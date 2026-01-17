@@ -1,2 +1,9 @@
 .venv/
 .env
+.idea/
+praca/*
+praca/chapters/*.aux
+!praca/*.tex
+!praca/literatura.bib
+!praca/images
+!praca/chapters/

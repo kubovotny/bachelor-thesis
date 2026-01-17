@@ -1,0 +1,290 @@
+\documentclass[12pt, oneside]{book}  % jednostranna tlac
+%\documentclass[12pt, twoside]{book}  % obojstranna tlac
+
+%spravne nastavenie okrajov
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3.5cm,right=2cm]{geometry}
+%zapnutie fontov pre UTF8 kodovanie
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{lipsum}
+
+%zapnutie slovenskeho delenia slov
+%a automatickych nadpisov ako Obsah, Obrázok a pod. v slovencine
+%\usepackage[slovak]{babel} % vypnite pre prace v anglictine!
+
+%nastavenie riadkovania podla smernice
+\linespread{1.25} % hodnota 1.25 by mala zodpovedat 1.5 riadkovaniu
+
+% balicek na vkladanie zdrojoveho kodu
+\usepackage{listings}
+% ukazky kodu su cislovane ako Listing 1,2,...
+% tu je Listing zmenene na Algorithm 1,2,...
+\renewcommand{\lstlistingname}{Algorithm}
+% nastavenia balicka listings
+% mozete pridat aj language=...
+% na nastavenie najcastejsie pouzivaneho prog. jazyka
+% takisto sa da zapnut cislovanie riadkov
+\lstset{frame=lines}
+
+% balicek na vkladanie obrazkov
+\usepackage{graphicx}
+% balicek na vkladanie celych pdf dokumentov, tu zadanie
+\usepackage{pdfpages}
+% balicek na spravne formatovanie URL
+\usepackage{url}
+% balicek na hyperlinky v ramci dokumentu
+% zrusime farebne ramiky okolo liniek aby pdf
+% vyzeralo rovnako ako tlacena verzia
+\usepackage[hidelinks,breaklinks]{hyperref}
+
+
+% -------------------
+% --- Definicia zakladnych pojmov
+% --- Vyplnte podla vasho zadania, rok ma byt rok odovzdania
+% -------------------
+\def\mfrok{2026}
+\def\mfnazov{Machine Learning Assessment of the Trading Value of Central Bank Information}
+\def\mftyp{Bachelor Thesis}
+\def\mfautor{Jakub Novotný}
+\def\mfskolitel{Ing. Pavel Gertler, PhD. }
+
+%ak mate konzultanta, odkomentujte aj jeho meno na titulnom liste
+\def\mfkonzultant{tit. Meno Priezvisko, tit. }  
+
+\def\mfmiesto{Bratislava, \mfrok}
+
+% študenti BIN a DAV odkomentujú príslušnú dvojicu riadkov
+% \def\mfodbor{ Computer Science }
+% \def\program{ Computer Science }
+% pre BIN:
+%\def\mfodbor{ Computer Science and Biology }
+%\def\program{ Bioinformatics }
+% pre DAV:
+\def\mfodbor{ Computer Science and Mathematics }
+\def\program{ Data Science }
+
+% Uvádzajte pracovisko zo zadania
+% u školiteľov z FMFI to bude katedra školiteľa
+\def\mfpracovisko{ Department of Computer Science }
+
+\begin{document}     
+\frontmatter
+\pagestyle{empty}
+
+% -------------------
+% --- Obalka ------
+% -------------------
+
+\begin{center}
+  \sc\large
+  Comenius University in Bratislava\\
+  Faculty of Mathematics, Physics and Informatics
+
+\vfill
+
+{\LARGE\mfnazov}\\
+\mftyp
+\end{center}
+
+\vfill
+
+{\sc\large 
+\noindent \mfrok\\
+\mfautor
+}
+
+\cleardoublepage
+% --- koniec obalky ----
+
+% -------------------
+% --- Titulný list
+% -------------------
+
+\noindent
+
+\begin{center}
+\sc  
+\large
+  Comenius University in Bratislava\\
+  Faculty of Mathematics, Physics and Informatics
+
+\vfill
+
+{\LARGE\mfnazov}\\
+\mftyp
+\end{center}
+
+\vfill
+
+\noindent
+\begin{tabular}{ll}
+Study Programme: & \program \\
+Field of Study: & \mfodbor \\
+Department: & \mfpracovisko \\
+Supervisor: & \mfskolitel \\
+% Consultant: & \mfkonzultant \\
+\end{tabular}
+
+\vfill
+
+
+\noindent \mfmiesto\\
+\mfautor
+
+\cleardoublepage
+% --- Koniec titulnej strany
+
+
+% -------------------
+% --- Zadanie z AIS
+% -------------------
+% v elektronickej verzii sa zverejňuje zadanie bez podpisov
+% v pracach v angličtine anglické aj slovenské zadanie
+
+\newpage
+\setcounter{page}{3}
+\includepdf{images/zadanie.pdf}
+
+\includepdf{images/zadanie-en.pdf}
+
+% --- Koniec zadania
+
+
+% -------------------
+%   Čestné vyhlásenie a nepovinné poďakovanie
+% -------------------
+\newpage
+\pagestyle{plain}
+\paragraph{Declaration:}
+I hereby declare that I have independently written this entire
+bachelor thesis entitled ``\mfnazov'', including all its
+figures and appendices, using the literature listed in the attached
+bibliography.
+
+% Uveďte na čo ste nástroje používali
+% Podľa typu použitia potom nástroje aj citujte v texte
+In preparation of the thesis I have also used the following artifical
+infelligence tools: Gemini, ChatGPT for the follwing purposes: 
+better verbal expression and helping with source searching. I
+have used artificial intelligence tools in accordance with relevant
+legal regulations, academic rights and freedoms, ethical and moral
+principles while simultaneously maintaining academic integrity. I am
+aware that I am fully responsible for the accuracy of the final text.
+
+\paragraph{Acknowledgments:} Tu môžete poďakovať školiteľovi, prípadne
+ďalším osobám, ktoré vám s prácou nejako pomohli, poradili,
+poskytli dáta a podobne.
+
+% --- Koniec poďakovania
+
+% -------------------
+%   Abstrakt - Slovensky
+% -------------------
+\newpage 
+\section*{Abstrakt}
+
+\paragraph*{Kľúčové slová:} 
+% --- Koniec Abstrakt - Slovensky
+
+
+% -------------------
+% --- Abstrakt - Anglicky 
+% -------------------
+\newpage 
+\section*{Abstract}
+
+\paragraph*{Keywords:} 
+
+% --- Koniec Abstrakt - Anglicky
+
+% -------------------
+% --- Predhovor 
+% -------------------
+%\newpage 
+%
+%
+%\chapter*{Preface} %
+%
+%Predhovor je všeobecná informácia o práci, obsahuje hlavnú charakteristiku práce 
+%a okolnosti jej vzniku. Autor zdôvodní výber témy, stručne informuje o cieľoch 
+%a význame práce, spomenie domáci a zahraničný kontext, komu je práca určená, 
+%použité metódy, stav poznania; autor stručne charakterizuje svoj prístup a svoje
+%hľadisko. 
+%
+% --- Koniec Predhovor
+
+
+% -------------------
+% --- Obsah
+% -------------------
+
+\cleardoublepage 
+
+\tableofcontents
+
+% ---  Koniec Obsahu
+
+% -------------------
+% --- Zoznamy tabuliek, obrázkov, skratiek, slovník - nepovinné
+% -------------------
+
+\newpage 
+
+\listoffigures
+\listoftables
+
+% ---  Koniec Zoznamov
+
+\mainmatter
+\pagestyle{headings}
+
+\input{chapters/intro}
+\input{chapters/theory}
+\input{chapters/data}
+\input{chapters/results}
+\input{chapters/discussion}
+
+% \input chapter.tex
+
+\input{chapters/conclusion}
+
+
+
+% \input zaver.tex
+
+% -------------------
+% --- Bibliografia
+% -------------------
+
+
+\newpage	
+
+\backmatter
+
+\thispagestyle{empty}
+\clearpage
+
+\bibliographystyle{plain}
+\bibliography{literatura} 
+\addcontentsline{toc}{chapter}{References}
+
+
+% -------------------
+%--- Prilohy---
+% -------------------
+
+%Nepovinná časť prílohy obsahuje materiály, ktoré neboli zaradené priamo  do textu. Každá príloha sa začína na novej strane.
+%Zoznam príloh je súčasťou obsahu.
+%
+% \input appendixA-en.tex
+
+% \input appendixB-en.tex
+
+\end{document}
+
+
+
+
+
+
