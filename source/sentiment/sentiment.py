@@ -12,8 +12,8 @@ from nltk.stem import WordNetLemmatizer
 
 # nltk.download('all')
 
-df = pd.read_csv('https://raw.githubusercontent.com/pycaret/pycaret/master/datasets/amazon.csv')
+df = pd.read_csv('../gathering/data_raw1.csv', sep='|')
 
-print(df.head())
+print(df.tail())
 
 if __name__ == '__main__':...
