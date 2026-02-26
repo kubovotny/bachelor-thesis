@@ -1,0 +1,11 @@
+2. Štruktúra a mechanizmus tlačových konferencií
+Tlačová konferencia (koná sa spravidla každých 6 týždňov o 14:45 SEČ) je pre finančných analytikov rozdelená na dva segmenty s odlišným dopadom na trhový sentiment: 
+
+    Introductory Statement (Úvodné vyhlásenie):
+        Charakteristika: Vysoko štruktúrovaný, vopred pripravený a schválený text.
+        Obsah: Obsahuje ekonomickú a monetárnu analýzu, hodnotenie rizík a rozhodnutie o sadzbách.
+        Trhový dopad: Má tendenciu hýbať cenami dlhopisov a meny bezprostredne po zverejnení (signálny efekt).
+    Q&A Session (Otázky a odpovede):
+        Charakteristika: Spontánnejšia časť, kde prezidentka ECB reaguje na otázky novinárov.
+        Význam pre výskum: Štúdie ukazujú, že Q&A sekcia má často väčší dopad na volatilitu a ceny akcií než úvodné slovo, pretože tu dochádza k „dekódovaniu“ neistoty a nuansií v tóne.
+        Kvantifikácia: Pre analýzu sentimentu je Q&A bohatším zdrojom dát, pretože obsahuje menej formálne formulácie, ktoré algoritmy NLP (Natural Language Processing) dokážu lepšie zachytiť ako zmeny nálady

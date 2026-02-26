@@ -7,3 +7,5 @@ praca/chapters/*.aux
 !praca/literatura.bib
 !praca/images
 !praca/chapters/
+*.pdf
+*.pptx
