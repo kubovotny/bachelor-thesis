@@ -9,3 +9,4 @@ praca/chapters/*.aux
 !praca/chapters/
 *.pdf
 *.pptx
+*.csv

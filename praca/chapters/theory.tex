@@ -1,58 +1,103 @@
 \chapter{Theoretical Background}
-The relationship between central bank communication and financial market behavior is a key aspect of modern monetary economics. To evaluate how valuable this information is for trading using Machine Learning, we first need to understand how monetary policy affects the economy. Then, we can investigate how computational linguistics can measure these qualitative signals. This chapter explains the theories behind asset pricing in response to monetary shocks and discusses the development of Natural Language Processing (NLP) within financial econometrics.
 
-\section{Monetary Policy Transmission and Market Efficiency}
+\section{Central Bank Communication}
+The operational paradigm of central banking has undergone a profound and irreversible structural transformation over the past three decades.
+Historically, central banks operated under a doctrine of deliberate opacity. Prior to 1990s, monetary policy decisions were rarely accompanied
+by public explanations, and the prevailing orthodoxy among policymakers held that taking financial markets by surprise was absolutely essential
+for the effectiveness of policy interventions.This period of institutional mystique, famously characterized by the "Secrets of the Temple"
+mentality during the early tenure of Alan Greenspan at the Federal Reserve, was defined by a distinct lack of formlaized public guidance. Market
+participants were routinely left to infer the target interest rate or the broader policy stance indirectly, relying on the size, timing,
+and nature of open market operations conducted by trading desks \cite{NBERw11898}.
 
-This thesis is based on the idea that announcements from central banks provide new information that changes how market participants think. The Efficient Market Hypothesis (EMH), says that asset prices should quickly show all available information  \cite{fama1970}. However, the details in central bank messages, especially during the European Central Bank's (ECB) press conferences, imply that "information" is not just clear-cut but can be understood in different ways.
+However, a fundamental paradigm shift has since occurred, repositioning caommunication from a peripheral public relations function to a core,
+independent instrument of monetary policy. Public institutions inherently bear an unequivocal obligation to share information, and central
+banks have increasingly recognized that transparency and accountability are fundamental duties of public service \cite{blinder2008central}.
+Beyond mere institutionalaccountability, the evolution of monetary policy frameworks—particurarly the widespread adoption of inflation
+targeting across advanced and emerging economies—has demonstrated that transparent and credible central banks are the absolute cornerstones
+of long-term price stability \cite{daly2025dynamic}.
+Clear communication has been empirically shown to enhance central bank independence, bolster institutional credibility, and actively anchor
+inflation expectations in complex macroeconomic environments \cite{filardo2008transparency}.
 
-\hfill
-Asset prices, especially in high-frequency markets like swaps and futures, react to different types of monetary policy surprises. As identified by \cite{jarocinski2020}, it is important to separate \textit{pure monetary policy shocks} from \textit{central bank information shocks}.
+\subsection{Monetary Policy Statement}
+At the operational nexus of the ECB's communication strategy is the monetary policy statement, delivered during the press conference that directly
+follows the monetary policy meetings of the Governing Council, which comprises the six members of the Executive Board
+(including the President and Vice-President) and the governors of the national central banks of the euro area meet to deliberate and set monetary
+policy parameters for the entire currency block. Currently, the ECB holds eight dedicated monetary policy meetings per year, operating on
+an approximate six-week cycle \cite{ITC_ECB_Schedule}.
 
-\begin{itemize}
-    \item A \textbf{pure monetary policy shock} occurs when the central bank increases interest rates, which usually leads to lower stock prices because future cash flows are discounted more.
-    \item An \textbf{information shock} occurs when a rate increase is paired with optimistic economic outlooks communicated by central bank, causing stock prices to rise even though the policy is stricter.
-\end{itemize}
+\subsubsection{Day Schedule}
+The orchestration of the announcement day is highly standardized, reflecting the institution's strict commitment to predictability and the mitigation
+of market volatility. Starting from July 21, 2022, the ECB modified its historical publication timeline to optimize how financial markets digest
+complex policy signals \cite{ECB2022_NewTimes}. The initial policy decision—typically a concise press release detailing the exact interest rate
+parameters, deposit facility rates, and major structural changes to asset purchase programs—is published at 14:15 CET. Shortly thereafter, the press
+conference commences at 14:45 CET, during which the President and Vice-President of the ECB present the detailed monetary policy statement and
+interact directly with the financial press. Concurrent with the start of the Q\&A segment, the full written text of the monetary policy statement
+is published on the ECB's digital platforms at 15:00 CET.
 
-This difference is important for the algorithmic approach proposed in this thesis. The model should not just react to the ``level'' of the rate itself but should understand the reasons for it. We believe that the information shock mainly comes from the wording in the Introductory Statement and the following Q\&A sessions.
+\begin{table}[h!]
+    % v tabulke sa popis zvykne davat nad tabulku
+    \caption[Governing Council Meeting Day Schedule]
+    {Schedule of meeting day of Governing Council}
+    %id tabulky
+    \label{tab:meet_schedule}
+    % tu zacina samotna tabulka
+    \begin{center}
+        \begin{tabular}{lcr}
+            \hline
+            Event            &  & Scheduled time \\
+            \hline
+            Meeting          &  & 9:00 - 12:00   \\
+            MP announcement  &  & 14:15          \\
+            Press conference &  & 14:45 - 15:15  \\
+            Market close     &  & 17:00          \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{table}
 
-Also, the model's risk assessment looks at how current economic data differs from past expectations. By using the ECB’s Macroeconomic Projection Database (MPD) and its historical data on inflation and GDP forecasts, we create a ``baseline'' expectation. The ``shock'' is calculated as the difference between the sentiment extracted from the press conference and historical forecast:
+Table \ref{tab:meet_schedule} description: \textbf{Meeting} - official meeting to discuss economic and monetary developments,
+\textbf{MP announcement} - official relase time for the MP, \textbf{Press conference} - introductory statement with Q\&A session,
+\textbf{Market close} - European stock markets close, finalizing the day's reaction to ECB's actions.
 
-\begin{equation}
-    \text{Shock}_t = \text{Sentiment}(\text{Text}_t) - E[\text{MacroForecast}_t | \Omega_{t-1}]]
-\end{equation}
+\subsubsection{Structure of the Statement}
+The press conference itself is bufurcated into two highly distinct communicative phases: the reading of the formally prepared introductory statement
+and the subsequent unscripted Question and Answer (Q\&A) session. This structural division is not merely procedural; it is of profound empirical
+significance for financial markets, as the two sections serve completely differnet epistemological functions and generate distinct asset price dynamics.
 
-\noindent Where $\Omega_{t-1}$ represents the information set available prior to the conference. This approach aligns with the literature on rational expectations, where market volatility is driven by the difference between what actually happens and what was expected before.
+The introductory statement is highly structured, meticulously drafted document that represents the absolute concensus view of the Governing Council
+\cite{ECB_WP2742}.It offers a comprehensive, linear overview of the integrated analytical framework, sequentially detailing the economic assessment,
+inflation dynamics, and an evaluation of monetary and financial conditions. The language utilized within this document is deliberately precise, relying
+on specific syntactical formulations to signal the future policy path-a practise widely known as forward guidance \cite{ECB_Statement_Oct2025}.
+
+In stark contrast, the Q\&A session introduces an element of controlled spontaneity. Advanced textual analysis and structural topic modeling applied
+to the historical transcripts of ECB press conferences demonstrate that the thematic content of the statement differs significantly from the discourse
+generated during the Q\&A session. The topics that dominate the statement are persistent, structural, and heavily focused on standardized macroeconomic
+aggregates. Conversely, the Q\&A frequently yields completely new, emergent topics that were not addressed in the prepared text. Empirical research
+reveals that the first six most prevalent topics within a vast sample of press conference transcripts are predominantly driven by the Q\&A segments.
+This indicates that the true added value of the press conference lies heavily in Q\&A phase, which provides the public and market participants
+with granular, real-time clarifications regarding the ECB's decisions \cite{ECB_WP2742}.
+
+\subsection{Other Communication Channels}
+While the MP statement and the accompanying press conference represent the focal point of the ECB's communication apparatus, they operate within a much
+broader, continuously active ecosystem of publications, reports, and public engagements. To continuously manage the yield curve, anchor long-term
+expectations, and fulfill its mandate of transparency, the ECB leverages several supplementary communication channels in the weeks between formal
+Governing Council meetings. This "inter-meeting communication" is powerful tool for addressing structural complexities and financial transmission
+mechanics that cannot be fully encapsulated in a single monthly press conference \cite{Istrefi2021ECB}.
+
+\subsubsection{The Economic Bulletin}
+The Economic Bulletin is comprehensive, data-rich analytical publication that serves to fully explicate the rationale underpinning the ECB's
+MP decisions. Releasing eight times a year-generally published two weeks after the corresponding MP meeting-the Bulletin contextualizes the Governing
+Council's choices against the detailed backdrop of prevailing economic, financial, and monetary conditions \cite{press_to_speeches}.
+
+\subsubsection{The Monetary Policy Accounts}
+In a major step toward heightened transparency, the ECB began publishing regular accounts of the Governing Council's MP meetings at the start of 2015,
+bringing its institutional practices into alignment with those of the US Federal Reserve and the Bank of England. These accounts are typically
+released four weeks after the corresponding MP meeting \cite{MP_accounts}.
+
+Documents offer a nuanced, synthesized overview of the Governing Council's internal deliberations.They outline the delicate balance of arguments,
+the spectrum of risk assessments considered by various members, and the differing perspectives on the economic outlook. By documenting the full
+range of analytical debates, the accounts help market participants understand the internal reaction function of the central bank and the specific
+macroeconomic thresholds that might trigger future policy interventions \cite{CorbisieroLawton2021}.
 
 \section{Natural Language Processing (NLP) in Finance}
 
-In the past, measuring what central bank speeches meant was done by hand or by using basic word counting methods. 
-Article \cite{tetlock2007} created a way to quantify pessimism in financial news, showing it could predict market activity. 
-Building on this, researchers made a financial-specific dictionary, noting that standard English dictionaries misclassify financial terms
-(e.g., words like ``liability'' or ``tax'' are seen as negative in everyday language but are neutral in finance) \cite{loughran2011}.
-
-However, these dictionary methods miss important details like context and the specific language used by central banks, which can often be unclear. To fix this, this we will use Natural Language Processing (NLP). NLP has changed a lot, going from Recurrent Neural Networks (RNNs) to Transformer-based models, which has revolutionized financial text analysis \cite{vaswani2017}.
-
-\hfill
-
-    Transformers use an ``attention mechanism'' that helps determine which words in a sentence are important, no matter where they are in the sentence. This is especially important for understanding sentences from ECB press conferences. For example, the sentence ``We do not anticipate that inflation will fail to decline,'' has two negatives, and a model needs to understand how the words relate to each other to correctly interpret it as a dovish or neutral statement, not a negative one.
-
-\section{Sentiment Analysis and Information Extraction Methodology}
-
-We propose a dual-layer sentiment analysis focusing on two distinct data structures within ECB communications:
-
-\begin{enumerate}
-    \item \textbf{The Introductory Statement:} A prepared text reflecting the consensus of the Governing Council. Sentiment here is hypothesized to align closely with the quarterly Macroeconomic Projection Database (MPD).
-    \item \textbf{The Q\&A Session:} This is an open discussion. \cite{blinder2008} argue that central bank communication is most effective when it reduces uncertainty; however, the Q\&A session is often where uncertainty ``leaks'' out.
-\end{enumerate}
-
-Using a Large Language Model (LLM) fine-tuned on financial texts, we generate sentiment scores specifically regarding \textit{inflation} and \textit{growth}. We treat the quarterly macro forecast (vintages of Inflation and GDP) as the mean ($\mu$) of the market's prior belief. The sentiment extracted from the text serves as a real-time update to this belief. 
-
-\hfill
-
-The difference between the ``tone'' of the Q\&A and the ``point forecast'' of the introductory statement helps us measure uncertainty. If the  Introductory Statement matches the MPD forecast (low variance), but the Q\&A shows a lot of changes in meaning, the algorithm sees an increase in uncertainty. This standard deviation from the point forecast acts as a warning signal:
-
-\begin{equation}
-    \text{Risk}_t = \sigma(\text{Sentiment}_\text{Q\&A} - \text{Sentiment}_\text{Intro})
-\end{equation}
-
-\noindent The trading algorithm learns the mapping between these textual shocks and subsequent asset returns. By cross-checking these sentiment-derived shocks against the established database of MP shocks provided by \cite{jarocinski2020}, we validate the model's economic grounding before allowing it to allocate capital.

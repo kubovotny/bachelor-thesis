@@ -1,6 +1,8 @@
-dotenv>=0.9.9
-python-dotenv>=1.2.1
 pandas>=2.3.3
 numpy>=2.3.5
-selenium>=4.0.0
 beautifulsoup4>=4.9.3
+requests
+sentence-transformers
+scikit-learn
+matplotlib
+tensorflow

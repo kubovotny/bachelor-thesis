@@ -1,0 +1,58 @@
+\chapter{Theoretical Background}
+The relationship between central bank communication and financial market behavior is a key aspect of modern monetary economics. To evaluate how valuable this information is for trading using Machine Learning, we first need to understand how monetary policy affects the economy. Then, we can investigate how computational linguistics can measure these qualitative signals. This chapter explains the theories behind asset pricing in response to monetary shocks and discusses the development of Natural Language Processing (NLP) within financial econometrics.
+
+\section{Monetary Policy Transmission and Market Efficiency}
+
+This thesis is based on the idea that announcements from central banks provide new information that changes how market participants think. The Efficient Market Hypothesis (EMH), says that asset prices should quickly show all available information  \cite{fama1970}. However, the details in central bank messages, especially during the European Central Bank's (ECB) press conferences, imply that "information" is not just clear-cut but can be understood in different ways.
+
+\hfill
+Asset prices, especially in high-frequency markets like swaps and futures, react to different types of monetary policy surprises. As identified by \cite{jarocinski2020}, it is important to separate \textit{pure monetary policy shocks} from \textit{central bank information shocks}.
+
+\begin{itemize}
+    \item A \textbf{pure monetary policy shock} occurs when the central bank increases interest rates, which usually leads to lower stock prices because future cash flows are discounted more.
+    \item An \textbf{information shock} occurs when a rate increase is paired with optimistic economic outlooks communicated by central bank, causing stock prices to rise even though the policy is stricter.
+\end{itemize}
+
+This difference is important for the algorithmic approach proposed in this thesis. The model should not just react to the ``level'' of the rate itself but should understand the reasons for it. We believe that the information shock mainly comes from the wording in the Introductory Statement and the following Q\&A sessions.
+
+Also, the model's risk assessment looks at how current economic data differs from past expectations. By using the ECB’s Macroeconomic Projection Database (MPD) and its historical data on inflation and GDP forecasts, we create a ``baseline'' expectation. The ``shock'' is calculated as the difference between the sentiment extracted from the press conference and historical forecast:
+
+\begin{equation}
+    \text{Shock}_t = \text{Sentiment}(\text{Text}_t) - E[\text{MacroForecast}_t | \Omega_{t-1}]]
+\end{equation}
+
+\noindent Where $\Omega_{t-1}$ represents the information set available prior to the conference. This approach aligns with the literature on rational expectations, where market volatility is driven by the difference between what actually happens and what was expected before.
+
+\section{Natural Language Processing (NLP) in Finance}
+
+In the past, measuring what central bank speeches meant was done by hand or by using basic word counting methods. 
+Article \cite{tetlock2007} created a way to quantify pessimism in financial news, showing it could predict market activity. 
+Building on this, researchers made a financial-specific dictionary, noting that standard English dictionaries misclassify financial terms
+(e.g., words like ``liability'' or ``tax'' are seen as negative in everyday language but are neutral in finance) \cite{loughran2011}.
+
+However, these dictionary methods miss important details like context and the specific language used by central banks, which can often be unclear. To fix this, this we will use Natural Language Processing (NLP). NLP has changed a lot, going from Recurrent Neural Networks (RNNs) to Transformer-based models, which has revolutionized financial text analysis \cite{vaswani2017}.
+
+\hfill
+
+    Transformers use an ``attention mechanism'' that helps determine which words in a sentence are important, no matter where they are in the sentence. This is especially important for understanding sentences from ECB press conferences. For example, the sentence ``We do not anticipate that inflation will fail to decline,'' has two negatives, and a model needs to understand how the words relate to each other to correctly interpret it as a dovish or neutral statement, not a negative one.
+
+\section{Sentiment Analysis and Information Extraction Methodology}
+
+We propose a dual-layer sentiment analysis focusing on two distinct data structures within ECB communications:
+
+\begin{enumerate}
+    \item \textbf{The Introductory Statement:} A prepared text reflecting the consensus of the Governing Council. Sentiment here is hypothesized to align closely with the quarterly Macroeconomic Projection Database (MPD).
+    \item \textbf{The Q\&A Session:} This is an open discussion. \cite{blinder2008} argue that central bank communication is most effective when it reduces uncertainty; however, the Q\&A session is often where uncertainty ``leaks'' out.
+\end{enumerate}
+
+Using a Large Language Model (LLM) fine-tuned on financial texts, we generate sentiment scores specifically regarding \textit{inflation} and \textit{growth}. We treat the quarterly macro forecast (vintages of Inflation and GDP) as the mean ($\mu$) of the market's prior belief. The sentiment extracted from the text serves as a real-time update to this belief. 
+
+\hfill
+
+The difference between the ``tone'' of the Q\&A and the ``point forecast'' of the introductory statement helps us measure uncertainty. If the  Introductory Statement matches the MPD forecast (low variance), but the Q\&A shows a lot of changes in meaning, the algorithm sees an increase in uncertainty. This standard deviation from the point forecast acts as a warning signal:
+
+\begin{equation}
+    \text{Risk}_t = \sigma(\text{Sentiment}_\text{Q\&A} - \text{Sentiment}_\text{Intro})
+\end{equation}
+
+\noindent The trading algorithm learns the mapping between these textual shocks and subsequent asset returns. By cross-checking these sentiment-derived shocks against the established database of MP shocks provided by \cite{jarocinski2020}, we validate the model's economic grounding before allowing it to allocate capital.
