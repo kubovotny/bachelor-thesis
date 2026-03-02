@@ -8,7 +8,9 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{lipsum}
-
+\usepackage[acronym, nonumberlist]{glossaries}
+\makenoidxglossaries
+\input{abbr.tex}
 %zapnutie slovenskeho delenia slov
 %a automatickych nadpisov ako Obsah, Obrázok a pod. v slovencine
 %\usepackage[slovak]{babel} % vypnite pre prace v anglictine!
@@ -233,6 +235,7 @@ poskytli dáta a podobne.
 
 \listoffigures
 \listoftables
+\printnoidxglossary[type=\acronymtype, title=List of Abbreviations]
 
 % ---  Koniec Zoznamov
 
