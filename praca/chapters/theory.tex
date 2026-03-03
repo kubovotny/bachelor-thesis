@@ -1,29 +1,28 @@
 \chapter{Theoretical Background}\label{chap:theory}
-This chapter establishes the theoretical foundation for the empirical analysis conducted in this thesis by bridging the macroeconomic principles
-of \gls{mp} with advanced computational linguistics. The first section explores the evolution of central bank communication. It examines
-the mechanics of \gls{mps}, the distinct roles of prepared statements versus unscripted Q\&A sessions, and the broader ecosystem
-of inter-meeting communication channels. The second section introduces \gls{nlp} within the financial domain, providing the
-methodological background for extracting quanifiable signals from unstructured central bank texts. It covers the transition from traditional
-dictionary-based sentiment analysis to state-of-the-art transformer models, such as BERT and its domain-specific adaptations.
-The final sections outline the theoretical underpinnings of time series analysis and portfolio optimization, which are essential for the practical
-application of the extracted sentiment signals in financial forecasting and the development of an investment strategy.
+This chapter establishes the theoretical foundation for the research in this thesis by connecting the macroeconomic concepts of \gls{mp} with advanced
+language technology. The first section looks at the evolution of central bank communication. It looks atthe mechanics of \gls{mps}, the distinct roles
+of prepared speeches versus Q\&A sessions, and how they communicate beteween meetings. The second section introduces \gls{nlp} and how it is used
+financial domain, providing the methodological background for extracting useful information from unstructured central bank texts. It covers the
+shift from traditional dictionary-based sentiment analysis to transformer models, such as BERT and its domain-specific adaptations. The last sections
+explain the theoretical basics of time series analysis and portfolio optimization, which are essential for the practical application of the extracted
+sentiment signals in financial forecasting and the development of an investment strategies.
 
 \section{Central Bank Communication}
-Central banking has undergone a profound and irreversible structural transformation over the past three decades.
-Historically, central banks operated under a doctrine of deliberate opacity. Before the 1990s, public explanations rarely accompanied monetary
-policy decisions, and the prevailing orthodoxy among policymakers held that taking financial markets by surprise was essential
-for the effectiveness of policy interventions. This period of institutional mystique, famously characterized by the "Secrets of the Temple"
-mentality during Alan Greenspan's early tenure at the \gls{fed}, was defined by a distinct lack of formalized public guidance. Market
-participants were routinely left to infer the target interest rate or the broader policy stance indirectly, relying on the size, timing,
-and nature of open market operations conducted by trading desks \cite{NBERw11898}.
+Over the past three decades, central banking has undergone profound and irreversible changes in the structure of its disclosures. In the past, central
+banks shrouded their operations in secrecy. Before the 1990s, there was no public explanation of why monetary policy decisions were made. Policymakers
+believed that their decisions should surprise the market because they believed that this was essential for policy interventions to be effective. This
+period of institutional unpredictability, famously defined by the “Secrets of the Temple” mentality during the early Alan Greenspan's tenure at the
+\gls{fed}, was characterized by a marked lack of formal public guidance \cite[p. 3]{NBERw11898}. Market participants repeatedly had to guess the target
+interest rate and the policy setting of the banks. They relied on the size, timing, and nature of the operations conducted by the \gls{fed} trading
+departments in the open market.
 
 Since then, however, there has been a fundamental paradigm shift that repositioned communication from a peripheral public relations function
 to a core, independent instrument of \gls{mp}. Public institutions have an inherent duty to share information, and central
-banks have increasingly recognized that transparency and accountability are fundamental public service obligations \cite{blinder2008central}.
+banks have increasingly recognized that transparency and accountability are fundamental public service obligations \cite[p. 15--18]{blinder2008central}.
 Beyond mere institutional accountability itself, the evolution of \gls{mp} frameworks—particularly the widespread adoption of inflation
 targeting across advanced and emerging economies—has demonstrated that transparent and credible central banks are the absolute cornerstones
 of long-term price stability \cite{daly2025dynamic}. Empirically, clear communication has been shown to enhance central bank independence,
-strengthen institutional credibility, and actively anchor inflation expectations in complex macroeconomic environments \cite{filardo2008transparency}.
+strengthen institutional credibility, and actively anchor inflation expectations in complex macroeconomic environments \cite[p. 7]{filardo2008transparency}.
 
 \subsection{Monetary Policy Statement}
 At the operational core of the \gls{ecb}'s communication strategy is the \gls{mps}, which is delivered during the press conference that
@@ -74,8 +73,7 @@ implications for financial markets, as the two sections serve completely differe
 The introductory statement is a highly structured, carefully drafted document that represents the absolute consensus view of the Governing Council
 \cite{ECB_WP2742}. It offers a comprehensive, linear overview of the integrated analytical framework that progressively details the economic assessment,
 inflation dynamics, and the evaluation of monetary and financial conditions. The language used in this document is deliberately precise, relying
-on specific syntactical formulations to signal the future policy path—a practice commonly known as forward-looking policy setting
-\cite{ECB_Statement_Oct2025}.
+on specific syntactical formulations to signal the future policy path—a practice commonly known as forward-looking policy setting.
 
 In sharp contrast, the Q\&A session introduces an element of controlled spontaneity. Advanced textual analysis and structural topic modeling applied
 to the historical transcripts of \gls{ecb} press conferences demonstrate that the thematic content of the statement differs significantly from the
@@ -83,7 +81,7 @@ discourse generated during the Q\&A session. The topics that dominate the statem
 macroeconomic aggregates. Conversely, the Q\&A often introduces completely new, emerging topics that were not addressed in the prepared text.
 Empirical research reveals that the first six most prevalent topics within a vast sample of press conference transcripts are predominantly driven by
 the Q\&A segments. This suggests that the true added value of the press conference lies largely in the Q\&A phase, which provides the public and
-market participants with detailed explanations regarding the \gls{ecb}'s decisions in real time\cite{ECB_WP2742}.
+market participants with detailed explanations regarding the \gls{ecb}'s decisions in real time \cite{ECB_WP2742}.
 
 \subsection{Other Communication Channels}
 While the \gls{mps} and the accompanying press conference represent the focal point of the \gls{ecb}'s communication apparatus, they operate within a much
@@ -106,7 +104,7 @@ released four weeks after the corresponding meeting \cite{MP_accounts}.
 The documents offer a detailed, synthesized overview of the Governing Council's internal deliberations. They outline the delicate balance of arguments,
 the range of risk assessments considered by various members, and the different perspectives on the economic outlook. By documenting the full
 range of analytical debates, the accounts help market participants understand the central bank's internal response function and the specific
-macroeconomic thresholds that might trigger future policy interventions \cite{CorbisieroLawton2021}.
+macroeconomic thresholds that might trigger future policy interventions \cite[p. 26--27]{CorbisieroLawton2021}.
 
 \section{Natural Language Processing in Finance}
 The exponential growth of the volume of digital information has fundamentally transformed the methodology of financial and macroeconomic research.
@@ -132,12 +130,12 @@ forefront of this shift is BERT (Bidirectional Encoder Representations from Tran
 in relation to all other words in a sentence, rather than in isolation, thereby capturing deep contextual relationships.
 
 Despite its power, general-purpose BERT is trained on standard texts (such as Wikipedia) and often falls short when confronted with the highly
-specialized lexicon of finance \cite[s. 6]{BIS_WP1215_2024}. This limitation led to the development of FinBERT, a model fine-tuned extensively
+specialized lexicon of finance \cite[p. 6]{BIS_WP1215_2024}. This limitation led to the development of FinBERT, a model fine-tuned extensively
 on financial texts, which significantly outperforms general-purpose BERT in accurately classifying the sentiment of professional financial discourse.
 
 However, central banking discourse constitutes an even more specialized field. As a result, the academic literature has recently introduced
 models such as CentralBankRoBERTa and other Central Bank Language Models (CB-LMs). These models are trained explicitly on massive, specialized texts
-that include central bank speeches, \gls{mps}, and macroeconomic research papers \cite[s. 4]{BIS_WP1215_2024}. Empirical benchmarks show that CB-LMs
+that include central bank speeches, \gls{mps}, and macroeconomic research papers \cite[p. 4]{BIS_WP1215_2024}. Empirical benchmarks show that CB-LMs
 significantly outperform both standard and financial models in understanding central bank idioms and accurately classifying the hawkish, dovish, or
 neutral stance of official policy communications. By using these highly calibrated transformer models, researchers can extract extremely precise,
 theory-consistent signals from institutions like the \gls{ecb} and the \gls{fed}, drastically improving the predictability of market reactions
