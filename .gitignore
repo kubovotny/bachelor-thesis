@@ -10,3 +10,4 @@ praca/chapters/*.aux
 *.pdf
 *.pptx
 *.csv
+__pycache__/
