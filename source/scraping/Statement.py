@@ -4,36 +4,88 @@ from Scraper import get_page
 import pandas as pd
 import re
 
+STATEMENTS_DIR = "~/Documents/School/bachelor-thesis/source/statements"
 
-def split_statement_to_intro_and_qa(all_elements: List[BeautifulSoup]) -> Tuple[List[BeautifulSoup], List[BeautifulSoup]]:
-    separator_index = -1
-    qa_pattern = re.compile(r"(I am[\w\s,]{10,30}questions\.)|(We[\w\s,]*questions[\w\s]*\.)|(\s?Click here [\w\s,]*answers\.)")
+
+def split_statement_to_intro_and_qa(
+    all_elements: List[BeautifulSoup],
+) -> Tuple[List[BeautifulSoup], List[BeautifulSoup]]:
+
     # We need to search through the elements to find which one contains the pattern
+
+    separator_index = -1
+    qa_pattern2 = re.compile(r"My (first )?question .*")
     for i, element in enumerate(all_elements):
-        if re.search(qa_pattern, element.get_text(separator="  ", strip=True)) and i > 2:
-            separator_index = i
+        if re.search(qa_pattern2, element.get_text(separator="  ", strip=True)):
+            separator_index = i - 1
             break
+
     separator_index2 = -1
+    qa_pattern = re.compile(
+        r"(I am[\w\s,]{10,30}questions\.)|(We[\w\s,]*questions[\w\s]*\.)|(\s?Click here [\w\s,]*answers\.)"
+    )
+    for i, element in enumerate(all_elements):
+        if (
+            re.search(qa_pattern, element.get_text(separator="  ", strip=True))
+            and i > 2
+        ):
+            separator_index2 = i
+            break
+
+    if separator_index2 != -1:
+        separator_index = separator_index2
+
+    separator_index3 = -1
     qa_pattern2 = re.compile(r"Transcript of the questions.*ECB")
     for i, element in enumerate(all_elements):
         if re.search(qa_pattern2, element.get_text(separator="  ", strip=True)):
-            separator_index2 = i - 1
+            separator_index3 = i - 1
             break
-    if separator_index2 != -1:
-        separator_index = separator_index2
+    if separator_index3 != -1:
+        separator_index = separator_index3
     press_elements = []
     qa_elements = []
     # SPLIT
     if separator_index != -1:
         # PRESS STATEMENT
-        press_elements = all_elements[:separator_index+1]
+        press_elements = all_elements[: separator_index + 1]
         # Q&A
-        qa_elements = all_elements[separator_index+1:]
+        qa_elements = all_elements[separator_index + 1 :]
     else:
         press_elements = all_elements
     return press_elements, qa_elements
 
-def scrape_statement(url: str, date: str)-> Dict[str, str]:
+
+def recursive_bold_parser(tag):
+    mini_text = tag.get_text()
+    if len(mini_text) <= 1:
+        return ""
+    if tag.name is None:
+        return mini_text
+    if tag.name in ["b", "strong", "em"]:
+        return f"[{mini_text}]"
+    tags = []
+    for tg in tag:
+        tags.append(recursive_bold_parser(tg))
+    return "".join(tags)
+
+
+def qa_proccessor(qa: List[BeautifulSoup]) -> str:
+    qa_paragraphs = []
+    for paragraph in qa:
+        if len(paragraph.get_text().replace(" ", "")) < 5:
+            continue
+        qa_pattern2 = re.compile(r"Transcript of the questions.*President(of the ECB)?",re.I)
+        if re.search(qa_pattern2, paragraph.get_text(separator="  ", strip=True)):
+            continue
+        qa_paragraphs.append(recursive_bold_parser(paragraph))
+        # print(recursive_bold_parser(paragraph))
+        # print()
+    return "\t".join(qa_paragraphs)
+
+
+def scrape_statement(url: str, date: str) -> Dict[str, str]:
+    # print(date)
     page_content: bytes | None = get_page(url)
 
     if page_content:
@@ -57,6 +109,8 @@ def scrape_statement(url: str, date: str)-> Dict[str, str]:
                     "upper-connetion",
                     "lower-connection",
                     "see-also-boxes",
+                    "notes",
+                    "footnotes"
                 ]
                 for c in classes
             ):
@@ -70,7 +124,8 @@ def scrape_statement(url: str, date: str)-> Dict[str, str]:
                         all_elements.append(grandchild)
     intro, qa = split_statement_to_intro_and_qa(all_elements)
     press_text = "\t".join([e.get_text(separator="  ", strip=True) for e in intro])
-    qa_text = "\t".join([e.get_text(separator="  ", strip=True) for e in qa])
+
+    qa_text = qa_proccessor(qa)
     return {
         "date": date,
         "url": url,
@@ -78,8 +133,13 @@ def scrape_statement(url: str, date: str)-> Dict[str, str]:
         "qa": qa_text.replace('"', "'"),
     }
 
-def get_list_of_statements_for_year(year: int)-> Dict[str, str]:
-    url: str = "https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/{year}/html/index_include.en.html".format(year=year)
+
+def get_list_of_statements_for_year(year: int) -> Dict[str, str]:
+    url: str = (
+        "https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/{year}/html/index_include.en.html".format(
+            year=year
+        )
+    )
     print(f"Scraping year: {year}")
     page_content: bytes | None = get_page(url)
 
@@ -112,11 +172,15 @@ def get_list_of_statements_for_year(year: int)-> Dict[str, str]:
             statements[isodate] = article_url
     return statements
 
+
 if __name__ == "__main__":
+    # scrape_statement("https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/2003/html/is030306.en.html","2003-03-02")
     data = []
-    for i in range(2013, 2014):
+    for i in range(1998, 2026):
         statements = get_list_of_statements_for_year(i)
         for date, url in statements.items():
             elements = scrape_statement(url, date)
             data.append(elements)
-    pd.DataFrame(data).to_csv("statements2013.csv", index=False, sep="|", encoding="utf-8")
+    pd.DataFrame(data).to_csv(
+        f"{STATEMENTS_DIR}/scraped_v2.csv", index=True, sep="|", encoding="utf-8"
+    )
