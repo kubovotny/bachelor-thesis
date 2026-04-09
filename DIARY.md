@@ -35,4 +35,9 @@ facebook/bart-large-mnli, ktorý vracia pravdepodobnosť pre každú tému a my 
 Uvedomili sme si, že Risk assessment je najčastejšia a najviac všeobecná, preto sme to jemne uhladili a vyberáme 2. najčastejšiu
 ak je pravd. tej druhej 90% z Risk assessmentu.
 # Apríl
+### 9. apríl
+Rozdelené Q&A na Q a A - urobený sentiment z nich. Spočítaný spoločný sentiment. (Zatiaľ iba FinBERT)
+Čo ak priemer sentimentov z odsekov ako výsledok sentimentu celého vyhlásenia je zlý? (Čo ak nejaká informácia je vážnejšia ako iná)
+Teda že napr.: "Dnes bude svietiť slnko bude pekne" - úplne super - sentiment pozitívny a potom máme vetu "Včera mi zomrel pes" - úplne negatívny
+Celkovo budeme mať 0, ale celkovo by sme mali byť negatívne naladený. Síce je vonku pekne, ale zomrel mi pes. - táto veta by bolo celkovo smutná.
 # Máj
