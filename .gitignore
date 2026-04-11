@@ -11,3 +11,4 @@ praca/chapters/*.aux
 *.pptx
 *.csv
 __pycache__/
+*.xlsx*

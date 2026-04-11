@@ -34,10 +34,34 @@ Topic modelling nám anotuje dáta tak, že potom môžeme robiť semantický se
 facebook/bart-large-mnli, ktorý vracia pravdepodobnosť pre každú tému a my vyberieme tú najpravdepodobnejšiu.
 Uvedomili sme si, že Risk assessment je najčastejšia a najviac všeobecná, preto sme to jemne uhladili a vyberáme 2. najčastejšiu
 ak je pravd. tej druhej 90% z Risk assessmentu.
+### 27. marec
+Topic modelling pri intro nie je potrebné robiť, dohodli sme sa tak so školiteľom, pretože intro sú aj tak štrukturované. Skôr to budeme
+potrebovať pri Q&A.
 # Apríl
 ### 9. apríl
 Rozdelené Q&A na Q a A - urobený sentiment z nich. Spočítaný spoločný sentiment. (Zatiaľ iba FinBERT)
 Čo ak priemer sentimentov z odsekov ako výsledok sentimentu celého vyhlásenia je zlý? (Čo ak nejaká informácia je vážnejšia ako iná)
 Teda že napr.: "Dnes bude svietiť slnko bude pekne" - úplne super - sentiment pozitívny a potom máme vetu "Včera mi zomrel pes" - úplne negatívny
 Celkovo budeme mať 0, ale celkovo by sme mali byť negatívne naladený. Síce je vonku pekne, ale zomrel mi pes. - táto veta by bolo celkovo smutná.
+Otázky v Q&A sú väčšinou negatívne a odpovede pozitívne, čo nám vo výsledku dáva neutrálne, tu sa treba zamyslieť, čo nás viac zaujíma a dostaneme
+sa k odpovedi, pretože spýtať sa viem hocijak kriticky, ale ten kto vie čo sa deje, tak je prezident ECB, ktorý odpovedá.
+
+### 11. apríl
+Pripravil som si datasety segmentov z Q&A a intro. Sú v súboroch s príponov .psv. Ďalej som urobil prvotnú korelačnú analýzu a zistil som, že texty ECB
+sú fakt veľmi neutrálne. Preto potrebujeme trochu pritvrdiť a zmeniť model na CentralBankRoBERTa-u, ktorý je viac fine-tuned na texty centrálnych bánk.
+Ďalej som trochu zrefaktoroval kód a už nie je tak messy - `main_pipeline` priečinok. Ďalej som si nakoniec aj tak stiahol `shocks_ecb_mpd_me_d.csv`, ktoré
+som na začiatku skritizoval, že k ním sa nemám ako dostať - no mám sa k ním ako dostať, ale nie cez sentimenty, ale cez `EA-MPD.xlsx`. Ale skôr je lepšie
+so šokmi porovnávať koreláciu, pretože je to trochu upratanejší dataset, ako čistý trh.
+
+Ďalej je možné, že budeme potrebovať aj tak rozdeľovať text podľa témy, aby sme mohli rozlíšiť dôležitú info od nedôležitej -> že na nedôležité veci je
+neutrálny až pozitívny sentiment, zatiaľ čo na dôležité negatívny -> celkovo je intro potom neutrálne -> z toho sa predikovať nedá.
+
+Potom je možné, že budeme musieť urobiť nejaký intra-meeting koeficient, že budeme zaznamenávať zmeny vo vyjadrovaní / sentimentoch.
+
+V neposlednom rade budeme musieť nielen koreláciu, ale aj nejaký AU-ROC, ktorý  bude klasifikovať
+($S_{(+)}\rightarrow M_{(+)}$ a $S_{(-)}\rightarrow M_{(-)}$ - podľa modelu.)
+
+
+Rovnica: $S = a \cdot S_{press} + b \cdot S_{Q\&A}$, kde $a+b=1$
+
 # Máj
