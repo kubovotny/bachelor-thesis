@@ -112,7 +112,7 @@ def chunk_qa(filename: str) -> pd.DataFrame:
     data = load_statement_file(filename)
     data["qa_paragraphs"] = data["qa"].str.split("\t")
     data["QA_processed"] = data["qa_paragraphs"].apply(qa_multiple_proccesser)
-    data = data.drop(columns=["qa", "qa_paragraphs"]).dropna(inplace=True)
+    data = data.drop(columns=["qa", "qa_paragraphs"]).dropna()
     # THIS was manually checked, if it divide correctly - 100% correct 
     # check_edge = 280
     # for i,row in data.iterrows():

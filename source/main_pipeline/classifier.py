@@ -10,17 +10,19 @@ login(token=HF_TOKEN)
 
 classifier: TextClassificationPipeline | None = None
 
-{
-    "centralbankroberta": "Moritz-Pfeifer/CentralBankRoBERTa-sentiment-classifier",
+models = {
+    "roberta": "Moritz-Pfeifer/CentralBankRoBERTa-sentiment-classifier",
     "finbert": "ProsusAI/finbert",
 }
 
 
 def get_sentiment(
-    text: List[str | float] | str, model: str = "ProsusAI/finbert"
+    text: List[str | float] | str, model: str = "finbert"
 ) -> List[Dict[str, Any]]:
     global classifier
     if classifier is None:
+        if model in models:
+            model = models[model]
         classifier = pipeline("text-classification", model=model, token=HF_TOKEN)
     return classifier(text, top_k=3)
 
