@@ -18,7 +18,7 @@ df_qa_chunked.groupby(["date", "is_question"]).agg(
 
 
 # TOPIC MODELLING:
-# 2 témy: 
+# 2 témy:
 # 1. MP: úrokové sadzby, menová politika, inflácia
 # 2. EP: nezamestnanosť, economic outlook
 
