@@ -64,4 +64,26 @@ V neposlednom rade budeme musieť nielen koreláciu, ale aj nejaký AU-ROC, ktor
 
 Rovnica: $S = a \cdot S_{press} + b \cdot S_{Q\&A}$, kde $a+b=1$
 
+
+### 18. apríl
+Opravené texty práce na základe komentárov od spolužiakov a učiteľov. Reálnejšie ciele bakalárky.
+Pridaný základný kameň k rezdeľovaniu tém pomocou semantických modelov (facebook-mnli-large)
+
+### 19. apríl
+Datasety: `qa_labeled` a samotné sentimenty na otázkach urobené. Hľadali sme optimálne témy a dostali sme sa
+k 2 hlavným: Monetary Performance a Economic Performance a 2 vedľajším: Fiscal and Other Irrelevant.
+Tieto 4 témy sme opísali, aby model čo najlepšie klasifikoval texty.
+
+### 20. apríl
+Máme sentimenty oboch častí, aj agregované na dni.
+
+### 21. apríl
+Zrobené mini analýzy -> zistili sme, že rozdelenie textu podľa témy a následny sentiment z dôležitých častí koreluje horšie ako
+keď sme nerozdeľovali text podľa tém. Ale je potrebné spraviť logistickú regresiu pre lepšie výsledky, pretože tam vieme spraviť
+nejakú lineárnu kombináciu sentimentov pre rôzne témy.
+
+### 22. apríl
+Trochu zjednodušený kód, už je viac function modul based ako file based. Takže vieme importovať funkcie z ostatných súborov a 
+takto urobiť kód main.py, ktorý naraz spustí všetko.
+
 # Máj

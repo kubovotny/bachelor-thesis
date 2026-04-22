@@ -2,7 +2,6 @@ from transformers import pipeline, TextClassificationPipeline
 from typing import List, Dict, Any
 from huggingface_hub import login
 import os
-import re
 
 HF_TOKEN = os.environ["HF_TOKEN"]
 login(token=HF_TOKEN)
@@ -20,10 +19,11 @@ def get_sentiment(
     text: List[str | float] | str, model: str = "finbert"
 ) -> List[Dict[str, Any]]:
     global classifier
-    if classifier is None:
-        if model in models:
-            model = models[model]
-        classifier = pipeline("text-classification", model=model, token=HF_TOKEN)
+    if model in models:
+        model = models[model]
+    classifier = pipeline(
+        "text-classification", model=model, token=HF_TOKEN, device="cuda"
+    )
     return classifier(text, top_k=3)
 
 
@@ -39,15 +39,22 @@ def calculate_sentiment(list_of_sentiments: List[Dict[str, str | float]]) -> flo
 
 
 ZERO_SHOT_LABELS = {
-    "ECONOMIC_ANALYSIS": "economic activity, GDP output growth, and employment developments",
-    "INFLATION": "consumer price inflation, price developments, and wage pressures",
-    "RISK_ASSESSMENT": "upside and downside risks to the economic outlook",
-    "FINANCIAL_CONDITIONS": "financial market conditions, bond yields, and bank lending rates",
-    "MONETARY_ANALYSIS": "monetary analysis, money supply growth, and credit dynamics",
-    "FORWARD_GUIDANCE": "monetary policy stance, future interest rate guidance, and policy conclusions",
-    "FISCAL_POLICY": "government fiscal policy, public debt, and national budgets",
-    "STRUCTURAL_REFORM": "structural reforms, productivity, and labor market policies",
+    "MONETARY_POLICY_AND_INFLATION": "inflation, price stability, interest rate decisions, monetary policy stance, financing conditions, bank lending, and market interest rates",
+    "ECONOMIC_PERFORMANCE": "economic growth, GDP outlook, unemployment, labor market developments, macroeconomic risks, demand, consumption, and investment",
+    "FISCAL_AND_STRUCTURAL": "government budgets, national debt, public spending, and structural reforms",
+    "OTHER_IRRELEVANT": "general greetings, purely political questions, unrelated remarks, climate change, or personal comments (excluding macroeconomic impacts)",
 }
+# {
+#     "ECONOMIC_ANALYSIS": "economic activity, GDP output growth, and employment developments",
+#     "INFLATION": "consumer price inflation, price developments, and wage pressures",
+#     "RISK_ASSESSMENT": "upside and downside risks to the economic outlook",
+#     "FINANCIAL_CONDITIONS": "financial market conditions, bond yields, and bank lending rates",
+#     "MONETARY_ANALYSIS": "monetary analysis, money supply growth, and credit dynamics",
+#     "FORWARD_GUIDANCE": "monetary policy stance, future interest rate guidance, and policy conclusions",
+#     "FISCAL_POLICY": "government fiscal policy, public debt, and national budgets",
+#     "STRUCTURAL_REFORM": "structural reforms, productivity, and labor market policies",
+#     "OTHER_IRRELEVANT": "general greetings, non-economic questions, unrelated remarks, climate change, or personal comments",
+# }
 
 ZERO_SHOT_DESC2LABEL = {b: a for a, b in ZERO_SHOT_LABELS.items()}
 
@@ -64,15 +71,27 @@ def label_paragraph(text: str) -> str:
             device="cuda",
         )
     result = topic_classifier(
-        text, candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()), top_k=3
+        text, candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()), top_k=2
     )
     return result
 
 
-def wise_label_choose(
+def label_choose(
     sequence: str = None, labels: list[str] = [], scores: list[float] = []
 ) -> str:
-    if labels[0] == "RISK_ASSESSMENT":
-        if scores[0] * 0.9 < scores[1]:
-            return ZERO_SHOT_DESC2LABEL[labels[1]]
+    if scores[0] < 0.45:
+        return 'OTHER_IRRELEVANT'
     return ZERO_SHOT_DESC2LABEL[labels[0]]
+
+
+if __name__ == "__main__":
+    from chunker import STATEMENTS_DIR
+    import pandas as pd
+
+    data = pd.read_csv(f"{STATEMENTS_DIR}/labeled_chunks_2022u.csv")
+    data["result"] = label_paragraph(list(data["chunk"]))
+    data["topic"] = data["result"].apply(lambda x: ZERO_SHOT_DESC2LABEL[x["labels"][0]])
+    data["prob"] = data["result"].apply(lambda x: x["scores"][0])
+    for _, row in data.iterrows():
+        print(row["topic"], row["prob"], sep=",")
+    # print(*data["result"],sep="\n\n")
