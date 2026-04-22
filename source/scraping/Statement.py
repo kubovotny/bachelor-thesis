@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from Scraper import get_page
 import pandas as pd
 import re
+from datetime import datetime
 
 STATEMENTS_DIR = "~/Documents/School/bachelor-thesis/source/statements"
 
@@ -56,29 +57,31 @@ def split_statement_to_intro_and_qa(
     return press_elements, qa_elements
 
 
-def recursive_bold_parser(tag):
-    mini_text = tag.get_text()
+def recursive_italic_bold_parser(tag: BeautifulSoup) -> str:
+    mini_text: str = tag.get_text()
     if len(mini_text) <= 1:
         return ""
     if tag.name is None:
         return mini_text
     if tag.name in ["b", "strong", "em"]:
         return f"[{mini_text}]"
-    tags = []
+    tags: List[str] = []
     for tg in tag:
-        tags.append(recursive_bold_parser(tg))
+        tags.append(recursive_italic_bold_parser(tg))
     return "".join(tags)
 
 
 def qa_proccessor(qa: List[BeautifulSoup]) -> str:
-    qa_paragraphs = []
+    qa_paragraphs: List[str] = []
     for paragraph in qa:
         if len(paragraph.get_text().replace(" ", "")) < 5:
             continue
-        qa_pattern2 = re.compile(r"Transcript of the questions.*President(of the ECB)?",re.I)
+        qa_pattern2: re.Pattern[str] = re.compile(
+            r"Transcript of the questions.*President(of the ECB)?", re.I
+        )
         if re.search(qa_pattern2, paragraph.get_text(separator="  ", strip=True)):
             continue
-        qa_paragraphs.append(recursive_bold_parser(paragraph))
+        qa_paragraphs.append(recursive_italic_bold_parser(paragraph))
         # print(recursive_bold_parser(paragraph))
         # print()
     return "\t".join(qa_paragraphs)
@@ -90,7 +93,7 @@ def scrape_statement(url: str, date: str) -> Dict[str, str]:
 
     if page_content:
         soup: BeautifulSoup = BeautifulSoup(page_content, "html.parser")
-        main_content: List[BeautifulSoup] = soup.find("main")
+        main_content: BeautifulSoup = soup.find("main")
         if not main_content:
             print(f"Warning: No main content found for {url}")
             return
@@ -98,7 +101,7 @@ def scrape_statement(url: str, date: str) -> Dict[str, str]:
         for child in main_content.find_all(recursive=False):
             if child.name not in ["div", "p", "ul", "ol"]:
                 continue
-            classes = child.get("class", [])
+            classes: List[str] = child.get("class", [])
             if any(
                 c
                 in [
@@ -110,7 +113,7 @@ def scrape_statement(url: str, date: str) -> Dict[str, str]:
                     "lower-connection",
                     "see-also-boxes",
                     "notes",
-                    "footnotes"
+                    "footnotes",
                 ]
                 for c in classes
             ):
@@ -123,9 +126,9 @@ def scrape_statement(url: str, date: str) -> Dict[str, str]:
                     ):
                         all_elements.append(grandchild)
     intro, qa = split_statement_to_intro_and_qa(all_elements)
-    press_text = "\t".join([e.get_text(separator="  ", strip=True) for e in intro])
+    press_text: str = "\t".join([e.get_text(separator="  ", strip=True) for e in intro])
 
-    qa_text = qa_proccessor(qa)
+    qa_text: str = qa_proccessor(qa)
     return {
         "date": date,
         "url": url,
@@ -181,6 +184,6 @@ if __name__ == "__main__":
         for date, url in statements.items():
             elements = scrape_statement(url, date)
             data.append(elements)
-    pd.DataFrame(data).to_csv(
-        f"{STATEMENTS_DIR}/scraped_v2.csv", index=True, sep="|", encoding="utf-8"
-    )
+    df = pd.DataFrame(data)
+    df.index.name = "statement_id"
+    df.to_csv(f"{STATEMENTS_DIR}/scraped_v2.csv", index=True, sep="|", encoding="utf-8")

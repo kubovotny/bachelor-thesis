@@ -1,13 +1,14 @@
 from classifier import label_paragraph, label_choose
 from chunker import chunk_press, chunk_qa, STATEMENTS_DIR
-from typing import Literal
+from typing import Literal, List
 import pandas as pd
 
 FILENAME = "scraped_v2"
 
 
-def label_maker(part: Literal["intro", "qa"] = "intro"):
-    columns_to_drop = ["result"]
+def label_maker(part: Literal["intro", "qa"] = "intro") -> None:
+    columns_to_drop: List[str] = ["result"]
+    data: pd.DataFrame
     if part == "intro":
         data = chunk_press(FILENAME)
     else:

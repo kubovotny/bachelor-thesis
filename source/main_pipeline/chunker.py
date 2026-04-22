@@ -8,14 +8,16 @@ STATEMENTS_DIR = "~/Documents/School/bachelor-thesis/source/statements"
 FILE_SAVING = True
 
 
-def load_statement_file(filename):
-    data = pd.read_csv(f"{STATEMENTS_DIR}/{filename}.csv", sep="|", index_col="statement_id")
+def load_statement_file(filename: str) -> pd.DataFrame:
+    data = pd.read_csv(
+        f"{STATEMENTS_DIR}/{filename}.csv", sep="|", index_col="statement_id"
+    )
     data.drop(columns=["url"], inplace=True)
     data["date"] = pd.to_datetime(data["date"])
     return data
 
 
-def clean_paragraph(text: str, limit=100) -> str:
+def clean_paragraph(text: str, limit: int = 100) -> str:
     if not isinstance(text, str):
         return ""
 
@@ -32,12 +34,14 @@ def clean_paragraph(text: str, limit=100) -> str:
     return text
 
 
-def process_long_paragraph(long_text, max_words=200, min_tail_words=30):
+def process_long_paragraph(
+    long_text: str, max_words: int = 200, min_tail_words: int = 30
+) -> List[str]:
     if type(long_text) is not str:
         return pd.NA
-    sentences = sent_tokenize(long_text)
-    safe_chunks = []
-    current_chunk = ""
+    sentences: List[str] = sent_tokenize(long_text)
+    safe_chunks: List[str] = []
+    current_chunk: str = ""
     for sentence in sentences:
         if len(current_chunk.split()) + len(sentence.split()) <= max_words:
             current_chunk += sentence + " "
@@ -72,7 +76,7 @@ def make_percentile(data: pd.DataFrame) -> pd.DataFrame:
 
 
 def chunk_press(filename: str) -> pd.DataFrame:
-    data = load_statement_file(filename)
+    data: pd.DataFrame = load_statement_file(filename)
 
     data["paragraph"] = data["press"].str.split("\t")
 
@@ -109,10 +113,12 @@ def qa_splitter(paragraph: str) -> Dict[str, bool | str]:
     return {"is_question": verdict, "text": clean_qa(text)}
 
 
-def qa_multiple_proccesser(paragraphs: List):
+def qa_multiple_proccesser(
+    paragraphs: List[str],
+) -> List[Dict[str, bool | str]] | float:
     if type(paragraphs) is float:
         return paragraphs
-    qa_proccessed = []
+    qa_proccessed: List[Dict[str, bool | str]] = []
     for qa_paragraph in paragraphs:
         qa_proccessed.append(qa_splitter(qa_paragraph))
     return qa_proccessed
@@ -168,16 +174,21 @@ def chunk_qa(filename: str) -> pd.DataFrame:
 
 def q_to_a_merged(filename: str) -> pd.DataFrame:
     data = load_statement_file(filename)
+    dt: pd.Series[List[Dict[str, bool | str]] | float]
     dt = data["qa"].str.split("\t").apply(qa_multiple_proccesser)
 
-    paired_list = []
+    paired_list: List[List[str]] = []
+    row: List[Dict[str, bool | str]] | float
+    isq: bool
+    text: str
+    q: bool
     for row in dt:
         q = True
-        pairs: list[str] = []
-        pair = ""
-        z: list[str] = []
+        pairs: List[str] = []
+        pair: str = ""
+        z: List[str] = []
         if type(row) is float:
-            row = []
+            row: List[Dict[str, bool | str]] = []
         for dct in row:
             isq, text = dct.values()
             if isq:

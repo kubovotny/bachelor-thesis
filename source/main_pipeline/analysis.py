@@ -104,7 +104,7 @@ from sklearn.utils import resample
 # 1. Krok: Definovanie "Chvostov" pre trh (Náš Target / Cieľ)
 # Vypočítame 80. percentil (všetko nad toto je silný rast sadzieb)
 target_col = 'OIS_1M'
-hawkish_threshold = df[target_col].quantile(0.7) 
+hawkish_threshold = df[target_col].quantile(0.8) 
 
 # Vytvoríme binárnu premennú: 1 ak OIS vyskočilo vysoko, 0 inak
 df['Target_Hawkish_Tail'] = (df[target_col] > hawkish_threshold).astype(int)

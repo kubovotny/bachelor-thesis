@@ -1,5 +1,5 @@
 from transformers import pipeline, TextClassificationPipeline
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Literal
 from huggingface_hub import login
 import os
 
@@ -9,36 +9,45 @@ login(token=HF_TOKEN)
 
 classifier: TextClassificationPipeline | None = None
 
-models = {
+MODELS: Dict[Literal["finbert", "roberta"], str] = {
     "roberta": "Moritz-Pfeifer/CentralBankRoBERTa-sentiment-classifier",
     "finbert": "ProsusAI/finbert",
 }
 
 
 def get_sentiment(
-    text: List[str | float] | str, model: str = "finbert"
+    text: List[str | float] | str, model: Literal["finbert", "roberta"] = "finbert"
 ) -> List[Dict[str, Any]]:
     global classifier
-    if model in models:
-        model = models[model]
+    if model in MODELS:
+        model_name = MODELS[model]
+    else:
+        raise NameError(f"{model} model is not in menu.")
     classifier = pipeline(
-        "text-classification", model=model, token=HF_TOKEN, device="cuda"
+        "text-classification", model=model_name, token=HF_TOKEN, device="cuda"
     )
     return classifier(text, top_k=3)
 
 
 def calculate_sentiment(list_of_sentiments: List[Dict[str, str | float]]) -> float:
-    score = 0
+    score: float = 0
     for sentiment in list_of_sentiments:
         if any(sentiment["label"].lower() == x for x in ["positive", "hawkish"]):
             score += sentiment["score"]
         elif any(sentiment["label"].lower() == x for x in ["negative", "dovish"]):
             score -= sentiment["score"]
-
     return score
 
 
-ZERO_SHOT_LABELS = {
+ZERO_SHOT_LABELS: Dict[
+    Literal[
+        "MONETARY_POLICY_AND_INFLATION",
+        "ECONOMIC_PERFORMANCE",
+        "FISCAL_AND_STRUCTURAL",
+        "OTHER_IRRELEVANT",
+    ],
+    str,
+] = {
     "MONETARY_POLICY_AND_INFLATION": "inflation, price stability, interest rate decisions, monetary policy stance, financing conditions, bank lending, and market interest rates",
     "ECONOMIC_PERFORMANCE": "economic growth, GDP outlook, unemployment, labor market developments, macroeconomic risks, demand, consumption, and investment",
     "FISCAL_AND_STRUCTURAL": "government budgets, national debt, public spending, and structural reforms",
@@ -56,12 +65,20 @@ ZERO_SHOT_LABELS = {
 #     "OTHER_IRRELEVANT": "general greetings, non-economic questions, unrelated remarks, climate change, or personal comments",
 # }
 
-ZERO_SHOT_DESC2LABEL = {b: a for a, b in ZERO_SHOT_LABELS.items()}
+ZERO_SHOT_DESC2LABEL: Dict[
+    str,
+    Literal[
+        "MONETARY_POLICY_AND_INFLATION",
+        "ECONOMIC_PERFORMANCE",
+        "FISCAL_AND_STRUCTURAL",
+        "OTHER_IRRELEVANT",
+    ],
+] = {b: a for a, b in ZERO_SHOT_LABELS.items()}
 
 topic_classifier: TextClassificationPipeline | None = None
 
 
-def label_paragraph(text: str) -> str:
+def label_paragraph(text: str) -> List[Dict[str, float | str]]:
     global topic_classifier
     if topic_classifier is None:
         topic_classifier = pipeline(
@@ -70,7 +87,7 @@ def label_paragraph(text: str) -> str:
             token=HF_TOKEN,
             device="cuda",
         )
-    result = topic_classifier(
+    result: List[Dict[str, float | str]] = topic_classifier(
         text, candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()), top_k=2
     )
     return result
@@ -78,9 +95,14 @@ def label_paragraph(text: str) -> str:
 
 def label_choose(
     sequence: str = None, labels: list[str] = [], scores: list[float] = []
-) -> str:
+) -> Literal[
+    "MONETARY_POLICY_AND_INFLATION",
+    "ECONOMIC_PERFORMANCE",
+    "FISCAL_AND_STRUCTURAL",
+    "OTHER_IRRELEVANT",
+]:
     if scores[0] < 0.45:
-        return 'OTHER_IRRELEVANT'
+        return "OTHER_IRRELEVANT"
     return ZERO_SHOT_DESC2LABEL[labels[0]]
 
 

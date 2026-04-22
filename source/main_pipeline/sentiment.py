@@ -1,23 +1,57 @@
 import pandas as pd
 from chunker import STATEMENTS_DIR
-from typing import Literal
+from typing import Literal, Dict
 
-def label_formatter(x,part:Literal["QA","IS"]):
+INTRO_COLUMNS: Dict[str, str] = {
+    "label": "str",
+    "min": "float64",
+    "mean": "float64",
+    "max": "float64",
+    "std": "float64",
+}
+QA_COLUMNS: Dict[str, str] = {
+    "label": "str",
+    "is_question": "bool",
+    "min": "float64",
+    "mean": "float64",
+    "max": "float64",
+    "std": "float64",
+}
+
+
+def label_formatter(
+    x: Literal[
+        "MONETARY_POLICY_AND_INFLATION",
+        "ECONOMIC_PERFORMANCE",
+        "FISCAL_AND_STRUCTURAL",
+        "OTHER_IRRELEVANT",
+    ],
+    part: Literal["QA", "IS"],
+) -> str:
     return {
-            "MONETARY_POLICY_AND_INFLATION": f"{part}_MP",
-            "ECONOMIC_PERFORMANCE": f"{part}_EP",
-            "FISCAL_AND_STRUCTURAL": f"{part}_FS",
-            "OTHER_IRRELEVANT": f"{part}_OI",
-        }[x]
+        "MONETARY_POLICY_AND_INFLATION": f"{part}_MP",
+        "ECONOMIC_PERFORMANCE": f"{part}_EP",
+        "FISCAL_AND_STRUCTURAL": f"{part}_FS",
+        "OTHER_IRRELEVANT": f"{part}_OI",
+    }[x]
+
 
 def return_sentiment_data(
     MODEL="finbert",
     just_answers=True,
-):
-    agg_qa = pd.read_csv(f"{STATEMENTS_DIR}/sentiment/{MODEL}/agg_qa_labeled.csv")
-    agg_intro = pd.read_csv(f"{STATEMENTS_DIR}/sentiment/{MODEL}/agg_intro_labeled.csv")
-    agg_intro["label"] = agg_intro["label"].apply(label_formatter,part="IS")
-    agg_qa["label"] = agg_qa["label"].apply(label_formatter,part="QA")
+) -> pd.DataFrame:
+    agg_qa: pd.DataFrame = pd.read_csv(
+        f"{STATEMENTS_DIR}/sentiment/{MODEL}/agg_qa_labeled.csv",
+        dtype=QA_COLUMNS,
+        parse_dates=["date"],
+    )
+    agg_intro: pd.DataFrame = pd.read_csv(
+        f"{STATEMENTS_DIR}/sentiment/{MODEL}/agg_intro_labeled.csv",
+        dtype=INTRO_COLUMNS,
+        parse_dates=["date"],
+    )
+    agg_intro["label"] = agg_intro["label"].apply(label_formatter, part="IS")
+    agg_qa["label"] = agg_qa["label"].apply(label_formatter, part="QA")
 
     if just_answers:
         agg_qa = agg_qa[agg_qa["is_question"] == False]
@@ -25,9 +59,9 @@ def return_sentiment_data(
     else:
         agg_intro["is_question"] == False
 
-    df_agg = pd.concat([agg_intro, agg_qa])
+    df_agg: pd.DataFrame = pd.concat([agg_intro, agg_qa])
     # Preklopíme tabuľku (pivot)
-    df_pivot = df_agg.pivot(
+    df_pivot: pd.DataFrame = df_agg.pivot(
         index="date", columns="label", values=["mean", "max", "min", "std"]
     )
 
@@ -36,9 +70,6 @@ def return_sentiment_data(
     df_pivot = df_pivot.reset_index()
 
     df_pivot.fillna(df_pivot.mean(), inplace=True)
-
-    df_pivot["diff_sentiment"] = df_pivot["mean_IS_MP"] - df_pivot["mean_QA_MP"]
-    df_pivot["date"] = pd.to_datetime(df_pivot["date"])
     return df_pivot
 
 

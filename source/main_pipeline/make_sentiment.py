@@ -1,10 +1,30 @@
 from chunker import STATEMENTS_DIR
 from classifier import get_sentiment, calculate_sentiment
-from typing import Literal, List
+from typing import Literal, List, Dict
 import pandas as pd
 
 
 MODEL_SELECTION = ["finbert", "roberta"]
+QA_COLUMNS: Dict[str, str] = {
+    "statement_id": "int",
+    "is_question": "bool",
+    "chunk": "str",
+    "chunk_id": "int",
+    "chunk_percentile": "float64",
+    "label": "str",
+    "prob": "float64",
+    "score": "float64",
+}
+
+INTRO_COLUMNS: Dict[str, str] = {
+    "statement_id": "int",
+    "chunk": "str",
+    "chunk_id": "int",
+    "chunk_percentile": "float64",
+    "label": "str",
+    "prob": "float64",
+    "score": "float64",
+}
 
 
 def day_sentiment_maker(
@@ -13,7 +33,8 @@ def day_sentiment_maker(
     with_labels: bool = True,
     source_data: pd.DataFrame | None = None,
 ):
-    grouping_columns = ["date"]
+    grouping_columns: List["str"] = ["date"]
+    ending: str
     if with_labels:
         ending = "_labeled"
         grouping_columns.append("label")
@@ -24,7 +45,10 @@ def day_sentiment_maker(
 
     if source_data is None:
         source_data = pd.read_csv(
-            f"{STATEMENTS_DIR}/sentiment/{model}/chunk_{part}_labeled.psv", sep="|"
+            f"{STATEMENTS_DIR}/sentiment/{model}/chunk_{part}_labeled.psv",
+            sep="|",
+            dtype=QA_COLUMNS if part == "qa" else INTRO_COLUMNS,
+            parse_dates=["date"],
         )
 
     data = source_data.groupby(grouping_columns).agg(
@@ -45,7 +69,8 @@ def chunk_sentiment_maker(
 ):
     if chunked_df is None:
         chunked_df = pd.read_csv(
-            f"{STATEMENTS_DIR}/labeled_{part}.psv", sep="|", index_col="statement_id"
+            f"{STATEMENTS_DIR}/labeled_{part}.psv", sep="|", index_col="statement_id",
+            parse_dates=["date"],
         )
 
     if type(model_selection) is list:
@@ -53,7 +78,7 @@ def chunk_sentiment_maker(
             chunked_df = chunk_sentiment_maker(model, part, chunked_df)
         return chunked_df
 
-    model = model_selection
+    model:Literal["finbert", "roberta"] = model_selection
     chunked_df["sentiment"] = get_sentiment(list(chunked_df["chunk"]), model)
     chunked_df["score"] = chunked_df["sentiment"].apply(calculate_sentiment)
 
@@ -69,7 +94,7 @@ if __name__ == "__main__":
     # for part in ["intro", "qa"]:
     #     chunk_sentiment_maker(MODEL_SELECTION)
     for model in MODEL_SELECTION:
-        day_sentiment_maker(model,"qa",False)
+        day_sentiment_maker(model, "qa", False)
 
 # TOPIC MODELLING:
 # 2 témy:
