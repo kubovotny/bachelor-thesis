@@ -84,6 +84,8 @@ nejakú lineárnu kombináciu sentimentov pre rôzne témy.
 
 ### 22. apríl
 Trochu zjednodušený kód, už je viac function modul based ako file based. Takže vieme importovať funkcie z ostatných súborov a 
-takto urobiť kód main.py, ktorý naraz spustí všetko.
+takto urobiť kód main.py, ktorý naraz spustí všetko. + Otypované všetky premenné, konštanty a paremetre funkcií, aby sa predišlo
+zlým vstupom.
 
+Použil som `shocks_ecb_mpd_me_d.csv` a zachránilo ma to, predikovať `pc1` je oveľa lepšie ako `OIS_@`, jednak to má lepšie ROC, ale dá sa to aj jednoducho odôvodniť. `pc1` je PCA zo všetkých `OIS`, takže je to oveľa viac stabilné a pomocou štúdie od Jarocínskeho a Karádiho sa to dá pekne vysvetliť.
 # Máj
