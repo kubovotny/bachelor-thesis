@@ -62,7 +62,7 @@ plt.figure(figsize=(10, 6))
 # Vykreslíme body
 sns.regplot(x=df['max_QA_MP'], y=df['OIS_1M'], 
             scatter_kws={'alpha':0.5, 'color': 'gray'}, 
-            line_kws={'color': 'red', 'linewidth': 2})
+            line_kws={'EA-MPDcolor': 'red', 'linewidth': 2})
 
 plt.axhline(y=0, color='black', linestyle='--', alpha=0.3)
 plt.axvline(x=0, color='black', linestyle='--', alpha=0.3)

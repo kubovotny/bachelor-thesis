@@ -1,14 +1,13 @@
 from chunker import STATEMENTS_DIR
 import pandas as pd
-from typing import List, Dict
+from typing import List, Dict, Literal
 from datetime import datetime
 
-FILENAME = "Dataset_EA-MPD.xlsx"
 SHEETNAME = "Press Conference Window"
 
 countries = ["DE", "ES", "IT", "FR"]
 years = [2, 10]
-COLUMNS:List[str] = [
+XLSX_COLUMNS: List[str] = [
     "date",
     "OIS_1M",
     "OIS_3M",
@@ -17,7 +16,9 @@ COLUMNS:List[str] = [
     "STOXX50",
 ]
 
-MARKET_COLUMNS: Dict[str, str] = {col: "float64" for col in COLUMNS[1:]}
+XLSX_COLUMNS_TYPES: Dict[str, str] = {col: "float64" for col in XLSX_COLUMNS[1:]}
+CSV_COLUMNS = ["pc1", "STOXX50", "MP_pm", "CBI_pm", "MP_median", "CBI_median"]
+CSV_COLUMNS_TYPES: Dict[str, str] = {col: "float64" for col in CSV_COLUMNS}
 
 MARKET_DIR = "/".join(STATEMENTS_DIR.split("/")[:-1]) + "/market"
 
@@ -30,11 +31,26 @@ def clean_date(date: str) -> datetime:
     return pd.to_datetime(date)
 
 
-def return_market_data()->pd.DataFrame:
-    market_data:pd.DataFrame = pd.read_excel(
-        f"{MARKET_DIR}/{FILENAME}", sheet_name=SHEETNAME, usecols=COLUMNS,
-        dtype=MARKET_COLUMNS
-    )
+def return_market_data(
+    which: Literal["Dataset_EA-MPD.xlsx", "shocks_ecb_mpd_me_d.csv"],
+) -> pd.DataFrame:
+    ending = which.split(".")[-1]
+    if ending == "xlsx":
+        market_data: pd.DataFrame = pd.read_excel(
+            f"{MARKET_DIR}/{which}",
+            sheet_name=SHEETNAME,
+            usecols=XLSX_COLUMNS,
+            dtype=XLSX_COLUMNS_TYPES,
+        )
+    else:
+        market_data: pd.DataFrame = pd.read_csv(
+            f"{MARKET_DIR}/{which}", dtype=CSV_COLUMNS_TYPES
+        )
+
     market_data["date"] = market_data.date.apply(clean_date)
     market_data = market_data.dropna(how="all")
     return market_data
+
+
+if __name__ == "__main__":
+    print(return_market_data("shocks_ecb_mpd_me_d.csv"))
