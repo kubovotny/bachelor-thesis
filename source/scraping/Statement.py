@@ -44,17 +44,17 @@ def split_statement_to_intro_and_qa(
             break
     if separator_index3 != -1:
         separator_index = separator_index3
-    press_elements = []
+    intro_elements = []
     qa_elements = []
     # SPLIT
     if separator_index != -1:
-        # PRESS STATEMENT
-        press_elements = all_elements[: separator_index + 1]
+        # INTRODUCTORY STATEMENT
+        intro_elements = all_elements[: separator_index + 1]
         # Q&A
         qa_elements = all_elements[separator_index + 1 :]
     else:
-        press_elements = all_elements
-    return press_elements, qa_elements
+        intro_elements = all_elements
+    return intro_elements, qa_elements
 
 
 def recursive_italic_bold_parser(tag: BeautifulSoup) -> str:
@@ -126,13 +126,13 @@ def scrape_statement(url: str, date: str) -> Dict[str, str]:
                     ):
                         all_elements.append(grandchild)
     intro, qa = split_statement_to_intro_and_qa(all_elements)
-    press_text: str = "\t".join([e.get_text(separator="  ", strip=True) for e in intro])
+    intro_text: str = "\t".join([e.get_text(separator="  ", strip=True) for e in intro])
 
     qa_text: str = qa_proccessor(qa)
     return {
         "date": date,
         "url": url,
-        "press": press_text.replace('"', "''"),
+        "intro": intro_text.replace('"', "''"),
         "qa": qa_text.replace('"', "'"),
     }
 

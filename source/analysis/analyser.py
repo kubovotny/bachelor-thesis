@@ -7,7 +7,7 @@ MODEL_SELECTION = "finbert"
 
 data = pd.read_csv(
     f"{STATEMENTS_DIR}/sentiment/{MODEL_SELECTION}_intro.csv", index_col="date"
-).rename(columns={"score": "score_press"})
+).rename(columns={"score": "score_intro"})
 data_qa = pd.read_csv(f"{STATEMENTS_DIR}/sentiment/{MODEL_SELECTION}_qa.csv").pivot(
     index="date", columns="is_question"
 )
@@ -17,7 +17,7 @@ data_qa.columns = [x[1] for x in list(data_qa.columns)]
 data[["score_answer", "score_question"]] = data_qa[["Answer", "Question"]]
 data.reset_index(inplace=True)
 data["date"] = pd.to_datetime(data["date"])
-data["score"] = (data["score_press"] + 3 * data["score_answer"]) / 2
+data["score"] = (data["score_intro"] + 3 * data["score_answer"]) / 2
 # mean_score = data["score"].mean()
 # std_score = data["score"].std()
 # data['z_score'] = (data['score'] - mean_score) / std_score
@@ -27,7 +27,7 @@ data["score"] = (data["score_press"] + 3 * data["score_answer"]) / 2
 # plt.axhline()
 # plt.show()
 melted_df = pd.melt(
-    data.drop(columns=["score_press", "score"]), id_vars=["date"], var_name="measure"
+    data.drop(columns=["score_intro", "score"]), id_vars=["date"], var_name="measure"
 )
 # print(mean)
 print(data[data["score"] < -0.1])

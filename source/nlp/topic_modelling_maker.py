@@ -1,5 +1,5 @@
 from .classifier import label_paragraph, label_choose
-from chunker import chunk_press, chunk_qa, STATEMENTS_DIR
+from chunker import chunk_intro, chunk_qa, STATEMENTS_DIR
 from typing import Literal, List
 import pandas as pd
 
@@ -10,7 +10,7 @@ def label_maker(part: Literal["intro", "qa"] = "intro") -> None:
     columns_to_drop: List[str] = ["result"]
     data: pd.DataFrame
     if part == "intro":
-        data = chunk_press(FILENAME)
+        data = chunk_intro(FILENAME)
     else:
         data = chunk_qa(FILENAME)
         columns_to_drop.append("qa_len")

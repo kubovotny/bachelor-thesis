@@ -71,12 +71,12 @@ def make_percentile(data: pd.DataFrame) -> pd.DataFrame:
     return data
 
 
-def chunk_press(filename: str) -> pd.DataFrame:
+def chunk_intro(filename: str) -> pd.DataFrame:
     data: pd.DataFrame = load_statement_file(filename)
 
-    data["paragraph"] = data["press"].str.split("\t")
+    data["paragraph"] = data["intro"].str.split("\t")
 
-    df = data.explode("paragraph").drop(columns=["qa", "press"])
+    df = data.explode("paragraph").drop(columns=["qa", "intro"])
     df["paragraph"] = df["paragraph"].apply(clean_paragraph)
     df = df.query("paragraph != ''")
 
@@ -126,7 +126,7 @@ def chunk_qa(filename: str) -> pd.DataFrame:
     data["qa_paragraphs"] = data["qa"].str.split("\t")
 
     data["QA_processed"] = data["qa_paragraphs"].apply(qa_multiple_proccesser)
-    data = data.drop(columns=["press", "qa", "qa_paragraphs"]).dropna()
+    data = data.drop(columns=["intro", "qa", "qa_paragraphs"]).dropna()
     if ...:
         # THIS was manually checked, if it divide correctly - 100% correct
         # check_edge = 280
@@ -208,12 +208,12 @@ def q_to_a_merged(filename: str) -> pd.DataFrame:
     data[["question", "answer"]] = (
         data["q_to_a"].str.split("|", expand=True).apply(lambda x: x.str.strip())
     )
-    data = data.drop(columns=["press", "qa", "q_to_a"])
+    data = data.drop(columns=["intro", "qa", "q_to_a"])
     return data
 
 
 def check_qa():
-    data = chunk_qa("scraped_v2").drop(columns="press")
+    data = chunk_qa("scraped_v2").drop(columns="intro")
     data["chunk_word_count"] = data["chunk"].str.split().str.len()
     data["chunk_len"] = data["chunk"].str.len()
     print(
@@ -232,6 +232,6 @@ def check_qa():
 
 if __name__ == "__main__":
     FILE_SAVING = True
-    # chunk_press("scraped_v2")
+    # chunk_intro("scraped_v2")
     # chunk_qa("scraped_v2")
     # q_to_a_merged("scraped_v2").to_csv(f"{STATEMENTS_DIR}/qa_paired.csv", sep="|")
