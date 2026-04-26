@@ -1,48 +1,78 @@
 \chapter{Data and Methodology}
-In this chapter we would talk about data gathering and implementation of NLP, Machine Learning and optimization algorithms. The basis of the entire
-methodology is data scraping and preprocessing. 
+This chapter outlines the data collection framework and the implementation of NLP and Machine Learning. The empirical foundation of this methodology
+rests upon data scraping and preprocessing. 
 
 \section{Data Scraping and Preprocessing}
-The first phase focuses on preparation of a dataset of transcripts from \gls{gc} conferences. This is divided into two tasks. The first task is to
-retrieve a list of hyperlinks to scrape webpages. The second task is splitting webpage into two logical parts and storing these parts into
-a~robust, structured format.
+Datasets of \gls{ecb} communications are publicly available. Nonetheless, for fine-grained sentiment analysis, they lack the necessary level of
+detail. Moreover, most sources provide uniform text blocks without distinguishing between the \gls{is} and \gls{qa} components. Our decision to
+develop a~custom scraping pipeline was driven by the need to isolate the responses of \gls{ecb} officials from the questions posed by journalists.
+This allowed for a~more precise extraction of \gls{mp} signals, which are free from the sentiment bias caused by journalistic questioning. The first
+phase focuses on the~preparation of a dataset of transcripts from \gls{gc} conferences. This preparation is divided into two primary tasks. The first
+task involves the retrieval of hyperlinks to scrape webpages, while the second focuses on parsing the content into two logical segments and storing
+these parts in a~robust, structured format.
+
+% Samotný diagram
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}[node distance=1.2cm and 1.5cm] % Vertikálna a horizontálna medzera
+
+        % Prvé tri idú doprava
+        \node (start) [startstop] {URL Extraction \\ \footnotesize (Iterative loop)};
+        \node (parse) [process, right=of start] {HTML Parsing \\ \footnotesize (BeautifulSoup)};
+        \node (bifurc) [process, right=of parse] {Bifurcation \\ \footnotesize (Intro vs. Q\&A split)};
+        
+        % Štvrtý ide DOLE pod tretí
+        \node (norm) [process, below=of bifurc] {Normalization \\ \footnotesize (Bold/italic handling)};
+        
+        % Piaty ide DOĽAVA od štvrtého (pod druhý)
+        \node (stop) [startstop, left=of norm, fill=green!20] {PSV File};
+
+        % Prepojenia (Arrows)
+        \draw [arrow] (start) -- (parse);
+        \draw [arrow] (parse) -- (bifurc);
+        \draw [arrow] (bifurc) -- (norm);
+        \draw [arrow] (norm) -- (stop);
+
+    \end{tikzpicture}
+    \caption{The Data Acquisition and Preprocessing Pipeline}
+    \label{fig:data_pipeline_snake}
+\end{figure}
+
 
 \subsection{Iterative Extraction of ECB Discourse}
-Before the text extraction from the transcript of the press conference, the acquisition of the hyperlink list was required. To acquire a complete
+Before the text extraction from the transcript of the press conference, the acquisition of the hyperlink list was required. The entire acquisition
+pipeline is visualized in Figure \ref{fig:data_pipeline_snake}. To acquire a complete
 list of meeting URLs, the \textit{HTML} source of the official
 \href{https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/html/index.en.html}{ECB monetary policy statement list} was analyzed.
-The primary index page is interactive and neccessitates the scrolling on the page to load every hyperlink. Therefore, we needed the implementation of
+The primary index page is interactive and necessitates the scrolling on the page to load every hyperlink. Therefore, we needed the implementation of
 a~\textit{Selenium WebDriver} for browser automation. However, we discovered a more algorithmically efficient alternative. We managed to retrieve
 the backend structure with year-specific placeholders: \nolinkurl{https:// www.ecb.europa.eu/press/press\_conference/monetary-policy-statement/{year}/
 html/index\_include.en.html}. Hence, we applied the iterative loop across all relevant years. This streamlines the hypertext link extraction process
 by avoiding browser interactions. 
 
-The link provides access to the~\gls{mps}, which is more characterized in the Section \ref{subsection:mps}. Text extraction from the \gls{mps}
-encountered visually organized yet, behind the scenes, unsystematic \textit{HTML} code. We had to cope with an itemized list, which protrudes from the
-main section; paragraphs and headings, which are enumerated below. Furthermore, the~\gls{qa} section is not separated from the~ introductory statement
-by any \textit{HTML} tag. Consequently, the if-else approach associated with \textit{regex} implementation executes the~bifucation of the~document
-into logical parts. 
+The link provides access to the~\gls{mps}, which is described in greater detail in Section \ref{subsection:mps}. Text extraction from the \gls{mps}
+encountered visually organized yet, within the underlying \textit{HTML} hierarchy, unsystematic \textit{HTML} code. We had to address an itemized
+list, which protrudes from the main section; paragraphs and headings, which are enumerated below. Furthermore, the~\gls{qa} section is not separated
+from the~ introductory statement by any \textit{HTML} tag. Consequently, the heuristic approach, combining conditional logic with regular expressions,
+executes the~bifurcation of the~document into logical parts. 
 
 Both parts are segmented into paragraphs, with each paragraph designed to address a single subject. Consequently, the paragraph functions as an~atomic
-component. Therefore, questions and answers do not coexist in same paragraph in the \gls{qa} section. For this reason \textit{HTML} content is parsed
-and stored in a Pipe-Separated Values (PSV) file. This format was particularly chosen to prevent delimiter collisions with the punctuation utilized by
-the~\gls{ecb} discourse. The resulting dataset concists of five primary features: \textbf{statement\_id} (unique identifier), \textbf{date},
-\textbf{url}, \textbf{intro} (the prepared introductory statement), and \textbf{qa} (the unscripted dialogue).
+component. Therefore, questions and answers do not coexist in the same paragraph in the \gls{qa} section. For this reason \textit{HTML} content is
+parsed and stored in a Pipe-Separated Values (PSV) file. This format was specifically chosen to prevent delimiter collisions with the punctuation
+utilized by the~\gls{ecb} discourse. The resulting dataset consists of five primary features: \textbf{statement\_id} (unique identifier),
+\textbf{date}, \textbf{url}, \textbf{intro} (the prepared introductory statement), and \textbf{qa} (the~unscripted dialogue).
 
-To sustain the internal structure of the paragraphs, both \textit{intro} and \textit{qa} columns are tab-delimited for paragraph separation.
-
-This file has five columns: \textbf{statement\_id} as a unique identifier for the row, along with \textbf{date} (the actual date of the press),
-\textbf{url} of the scraped page of the press, \textbf{intro}, which is the~text of the introductory statement, and \textbf{qa}, which is the raw text
-of the \gls{qa} section. Both columns \textit{qa} and \textit{intro} have text delimited by one tab to maintain paragraph structure. Column qa has an
-extra feature: square brackets to maintain italic or bold style. These styles are utilized in the~\gls{qa} section to distinguish a journalist's
-question and a president's answer. As visualized in Figure \ref{fig:qa.styling}, questions are bold or italic, while answers are plain text. But this
-is not the rule; some \gls{qa} have \{question:\} or \{president name:\} at the beginning and plain text.
+To preserve the internal structure of the~paragraphs, both \textit{intro} and \textit{qa} columns are tab-delimited for paragraph separation.
+The~column containing the~\gls{qa} segment has an~extra feature: square brackets to maintain italic or bold style. These styles are utilized in
+the~\gls{qa} section to distinguish a~journalist's question and a~president's answer. As visualized in Figure \ref{fig:qa.styling}, questions are bold
+or italic, while answers are plain text. However, this structure is not universally applied; certain \gls{qa} are instead prefixed with identifiers
+such as \{question:\} or the speaker's name, followed by unformatted text.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{images/qa_example_of_style.png}
-    \caption[Screenshot from two press conferences]{\centering Screenshot from two press conferences, on the left is the press from 7 March 2024,
-    on the right is the press from 1 December 2005}
+    \caption[Evolution of formatting styles in ECB transcripts]{\centering Evolution of formatting styles in ECB transcripts. The 2005 transcript
+    (right) utilizes explicit speaker labels, whereas the 2024 version (left) relies on font styling (bold/italic) to distinguish between speakers.}
     \label{fig:qa.styling}
 \end{figure}
 
