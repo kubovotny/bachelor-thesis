@@ -7,3 +7,5 @@ STATEMENTS_DIR = os.getenv("STATEMENTS_DIR")
 MARKET_DIR = os.getenv("MARKET_DIR")
 GROQ_KEY = os.environ["GROQ_KEY"]
 FILENAME = "scraped_v2"
+
+OUTPUT = os.getenv("IMAGES_OUTPUT_DIR")

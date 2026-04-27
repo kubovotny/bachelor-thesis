@@ -92,7 +92,7 @@ def return_sentiment_chunk_data(
         sep="|",
         parse_dates=["date"],
     )
-
+    chunk_qa["part"] = "QA"
     if just_answers:
         chunk_qa = chunk_qa[chunk_qa["is_question"] == False]
         chunk_qa.drop(columns=["is_question"], inplace=True)
@@ -101,7 +101,8 @@ def return_sentiment_chunk_data(
         sep="|",
         parse_dates=["date"],
     )
-    return pd.concat([chunk_qa, chunk_intro])
+    chunk_intro["part"] = "IS"
+    return pd.concat([chunk_qa, chunk_intro]).sort_values(["date","part", "chunk_id"]).reset_index().drop(columns="index")
 
 
 if __name__ == "__main__":

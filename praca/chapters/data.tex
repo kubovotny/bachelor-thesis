@@ -1,14 +1,14 @@
 \chapter{Data and Methodology}
-This chapter outlines the data collection framework and the implementation of NLP and Machine Learning. The empirical foundation of this methodology
-rests upon data scraping and preprocessing. 
+This chapter outlines the~data collection framework and the~implementation of NLP and Machine Learning. The~empirical foundation of this methodology
+rests upon data scraping and preprocessing.
 
 \section{Data Scraping and Preprocessing}
-Datasets of \gls{ecb} communications are publicly available. Nonetheless, for fine-grained sentiment analysis, they lack the necessary level of
-detail. Moreover, most sources provide uniform text blocks without distinguishing between the \gls{is} and \gls{qa} components. Our decision to
-develop a~custom scraping pipeline was driven by the need to isolate the responses of \gls{ecb} officials from the questions posed by journalists.
-This allowed for a~more precise extraction of \gls{mp} signals, which are free from the sentiment bias caused by journalistic questioning. The first
-phase focuses on the~preparation of a dataset of transcripts from \gls{gc} conferences. This preparation is divided into two primary tasks. The first
-task involves the retrieval of hyperlinks to scrape webpages, while the second focuses on parsing the content into two logical segments and storing
+Datasets of \gls{ecb} communications are publicly available. Nonetheless, for fine-grained sentiment analysis, they lack the~neccessary level of
+detail. Moreover, most sources provide uniform text blocks without distinguishing between the~\gls{is} and \gls{qa} components. Our decision to
+develop a~custom scraping pipeline was driven by the~need to isolate the~responses of \gls{ecb} officials from the~questions posed by journalists.
+This allowed for a~more precise extraction of \gls{mp} signals, which are free from the~sentiment bias caused by journalistic questioning. The~first
+phase focuses on the~preparation of a dataset of transcripts from \gls{gc} conferences. This preparation is divided into two primary tasks. The~first
+task involves the~retrieval of hyperlinks to scrape webpages, while the~second focuses on parsing the~content into two logical segments and storing
 these parts in a~robust, structured format.
 
 % Samotný diagram
@@ -20,10 +20,10 @@ these parts in a~robust, structured format.
         \node (start) [startstop] {URL Extraction \\ \footnotesize (Iterative loop)};
         \node (parse) [process, right=of start] {HTML Parsing \\ \footnotesize (BeautifulSoup)};
         \node (bifurc) [process, right=of parse] {Bifurcation \\ \footnotesize (Intro vs. Q\&A split)};
-        
+
         % Štvrtý ide DOLE pod tretí
         \node (norm) [process, below=of bifurc] {Normalization \\ \footnotesize (Bold/italic handling)};
-        
+
         % Piaty ide DOĽAVA od štvrtého (pod druhý)
         \node (stop) [startstop, left=of norm, fill=green!20] {PSV File};
 
@@ -34,53 +34,123 @@ these parts in a~robust, structured format.
         \draw [arrow] (norm) -- (stop);
 
     \end{tikzpicture}
-    \caption{The Data Acquisition and Preprocessing Pipeline}
+    \caption{The~Data Acquisition and Preprocessing Pipeline}
     \label{fig:data_pipeline_snake}
 \end{figure}
 
 
 \subsection{Iterative Extraction of ECB Discourse}
-Before the text extraction from the transcript of the press conference, the acquisition of the hyperlink list was required. The entire acquisition
-pipeline is visualized in Figure \ref{fig:data_pipeline_snake}. To acquire a complete
-list of meeting URLs, the \textit{HTML} source of the official
+
+Before the~text extraction from the~transcript of the~press conference, the~acquisition of the~hyperlink list was required. The~entire acquisition
+pipeline is visualized in Figure \ref{fig:data_pipeline_snake}. To acquire a complete list of meeting URLs, the~\textit{HTML} source of the~official
 \href{https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/html/index.en.html}{ECB monetary policy statement list} was analyzed.
-The primary index page is interactive and necessitates the scrolling on the page to load every hyperlink. Therefore, we needed the implementation of
+The~primary index page is interactive and necessitates scrolling to load every hyperlink. Therefore, we needed the~implementation of
 a~\textit{Selenium WebDriver} for browser automation. However, we discovered a more algorithmically efficient alternative. We managed to retrieve
-the backend structure with year-specific placeholders: \nolinkurl{https:// www.ecb.europa.eu/press/press\_conference/monetary-policy-statement/{year}/
-html/index\_include.en.html}. Hence, we applied the iterative loop across all relevant years. This streamlines the hypertext link extraction process
-by avoiding browser interactions. 
+the~backend structure with year-specific placeholders: \nolinkurl{https:// www.ecb.europa.eu/press/press\_conference/monetary-policy-statement/{year}/
+html/index\_include.en.html}. Hence, we applied the~iterative loop across all relevant years. This streamlines the~hypertext link extraction process
+by avoiding browser interactions. This process, spanning from the~\gls{ecb}'s establishment to the~present, yielded a total of $291$ unique
+transcripts.
 
-The link provides access to the~\gls{mps}, which is described in greater detail in Section \ref{subsection:mps}. Text extraction from the \gls{mps}
-encountered visually organized yet, within the underlying \textit{HTML} hierarchy, unsystematic \textit{HTML} code. We had to address an itemized
-list, which protrudes from the main section; paragraphs and headings, which are enumerated below. Furthermore, the~\gls{qa} section is not separated
-from the~ introductory statement by any \textit{HTML} tag. Consequently, the heuristic approach, combining conditional logic with regular expressions,
-executes the~bifurcation of the~document into logical parts. 
+\subsection{Content Parsing and Data Structuring}
 
-Both parts are segmented into paragraphs, with each paragraph designed to address a single subject. Consequently, the paragraph functions as an~atomic
-component. Therefore, questions and answers do not coexist in the same paragraph in the \gls{qa} section. For this reason \textit{HTML} content is
-parsed and stored in a Pipe-Separated Values (PSV) file. This format was specifically chosen to prevent delimiter collisions with the punctuation
-utilized by the~\gls{ecb} discourse. The resulting dataset consists of five primary features: \textbf{statement\_id} (unique identifier),
-\textbf{date}, \textbf{url}, \textbf{intro} (the prepared introductory statement), and \textbf{qa} (the~unscripted dialogue).
+The~link provides access to the~\gls{mps}, which is described in greater detail in Section \ref{subsection:mps}. Text extraction from the~\gls{mps}
+encountered visually organized yet, within the~underlying \textit{HTML} hierarchy, unsystematic \textit{HTML} code. We had to address an itemized
+list, which protrudes from the~main section; paragraphs and headings, which are enumerated below. Furthermore, the~\gls{qa} section is not separated
+from the~ introductory statement by any \textit{HTML} tag. Consequently, the~heuristic approach, combining conditional logic with regular expressions,
+executes the~bifurcation of the~document into logical parts.
 
-To preserve the internal structure of the~paragraphs, both \textit{intro} and \textit{qa} columns are tab-delimited for paragraph separation.
+Both parts are segmented into paragraphs, with each paragraph designed to address a single subject. Consequently, the~paragraph functions as an~atomic
+component. Therefore, questions and answers do not coexist in the~same paragraph in the~\gls{qa} section. For this reason \textit{HTML} content is
+parsed and stored in a Pipe-Separated Values (PSV) file. This format was specifically chosen to prevent delimiter collisions with the~punctuation
+utilized by the~\gls{ecb} discourse. The~resulting dataset consists of five primary features: \textbf{statement\_id} (unique identifier),
+\textbf{date}, \textbf{url}, \textbf{intro} (the~prepared introductory statement), and \textbf{qa} (the~unscripted dialogue).
+
+To preserve the~internal structure of the~paragraphs, both \textit{intro} and \textit{qa} columns are tab-delimited for paragraph separation.
 The~column containing the~\gls{qa} segment has an~extra feature: square brackets to maintain italic or bold style. These styles are utilized in
 the~\gls{qa} section to distinguish a~journalist's question and a~president's answer. As visualized in Figure \ref{fig:qa.styling}, questions are bold
-or italic, while answers are plain text. However, this structure is not universally applied; certain \gls{qa} are instead prefixed with identifiers
-such as \{question:\} or the speaker's name, followed by unformatted text.
+or italic, while answers are plain text. However, this structure is not universally applied; certain \gls{qa} segments are instead prefixed with
+identifiers such as \{question:\} or the~speaker's name, followed by unformatted text.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\linewidth]{images/qa_example_of_style.png}
-    \caption[Evolution of formatting styles in ECB transcripts]{\centering Evolution of formatting styles in ECB transcripts. The 2005 transcript
-    (right) utilizes explicit speaker labels, whereas the 2024 version (left) relies on font styling (bold/italic) to distinguish between speakers.}
+    \includegraphics[width=1\linewidth]{images/data/qa_example_of_style.png}
+    \caption[Evolution of formatting styles in ECB transcripts]{\centering Evolution of formatting styles in ECB transcripts. The~2005 transcript
+        (right) utilizes explicit speaker labels, whereas the~2024 version (left) relies on font styling (bold/italic) to distinguish between
+        speakers.}
     \label{fig:qa.styling}
+\end{figure}
+
+\section{Financial Market Data}
+
+
+\section{Quantifying Central Bank Communications}
+The transition from qualitative narratives to quantitative market predictors requires a systematic transformation of the raw textual data. This stage
+of the methodology is concerned with the transformation of the previous structured base dataset into a more refined analytical collection. For this we
+use a pipeline that reduces noise, considers limitations of models and adds metadata to the text.
+
+The output of this pipeline is split into two specialized datasets that describe the \gls{is} and \gls{qa} components. The pipeline identifies themes
+through topic modeling. Moreover, it measures the emotional tone of each observation via sentiment analysis. Unique identifiers are used to track
+the~original order of segments. This maintains the chronological and contextual integrity of the discourse. Binary classification
+is applied to the \gls{qa} dataset to separate journalistic inquiries from official responses. This ensures the analysis focuses on signals from
+\gls{ecb} officials.
+
+\subsection{Text Segmentation and Contextual Windowing}
+
+Further analysis requires strict rules, which enhance model behavior. By analyzing lengths and list of the smallest paragraphs, we set the minimum
+length of a paragraph to $100$ characters. In this list, we observed redundant paragraphs, examples of which are provided in Table\ref{tab:redundant}.
+These passages are contextually sparse for transformers to identify the sentiment or the topic. Moreover, they do not hold valuable information for
+the~market audience.
+
+\begin{table}[ht]
+    \centering
+    % v tabulke sa popis zvykne davat nad tabulku
+    \caption{Illustrative examples of noisy paragraphs excluded from the dataset.}
+    %id tabulky
+    \label{tab:redundant}
+    % tu zacina samotna tabulka
+    \begin{tabular}{@{}lr@{}}
+        \toprule
+        Paragraph content                                         & Character count \\ \midrule
+        "Thank you very much."                                    & 21              \\
+        "I now leave the floor to the Vice-President."            & 45              \\
+        "Question: Could you elaborate on the inflation outlook?" & 58              \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+Apart from this noise reduction, paragraph lengths often reach a transformer’s token constraint, which is $512$ tokens per input for BERT-based models,
+including FinBERT and CentralBankRoBERTa. To address this, long paragraphs are processed into segments with an upper bound of $200$ words. This
+processing starts by partitioning passages into sentences using the \textit{nltk.tokenize} library, which handles abbreviations and punctuation more
+robustly than simple splitting rules. The~preservation of full sentences is necessary for the model's correct insight into the context and syntactical
+structure of the passage.
+
+Our implementation follows an iterative approach where sentences are merged into a~segment until the~addition of the~next sentence would exceed
+the~maximum size. At that point, the segment is closed, and a new one is formed. Finally, for the remaining text, we examine the length of the last
+segment of each paragraph. If this segment contains fewer than $30$ words, it is appended to the preceding segment rather than being treated as
+an~independent input. This ensures that every segment processed by the model contains sufficient semantic density, while the combined length remains
+safely within the transformer's token limitations.
+
+Short paragraphs (that is, longer than $100$ characters but shortetr than $30$ words) are maintained as independent segments. While shorter inputs may
+provide less context, their semantic integrity as independent statements or questions is considered more important for the analysis than fulfilling
+a~word-count target. Finally, to ensure traceability, each segment retains the metadata of its parent paragraph, including the date, speaker identity,
+and section type (\gls{is}vs. \gls{qa}). This structure prevents the ``dilution'' of sentiment scores that occurs in excessively long text blocks and
+ensures that no segment istruncated. The effectiveness of this segmentation and merging strategy is illustrated in Figure \ref{fig:distribution},
+which compares the word count distribution before and after the transformation.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{images/data/segment_distribution.png}
+    \caption[Impact of segmentation on text length distribution]{\centering Impact of segmentation on text length distribution. The grey area
+        represents original paragraphs with a long tail of outliers, while the blue area shows the normalized segments adhering to the $200$-word
+        constraint.}
+    \label{fig:distribution}
 \end{figure}
 
 
 
-% https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/2005/html/is051201.en.html picture source example and conference from 
-% 2024-03-07
 
-\section{Sentiment Extraction Framework}
-\section{Applying Sentiment Extraction Model}
-\section{Regression Model Specification}
+\subsection{Zero-Shot Topic Classification}
+% TODO write more %
+
+\subsection{Multi-Model Sentiment Extraction}
+
+\section{Empirical Model Specification}

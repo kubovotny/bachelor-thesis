@@ -4,9 +4,10 @@ import pandas as pd
 from typing import Dict, List, Any
 from .. import STATEMENTS_DIR
 
+
 def load_statement_file(filename: str) -> pd.DataFrame:
     data = pd.read_csv(
-        f"{STATEMENTS_DIR}/{filename}.csv", sep="|", index_col="statement_id"
+        f"{STATEMENTS_DIR}/{filename}.psv", sep="|", index_col="statement_id"
     )
     data.drop(columns=["url"], inplace=True)
     data["date"] = pd.to_datetime(data["date"])
@@ -70,19 +71,23 @@ def make_percentile(data: pd.DataFrame) -> pd.DataFrame:
     )
     return data
 
-
-def chunk_intro(filename: str) -> pd.DataFrame:
+def paragraphs_intro(filename:str) -> pd.DataFrame:
     data: pd.DataFrame = load_statement_file(filename)
 
-    data["paragraph"] = data["intro"].str.split("\t")
+    data["text"] = data["intro"].str.split("\t")
 
-    df = data.explode("paragraph").drop(columns=["qa", "intro"])
-    df["paragraph"] = df["paragraph"].apply(clean_paragraph)
-    df = df.query("paragraph != ''")
+    df = data.explode("text").drop(columns=["qa", "intro"])
+    return df
 
-    df["chunk"] = df["paragraph"].apply(process_long_paragraph)
 
-    df_w_chunked = df.explode("chunk").drop(columns=["paragraph"])
+def chunk_intro(filename: str) -> pd.DataFrame:
+    df = paragraphs_intro(filename)
+    df["text"] = df["text"].apply(clean_paragraph)
+    df = df.query("text != ''")
+
+    df["chunk"] = df["text"].apply(process_long_paragraph)
+
+    df_w_chunked = df.explode("chunk").drop(columns=["text"])
     df_w_chunked = make_percentile(df_w_chunked)
     if FILE_SAVING:
         df_w_chunked[["date", "chunk_id", "chunk_percentile", "chunk"]].to_csv(
@@ -120,13 +125,14 @@ def qa_multiple_proccesser(
     return qa_proccessed
 
 
-def chunk_qa(filename: str) -> pd.DataFrame:
+def paragraphs_qa(filename: str) -> pd.DataFrame:
     data = load_statement_file(filename)
 
     data["qa_paragraphs"] = data["qa"].str.split("\t")
 
     data["QA_processed"] = data["qa_paragraphs"].apply(qa_multiple_proccesser)
     data = data.drop(columns=["intro", "qa", "qa_paragraphs"]).dropna()
+
     if ...:
         # THIS was manually checked, if it divide correctly - 100% correct
         # check_edge = 280
@@ -141,14 +147,17 @@ def chunk_qa(filename: str) -> pd.DataFrame:
         ...
 
     df_with_qa = data.explode("QA_processed")
-
     df_with_qa["is_question"] = df_with_qa["QA_processed"].apply(
         lambda x: x["is_question"]
     )
-    df_with_qa["text"] = df_with_qa["QA_processed"].apply(
-        lambda x: clean_paragraph(x["text"], 80)
-    )
-    df_with_qa = df_with_qa.query("text != ''").drop(columns="QA_processed")
+    df_with_qa["text"] = df_with_qa["QA_processed"].apply(lambda x: x["text"])
+    return df_with_qa.drop(columns="QA_processed")
+
+
+def chunk_qa(filename: str) -> pd.DataFrame:
+    df_with_qa = paragraphs_qa(filename)
+    df_with_qa["text"] = df_with_qa["text"].apply(clean_paragraph, limit=80)
+    df_with_qa = df_with_qa.query("text != ''")
     # df_with_qa["len"] = df_with_qa.text.str.split(" ").str.len()
 
     # print(df_with_qa.query("len > 200"))
