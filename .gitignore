@@ -13,3 +13,4 @@ praca/chapters/*.aux
 __pycache__/
 *.xlsx*
 *.psv
+.vscode/

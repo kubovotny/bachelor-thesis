@@ -82,6 +82,7 @@ identifiers such as \{question:\} or the~speaker's name, followed by unformatted
 
 \section{Financial Market Data}
 
+% TODO
 
 \section{Quantifying Central Bank Communications}
 The transition from qualitative narratives to quantitative market predictors requires a systematic transformation of the raw textual data. This stage
@@ -103,6 +104,7 @@ the~market audience.
 
 \begin{table}[ht]
     \centering
+    % TODO doplniť reálne veci do tabuľky
     % v tabulke sa popis zvykne davat nad tabulku
     \caption{Illustrative examples of noisy paragraphs excluded from the dataset.}
     %id tabulky
@@ -110,10 +112,10 @@ the~market audience.
     % tu zacina samotna tabulka
     \begin{tabular}{@{}lr@{}}
         \toprule
-        Paragraph content                                         & Character count \\ \midrule
-        "Thank you very much."                                    & 21              \\
-        "I now leave the floor to the Vice-President."            & 45              \\
-        "Question: Could you elaborate on the inflation outlook?" & 58              \\ \bottomrule
+        Paragraph content                                           & Character count \\ \midrule
+        ``Thank you very much.''                                    & 21              \\
+        ``I now leave the floor to the Vice-President.''            & 45              \\
+        ``Question: Could you elaborate on the inflation outlook?'' & 58              \\ \bottomrule
     \end{tabular}
 \end{table}
 
@@ -145,12 +147,94 @@ which compares the word count distribution before and after the transformation.
     \label{fig:distribution}
 \end{figure}
 
-
-
-
 \subsection{Zero-Shot Topic Classification}
-% TODO write more %
+While the segments are now technically structured, they remain unlabelled raw text. To transform these strings into meaningful predictors, we must
+categorize them based on their thematic content. We considered several approaches to this task. Traditional Dictionary-based (Bag-of-Words) methods
+were dismissed due to their inability to capture context, such as negations or complex sentence structures. Furthermore, training a custom Topic
+Modeling transformer on annotated data was not feasible given the project’s time constraints and the lack of a pre-labelled domain-specific dataset.
+
+Consequently, we decided to implement Zero-Shot Classification. This approach allows for the classification of text into prescribed categories without
+requiring  explicit training on those specific labels. After reviewing current state-of-the-art models, we selected the
+\textit{facebook/bart-large-mnli} model. This model is particularly suitable for our use case. Thus, it is pre-trained on Natural Language Inference
+(NLI) tasks. Further, it enables treating thematic labels as hypotheses to be tested against the text segments.
+
+We also started with a list of ten detailed topics. This turned out to be a mistake, because the model suffered from a sort of decision paralysis
+(much like a human struggling to choose from a massive menu). It became indecisive and ended up dumping almost everything into a broad ``Risk
+Assessment'' category. To fix this, we radically simplified the taxonomy to four core themes and replaced the short titles with descriptive hypothesis
+strings. By narrowing the choices and enriching the context of each label, we forced the model to be more certain. The final set of labels and their
+descriptive strings are detailed in Table \ref{tab:labels}.
+\begin{table}[ht]
+    \centering
+    \caption{Thematic labels and descriptive strings for Zero-Shot Classification}
+    \label{tab:labels}
+    \begin{tabular}{@{}lp{8cm}@{}}
+        \toprule
+        \textbf{Category}                & \textbf{Model Input (Label String)}                                            \\ \midrule
+        Monetary Policy                  & ``inflation, price stability, interest rate decisions, monetary policy stance,
+        financing conditions, bank lending, and market interest rates''                                                   \\ \addlinespace
+        Economic Performance             & ``economic growth, GDP outlook, unemployment, labor market developments,
+        macroeconomic risks, demand, consumption, and investment''                                                        \\ \addlinespace
+        Fiscal             \& Structural & ``government budgets, national debt, public spending, and structural reforms'' \\ \addlinespace
+        Other / Noise                    & ``general greetings, purely political questions, unrelated remarks, climate
+        change, or personal comments (excluding macroeconomic impacts)''                                                  \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+The ``Other'' category is our final filter. It catches thematic noise. This noise includes politeness and procedural talk that doesn't actually move
+markets. By isolating these, we can later test if stripping away the fluff actually sharpens our sentiment-based market predictions.
 
 \subsection{Multi-Model Sentiment Extraction}
+Once the segments are labeled, the next step involves extracting the actual emotional tone (the sentiment) from the text. We decided not to rely on
+just one algorithm. Different models can pick up on different nuances. Instead, we use a two models paralleling approach (FinBERT and
+CentralBankRoBERTa) to evaluate every chunk in both the \gls{is} and \gls{qa} datasets.
+
+The choice of these two models is intentional. FinBERT is the industry standard for general financial text. Whereas CentralBankRoBERTa is specifically
+tuned to recognize the unique language of central bankers. It understands categories like ``Hawkish'' (signaling tighter policy) and ``Dovish'' (signaling
+looser policy), which are far more useful for our analysis than simple positive or negative labels. For both models, we calculate a net sentiment
+score for each chunk using the following formula:
+
+\begin{equation}
+    Score = P_{positive/hawkish} - P_{negative/dovish}
+\end{equation}
+
+In this setup, neutral sentences are assigned a value of zero. This is a premeditated choice, because neutral segments effectively act as a ``diluent''
+that reduces the overall intensity of the signal. If a press conference is filled with neutral filler text, the final score should naturally gravitate
+toward zero.
+
+Instead of just looking at the average sentiment, we calculate a whole suite of metrics for the entire \gls{is} and \gls{qa} components separately.
+These include the mean, minimum, maximum, and the standard deviation of the scores. Our logic is that financial markets don't always react to the
+average tone. Sometimes, a single extreme statement (the maximum or minimum) can move the needle more than the rest of the speech combined. The
+standard deviation also helps us see if the ECB's message was consistent or if it fluctuated wildly during the session.
+
+Finally, we produce two distinct outputs for our empirical model. The first is a ``general'' sentiment, which looks at the text as a whole without any
+filters. The second is a ``labeled'' sentiment, where we weight the scores based on the topics identified in the previous step. This allows us to test
+a key hypothesis: does the market care more about the sentiment regarding inflation than, for example, the sentiment regarding general economic
+growth?
+
+To demonstrate how these models process the ECB's language in practice, we provide a few illustrative examples in Table \ref{tab:sentiment_examples}.
+These segments show how FinBERT and CentralBankRoBERTa assign different weights to the same sentence, which justifies our choice to use both. For
+instance, a sentence about stagnant growth might be seen as purely ``Negative'' by FinBERT, while CentralBankRoBERTa might interpret it as
+a ``Dovish'' signal for future interest rates.
+
+\begin{table}[ht]
+    \centering
+    \caption{Illustrative comparison of net sentiment scores between models}
+    \label{tab:sentiment_examples}
+    \begin{tabular}{@{}lp{7cm}cc@{}}
+        \toprule
+        \textbf{Source} & \textbf{Text Segment (Sample)}                             & \textbf{FinBERT} & \textbf{RoBERTa} \\ \midrule
+        IS              & ``Inflation is expected to remain too high for too long.'' & 0.12             & 0.88 \\ \addlinespace
+        Q\&A            & ``Economic activity has stagnated in recent quarters.''    & -0.75            & -0.42 \\ \addlinespace
+        IS              & ``We will continue to follow a data-dependent approach.''  & 0.00             & 0.05 \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+
+% použité modely sú FinBERT a CentralBankRoBERTa
+% s oboma som ohodnotil aj Q&A aj IS každý chunk samostatne
+% potom som spravil priemer, minimum, maximum a standardnu odchylku - jeden vystup bol s pouzitim labelov a druhy vystup bol bez pouzitia labelov
+% teda vseobecny
+% neutralne vety nechavam ako 0
+% sentiment pre chunk vyratavam ako score = Prob_{hawkish/pozitive} - Prob_{dovish/negative}
 
 \section{Empirical Model Specification}

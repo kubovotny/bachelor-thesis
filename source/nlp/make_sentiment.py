@@ -69,16 +69,21 @@ def chunk_sentiment_maker(
 ):
     if chunked_df is None:
         chunked_df = pd.read_csv(
-            f"{STATEMENTS_DIR}/labeled_{part}.psv", sep="|", index_col="statement_id",
+            f"{STATEMENTS_DIR}/labeled_{part}.psv",
+            sep="|",
+            index_col="statement_id",
             parse_dates=["date"],
         )
 
     if type(model_selection) is list:
         for model in model_selection:
             chunked_df = chunk_sentiment_maker(model, part, chunked_df)
+            chunked_df.rename(
+                columns={"sentiment": f"{model}_sentiment", "score": f"{model}_score"}
+            )
         return chunked_df
 
-    model:Literal["finbert", "roberta"] = model_selection
+    model: Literal["finbert", "roberta"] = model_selection
     chunked_df["sentiment"] = get_sentiment(list(chunked_df["chunk"]), model)
     chunked_df["score"] = chunked_df["sentiment"].apply(calculate_sentiment)
 

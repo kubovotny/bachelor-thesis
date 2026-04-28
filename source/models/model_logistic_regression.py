@@ -18,7 +18,7 @@ X_COLUMNS = ["mean_IS_EP",
        "std_IS_MP", "std_IS_OI", "std_QA_EP", "std_QA_FS", "std_QA_MP",
        "std_QA_OI"]
 X_COLUMNS = [f"{a}_{b}" for a in ["mean", "std", "max", "min"] for b in ["IS", "QA"]]
-
+print(X_COLUMNS)
 # data = data.query("date < "2010-01-01"")
 
 
