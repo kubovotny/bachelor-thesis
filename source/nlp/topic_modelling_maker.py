@@ -4,7 +4,7 @@ from typing import Literal, List
 import pandas as pd
 
 FILENAME = "scraped_v2"
-
+# TODO don't call label_choose or I will call it later, not before saving data
 
 def label_maker(part: Literal["intro", "qa"] = "intro") -> None:
     columns_to_drop: List[str] = ["result"]

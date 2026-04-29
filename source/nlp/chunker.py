@@ -4,6 +4,7 @@ import pandas as pd
 from typing import Dict, List, Any
 from .. import STATEMENTS_DIR
 
+FILE_SAVING = False
 
 def load_statement_file(filename: str) -> pd.DataFrame:
     data = pd.read_csv(

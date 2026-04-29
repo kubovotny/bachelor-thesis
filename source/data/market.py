@@ -11,6 +11,7 @@ XLSX_COLUMNS: List[str] = [
     "date",
     "OIS_1M",
     "OIS_3M",
+    "OIS_6M",
     "OIS_1Y",
     *[f"{c}{y}Y" for y in years for c in countries],
     "STOXX50",
@@ -48,6 +49,7 @@ def return_market_data(
         )
 
     market_data["date"] = market_data.date.apply(clean_date)
+    market_data = market_data.set_index("date")
     market_data = market_data.dropna(how="all")
     return market_data
 

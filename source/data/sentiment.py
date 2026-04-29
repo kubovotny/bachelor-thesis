@@ -102,7 +102,7 @@ def return_sentiment_chunk_data(
         parse_dates=["date"],
     )
     chunk_intro["part"] = "IS"
-    return pd.concat([chunk_qa, chunk_intro]).sort_values(["date","part", "chunk_id"]).reset_index().drop(columns="index")
+    return pd.concat([chunk_intro, chunk_qa]).sort_values(["date","part", "chunk_id"]).reset_index().drop(columns="index")
 
 
 if __name__ == "__main__":

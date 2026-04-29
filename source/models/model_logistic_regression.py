@@ -5,6 +5,8 @@ from sklearn.metrics import roc_auc_score
 from ..data.model_data import return_data
 import pandas as pd
 
+# FIXME calling random forest
+# TODO tune model
 
 data = return_data("roberta", with_label=False)
 treshold = data["pc1"].quantile(0.7)

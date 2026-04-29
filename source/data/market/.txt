@@ -1,6 +1,4 @@
-Sheet 2. Press Release Window. Until June 2022, change in the median quote from the window 13:25-13:35 before the press release to the median quote in the window 14:00-14:10 after it. As of July 2022, the relevant windows are 13:55-14:05 and 14:30-14:40, respectively. 
-Sheet 3. Press Conference Window. Until June 2022, change in the median quote from the window 14:15-14:25 before the press conference to the median quote in the window 15:40-15:50 after it. As of July 2022, the relevant windows are 14:30-14:40 and 15:55-16:05, respectively. 
-Sheet 4. Monetary Event Window. Until June 2022, change in the median quote from the window 13:25-13:35 before the press release to the median quote in the window 15:40-15:50 after the press conference. As of July 2022, the relevant windows are 13:55-14:05 and 15:55-16:05, respectively. 
+Press Conference Window. Until June 2022, change in the median quote from the window 14:15-14:25 before the press conference to the median quote in the window 15:40-15:50 after it. As of July 2022, the relevant windows are 14:30-14:40 and 15:55-16:05, respectively. 
 
 
 OIS1W: 1 week OIS rate change in the relevant window in basis points.
