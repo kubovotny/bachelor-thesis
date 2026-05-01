@@ -1,14 +1,14 @@
 import pandas as pd
-from .. import STATEMENTS_DIR
+from .. import DATABASE_DIR
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 MODEL_SELECTION = "finbert"
 
 data = pd.read_csv(
-    f"{STATEMENTS_DIR}/sentiment/{MODEL_SELECTION}_intro.csv", index_col="date"
+    f"{DATABASE_DIR}/sentiment/{MODEL_SELECTION}_intro.csv", index_col="date"
 ).rename(columns={"score": "score_intro"})
-data_qa = pd.read_csv(f"{STATEMENTS_DIR}/sentiment/{MODEL_SELECTION}_qa.csv").pivot(
+data_qa = pd.read_csv(f"{DATABASE_DIR}/sentiment/{MODEL_SELECTION}_qa.csv").pivot(
     index="date", columns="is_question"
 )
 data_qa.rename(columns={False: "Answer", True: "Question"}, inplace=True)

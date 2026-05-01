@@ -1,9 +1,9 @@
 import sqlite3
 import pandas as pd
-from .. import DATA_DIR, PASSWORD
+from .. import DATABASE_DIR, PASSWORD
 from typing import Literal
 
-DATABASE = f"{DATA_DIR}/statements.db"
+DATABASE = f"{DATABASE_DIR}/statements.db"
 conn = sqlite3.connect(DATABASE)
 cur = conn.cursor()
 
@@ -63,22 +63,23 @@ def return_topic_labels(version=0):
     return {n: (d, r) for r, n, d in cur.execute(sql, (version,)).fetchall()}
 
 
-def return_chunks(limit=200):
+def return_chunks(limit_version:Literal[50, 100, 150, 200, 250, 300, 350]=200):
     sql = "SELECT rowid as chunk_rowid, chunk FROM chunks WHERE chunk_limit=?;"
-    return pd.read_sql(sql, conn, params=(limit,))
+    return pd.read_sql(sql, conn, params=(limit_version,))
 
 
-def return_sentiment(limit=200, with_topic: bool = False):
-    sql = f"""SELECT DATE(st.date) date, ch.part, ch.is_question, ch.chunk, se.score, sm.name sentiment_model
-    {", tl.name topic, t.prob topic_prob" if with_topic else ""}  FROM sentiments se
+def return_sentiment(limit_version:Literal[50, 100, 150, 200, 250, 300, 350]=200, with_topic: bool = False):
+    sql = f"""SELECT DATE(st.date) date, CASE ch.part WHEN 0 THEN "IS" ELSE "QA" END part, ch.is_question=1 is_question, ch.chunk, se.score, sm.name sentiment_model\
+{", tl.name topic, t.prob topic_prob" if with_topic else ""} FROM sentiments se
 JOIN chunks ch ON ch.rowid = se.chunk_rowid
 JOIN statements st ON st.rowid = ch.statement_id
 JOIN sentiment_models sm ON sm.rowid = se.model_id
 {("JOIN topics t ON t.chunk_rowid = se.chunk_rowid\n" + 
- "JOIN topic_labels tl ON tl.rowid = t.label_rowid" )if with_topic else ""}
-WHERE ch.chunk_limit = ?;
+ "JOIN topic_labels tl ON tl.rowid = t.label_rowid\n" )if with_topic else ""}\
+WHERE ch.chunk_limit = ?
+ORDER BY st.date, ch.part, ch.chunk_id;
 """
-    return pd.read_sql(sql, conn, parse_dates="date", params=(limit,))
+    return pd.read_sql(sql, conn, parse_dates="date", params=(limit_version,))
 
 def concat_intro_qa(
     df_intro: pd.DataFrame | None = None, df_qa: pd.DataFrame | None = None
@@ -216,7 +217,7 @@ if __name__ == "__main__":
     # qa = pd.read_csv(f"{DATA_DIR}/statements/labeled_qa.psv", sep="|")
     # insert_topic(intro, qa)
     # print(return_sentiment(True))
-"""SELECT DATE(st.date) date, ch.part, ch.is_question, ch.chunk, se.score, sm.name sentiment_model, tl.name topic, t.prob topic_prob  FROM sentiments se
+"""SELECT DATE(st.date) date, CASE WHENch.part=0,"IS","QA"), ch.is_question, ch.chunk, se.score, sm.name sentiment_model, tl.name topic, t.prob topic_prob  FROM sentiments se
 JOIN chunks ch ON ch.rowid = se.chunk_rowid
 JOIN statements st ON st.rowid = ch.statement_id
 JOIN sentiment_models sm ON sm.rowid = se.model_id

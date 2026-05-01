@@ -8,3 +8,4 @@ matplotlib
 tensorflow
 datasets
 seaborn
+sqlite3

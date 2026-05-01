@@ -1,5 +1,5 @@
 import pandas as pd
-from .. import STATEMENTS_DIR, MARKET_DIR
+from .. import DATABASE_DIR, MARKET_DIR
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -18,7 +18,7 @@ market_data["date"] = market_data.date.apply(clean_date)
 market_data = market_data.set_index("date")
 market_data = market_data.dropna(how="all")
 
-sentiment_data = pd.read_csv(f"{STATEMENTS_DIR}/finbert_sentiment.csv")
+sentiment_data = pd.read_csv(f"{DATABASE_DIR}/finbert_sentiment.csv")
 sentiment_data["date"] = sentiment_data["date"].apply(clean_date)
 sentiment_data = sentiment_data.set_index("date").query("not score.isna()")
 

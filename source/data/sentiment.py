@@ -1,6 +1,7 @@
 import pandas as pd
-from typing import Literal, Dict
-from .. import STATEMENTS_DIR
+from typing import Literal, Dict, List
+from .. import DATABASE_DIR
+from ..data.connection import return_sentiment
 
 INTRO_COLUMNS: Dict[str, str] = {
     "label": "str",
@@ -20,62 +21,72 @@ QA_COLUMNS: Dict[str, str] = {
 
 
 def label_formatter(
-    x: Literal[
-        "MONETARY_POLICY_AND_INFLATION",
-        "ECONOMIC_PERFORMANCE",
-        "FISCAL_AND_STRUCTURAL",
-        "OTHER_IRRELEVANT",
-    ],
     part: Literal["QA", "IS"],
+    model: Literal["finbert", "roberta"],
+    x: (
+        Literal[
+            "MONETARY_POLICY_AND_INFLATION",
+            "ECONOMIC_PERFORMANCE",
+            "FISCAL_AND_STRUCTURAL",
+            "OTHER_IRRELEVANT",
+        ]
+        | None
+    ) = None,
 ) -> str:
+    if x is None:
+        return f"{model}_{part}"
     return {
-        "MONETARY_POLICY_AND_INFLATION": f"{part}_MP",
-        "ECONOMIC_PERFORMANCE": f"{part}_EP",
-        "FISCAL_AND_STRUCTURAL": f"{part}_FS",
-        "OTHER_IRRELEVANT": f"{part}_OI",
+        "MONETARY_POLICY_AND_INFLATION": f"{model}_{part}_MP",
+        "ECONOMIC_PERFORMANCE": f"{model}_{part}_EP",
+        "FISCAL_AND_STRUCTURAL": f"{model}_{part}_FS",
+        "OTHER_IRRELEVANT": f"{model}_{part}_OI",
     }[x]
 
 
-def return_sentiment_agg_data(
-    MODEL: Literal["finbert", "roberta"] = "finbert",
+def return_sentiment_agg(
+    with_label: bool = True,
+    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
+):
+    data = return_sentiment(limit_version, with_topic=with_label)
+    grouping_columns: List["str"] = ["date", "part"]
+    if with_label:
+        grouping_columns.append("topic")
+    grouping_columns += ["is_question", "sentiment_model"]
+    data_agg = data.groupby(grouping_columns).agg(
+        {"score": ["min", "mean", "max", "std"]}
+    )
+    data_agg.columns = data_agg.columns.droplevel(0)
+    data_agg = data_agg.reset_index()
+    data_agg.columns.name = None
+    return data_agg
+
+
+def return_sentiment_agg_pivot(
     just_answers: bool = True,
     with_label: bool = True,
+    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
 ) -> pd.DataFrame:
-    ending = ""
+    agg_data = return_sentiment_agg(with_label, limit_version)
     if with_label:
-        ending = "_labeled"
-    agg_qa: pd.DataFrame = pd.read_csv(
-        f"{STATEMENTS_DIR}/sentiment/{MODEL}/agg_qa{ending}.csv",
-        dtype={col: t for col, t in QA_COLUMNS.items() if col != "label" or with_label},
-        parse_dates=["date"],
-    )
-    agg_intro: pd.DataFrame = pd.read_csv(
-        f"{STATEMENTS_DIR}/sentiment/{MODEL}/agg_intro{ending}.csv",
-        dtype={
-            col: t for col, t in INTRO_COLUMNS.items() if col != "label" or with_label
-        },
-        parse_dates=["date"],
-    )
-    if with_label:
-        agg_intro["label"] = agg_intro["label"].apply(label_formatter, part="IS")
-        agg_qa["label"] = agg_qa["label"].apply(label_formatter, part="QA")
+        agg_data["label"] = agg_data[["topic", "part", "sentiment_model"]].apply(
+            (lambda x: label_formatter(x["part"], x["sentiment_model"], x["topic"])),
+            axis=1,
+        )
     else:
-        agg_intro["label"] = "IS"
-        agg_qa["label"] = "QA"
+        agg_data["label"] = agg_data[["part", "sentiment_model"]].apply(
+            (lambda x: label_formatter(x["part"], x["sentiment_model"])),
+            axis=1,
+        )
     if just_answers:
-        agg_qa = agg_qa[agg_qa["is_question"] == False]
-        agg_qa.drop(columns=["is_question"], inplace=True)
-    else:
-        agg_intro["is_question"] == False
-
-    df_agg: pd.DataFrame = pd.concat([agg_intro, agg_qa])
+        agg_data = agg_data[agg_data["is_question"] == False]
+        agg_data.drop(columns=["is_question"], inplace=True)
     # Preklopíme tabuľku (pivot)
-    df_pivot: pd.DataFrame = df_agg.pivot(
-        index="date", columns="label", values=["mean", "max", "min", "std"]
-    )
 
+    df_pivot: pd.DataFrame = agg_data.pivot(
+        index="date", columns="label", values=["max", "mean", "min", "std"]
+    )
     # Zlúčime viacúrovňové názvy stĺpcov do jedného (napr. 'mean_QA_MP')
-    df_pivot.columns = [f"{col[0]}_{col[1]}" for col in df_pivot.columns]
+    df_pivot.columns = [f"{col[1]}_{col[0]}" for col in df_pivot.columns]
     df_pivot = df_pivot.reset_index()
 
     df_pivot.fillna(df_pivot.mean(), inplace=True)
@@ -83,27 +94,11 @@ def return_sentiment_agg_data(
 
 
 def return_sentiment_chunk_data(
-    MODEL: Literal["finbert", "roberta"] = "finbert",
-    just_answers: bool = True,
+    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
     with_label: bool = True,
 ) -> pd.DataFrame:
-    chunk_qa = pd.read_csv(
-        f"{STATEMENTS_DIR}/sentiment/{MODEL}/chunk_qa_labeled.psv",
-        sep="|",
-        parse_dates=["date"],
-    )
-    chunk_qa["part"] = "QA"
-    if just_answers:
-        chunk_qa = chunk_qa[chunk_qa["is_question"] == False]
-        chunk_qa.drop(columns=["is_question"], inplace=True)
-    chunk_intro = pd.read_csv(
-        f"{STATEMENTS_DIR}/sentiment/{MODEL}/chunk_intro_labeled.psv",
-        sep="|",
-        parse_dates=["date"],
-    )
-    chunk_intro["part"] = "IS"
-    return pd.concat([chunk_intro, chunk_qa]).sort_values(["date","part", "chunk_id"]).reset_index().drop(columns="index")
+    return return_sentiment(limit_version, with_label)
 
 
 if __name__ == "__main__":
-    print(return_sentiment_chunk_data(with_label=False))
+    print(return_sentiment_agg_pivot(with_label=True))

@@ -1,5 +1,5 @@
 import pandas as pd
-from .. import STATEMENTS_DIR, MARKET_DIR
+from .. import DATABASE_DIR, MARKET_DIR
 import seaborn as sns
 import matplotlib.pyplot as plt
 from ..data.sentiment import return_sentiment_agg_data

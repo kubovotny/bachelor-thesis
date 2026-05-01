@@ -2,7 +2,7 @@ from nltk.tokenize import sent_tokenize
 import re
 import pandas as pd
 from typing import Dict, List
-from .. import STATEMENTS_DIR
+from .. import DATABASE_DIR
 from ..data.connection import insert_chunks
 
 DATABASE_SAVING = False
@@ -10,7 +10,7 @@ DATABASE_SAVING = False
 
 def load_statement_file(filename: str) -> pd.DataFrame:
     data = pd.read_csv(
-        f"{STATEMENTS_DIR}/{filename}.psv", sep="|", index_col="statement_id"
+        f"{DATABASE_DIR}/{filename}.psv", sep="|", index_col="statement_id"
     )
     data.drop(columns=["url"], inplace=True)
     data["date"] = pd.to_datetime(data["date"])

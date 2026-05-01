@@ -32,22 +32,6 @@ INTRO_COLUMNS: Dict[str, str] = {
 }
 
 
-def return_sentiment_agg(with_topic: bool = True):
-    data = return_sentiment(with_topic)
-    print(data)
-    grouping_columns: List["str"] = ["date", "part"]
-    if with_topic:
-        grouping_columns.append("topic")
-    grouping_columns += ["is_question", "sentiment_model"]
-    data_agg = data.groupby(grouping_columns).agg(
-        {"score": ["min", "mean", "max", "std"]}
-    )
-    data_agg.columns = data_agg.columns.droplevel(0)
-    data_agg = data_agg.reset_index().set_index("date")
-    data_agg.columns.name = None
-    return data_agg
-
-
 def chunk_sentiment_maker(
     model: Literal["finbert", "roberta"],
     limit: Literal[50, 100, 150, 200, 250, 300, 350] | None = None,

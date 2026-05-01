@@ -12,7 +12,7 @@ def qa_dates_missing(data: pd.DataFrame) -> set[str]:
 
 
 if __name__ == "__main__":
-    correct_data: pd.DataFrame = pd.read_csv(f"{STATEMENTS_DIR}/scraped.csv", sep="|")
+    correct_data: pd.DataFrame = pd.read_csv(f"{STATEMENTS_DIR}/scraped_v2.psv", sep="|")
     correct_missing: set[str] = qa_dates_missing(correct_data)
 
     data_to_check: pd.DataFrame = pd.read_csv(

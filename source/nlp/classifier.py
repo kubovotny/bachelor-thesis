@@ -101,7 +101,7 @@ def label_paragraph(text: str | List[str]) -> List[Dict[str, float | str]]:
     results = []
     # Znížený batch_size na 32 pre stabilitu na 12GB VRAM
     for out in topic_classifier(
-        text.to_list(),
+        text.to_list() if not isinstance(text, list) else text,
         candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()),
         batch_size=128,
     ):
@@ -117,12 +117,12 @@ def label_choose(
 
 
 if __name__ == "__main__":
-    from .. import STATEMENTS_DIR
+    from .. import DATABASE_DIR
     import pandas as pd
     import time
 
     start = time.time()
-    data = pd.read_csv(f"{STATEMENTS_DIR}/labeled_chunks_2022u.csv")
+    data = pd.read_csv(f"{DATABASE_DIR}/scraped_v2.psv").sample(500, random_state=42)
     data["result"] = label_paragraph(data["chunk"].to_list())
     data["topic"] = data["result"].apply(lambda x: ZERO_SHOT_DESC2LABEL[x["labels"][0]])
     data["prob"] = data["result"].apply(lambda x: x["scores"][0])

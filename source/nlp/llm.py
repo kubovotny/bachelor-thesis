@@ -3,7 +3,7 @@ import time
 import pandas as pd
 from groq import Groq
 from ..data.connection import return_chunks
-from .. import STATEMENTS_DIR, GROQ_KEY, FILENAME
+from .. import DATABASE_DIR, GROQ_KEY, FILENAME
 
 # Inicializácia
 client = Groq(api_key=GROQ_KEY)
@@ -68,10 +68,7 @@ for i in range(0, len(df), batch_size):
     all_results.extend(batch_res)
 
     # Každých 100 riadkov priebežne ukladaj (DÔLEŽITÉ pri takomto objeme!)
-    if i % 100 == 0:
-        pd.DataFrame(all_results).to_csv(
-            f"{STATEMENTS_DIR}/sentiment/llm/backup.csv", index=False
-        )
+    if i % 100 == 0:...# TODO saving to dabase
 
     # Krátka pauza, aby Groq "nelapal po dychu"
     time.sleep(1.2)
@@ -79,6 +76,4 @@ for i in range(0, len(df), batch_size):
 # Pridanie výsledkov do pôvodného DF
 results_df = pd.DataFrame(all_results)
 df = pd.concat([df.reset_index(drop=True), results_df], axis=1)
-df.to_csv(
-    f"{STATEMENTS_DIR}/sentiment/llm/chunk_intro_labeled.psv", index=False, sep="|"
-)
+# TODO save to dabase
