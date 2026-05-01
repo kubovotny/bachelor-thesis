@@ -3,6 +3,7 @@ from typing import List, Dict, Any, Literal
 from huggingface_hub import login
 import os
 from ..data.connection import return_topic_labels
+import torch
 
 HF_TOKEN = os.environ["HF_TOKEN"]
 login(token=HF_TOKEN)
@@ -81,19 +82,32 @@ ZERO_SHOT_DESC2LABEL: Dict[
 topic_classifier: TextClassificationPipeline | None = None
 
 
-def label_paragraph(text: str) -> List[Dict[str, float | str]]:
+def label_paragraph(text: str | List[str]) -> List[Dict[str, float | str]]:
     global topic_classifier
+
+    # Zabezpečíme, aby text bol list, kvôli tqdm a batchingu
+    if isinstance(text, str):
+        text = [text]
+
     if topic_classifier is None:
         topic_classifier = pipeline(
             "zero-shot-classification",
             model="facebook/bart-large-mnli",
             token=HF_TOKEN,
-            device="cuda",
+            device=0,
+            torch_dtype=torch.float16,
         )
-    result: List[Dict[str, float | str]] = topic_classifier(
-        text, candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()), top_k=2
-    )
-    return result
+
+    results = []
+    # Znížený batch_size na 32 pre stabilitu na 12GB VRAM
+    for out in topic_classifier(
+        text.to_list(),
+        candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()),
+        batch_size=128,
+    ):
+        results.append(out)
+
+    return results
 
 
 def label_choose(
@@ -105,11 +119,15 @@ def label_choose(
 if __name__ == "__main__":
     from .. import STATEMENTS_DIR
     import pandas as pd
+    import time
 
+    start = time.time()
     data = pd.read_csv(f"{STATEMENTS_DIR}/labeled_chunks_2022u.csv")
-    data["result"] = label_paragraph(list(data["chunk"]))
+    data["result"] = label_paragraph(data["chunk"].to_list())
     data["topic"] = data["result"].apply(lambda x: ZERO_SHOT_DESC2LABEL[x["labels"][0]])
     data["prob"] = data["result"].apply(lambda x: x["scores"][0])
+    end = time.time()
     for _, row in data.iterrows():
         print(row["topic"], row["prob"], sep=",")
     # print(*data["result"],sep="\n\n")
+    print(end - start, len(data))

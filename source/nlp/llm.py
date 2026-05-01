@@ -2,8 +2,7 @@ import json
 import time
 import pandas as pd
 from groq import Groq
-import os
-from .chunker import chunk_intro
+from ..data.connection import return_chunks
 from .. import STATEMENTS_DIR, GROQ_KEY, FILENAME
 
 # Inicializácia
@@ -58,7 +57,7 @@ def evaluate_batch(texts):
 
 all_results = []
 batch_size = 10
-df = chunk_intro(FILENAME).query("'2008-01-01' <= date <= '2010-01-01'")
+df = return_chunks()
 
 for i in range(0, len(df), batch_size):
     batch_texts = df["chunk"].iloc[i : i + batch_size].tolist()
