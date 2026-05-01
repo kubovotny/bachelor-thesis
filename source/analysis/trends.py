@@ -8,18 +8,18 @@ data1 = data1.rename(columns={c: f"finbert_{c}" for c in data1.columns if c != "
 data2=return_sentiment_agg_data("roberta",with_label=False)
 data2 = data2.rename(columns={c: f"roberta_{c}" for c in data2.columns if c != "date"})
 df = pd.merge(data1, data2, on="date")
-
+print(df.columns)
 # 1. Príprava dát
 df = df.sort_values('date')
 part1 = "IS"
 part2 = "QA"
 # Výpočet 12-mesačného kĺzavého priemeru (cca 8-12 zasadaní ECB)
 # Použijeme QA stĺpce, tie bývajú zaujímavejšie
-df[f'roberta_rolling_{part1}'] = df[f'roberta_mean_{part1}'].rolling(window=10, center=True).mean()
-df[f'finbert_rolling_{part1}'] = df[f'finbert_mean_{part1}'].rolling(window=10, center=True).mean()
+df[f'roberta_rolling_{part1}'] = df[f'roberta_mean_{part1}'].rolling(window=6, center=True).mean()
+df[f'finbert_rolling_{part1}'] = df[f'finbert_mean_{part1}'].rolling(window=6, center=True).mean()
 
-df[f'roberta_rolling_{part2}'] = df[f'roberta_mean_{part2}'].rolling(window=10, center=True).mean()
-df[f'finbert_rolling_{part2}'] = df[f'finbert_mean_{part2}'].rolling(window=10, center=True).mean()
+df[f'roberta_rolling_{part2}'] = df[f'roberta_mean_{part2}'].rolling(window=6, center=True).mean()
+df[f'finbert_rolling_{part2}'] = df[f'finbert_mean_{part2}'].rolling(window=6, center=True).mean()
 
 # 2. Graf
 plt.figure(figsize=(14, 7))
@@ -62,8 +62,8 @@ plt.show()
 df['sentiment_spread'] = df['roberta_mean_QA'] - df['roberta_mean_IS']
 df['spread_rolling'] = df['sentiment_spread'].rolling(window=10, center=True).mean()
 
-df['roberta_uncertainty_rolling'] = df['roberta_std_QA'].rolling(window=10, center=True).mean()
-df['finbert_uncertainty_rolling'] = df['finbert_std_QA'].rolling(window=10, center=True).mean()
+df['roberta_uncertainty_rolling'] = df['roberta_std_QA'].rolling(window=6, center=True).mean()
+df['finbert_uncertainty_rolling'] = df['finbert_std_QA'].rolling(window=6, center=True).mean()
 
 # Nastavenie grafu (2 podgrafy pod sebou)
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 10), sharex=True)

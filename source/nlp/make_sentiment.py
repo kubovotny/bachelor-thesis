@@ -2,7 +2,7 @@ from .. import STATEMENTS_DIR
 from .classifier import get_sentiment, calculate_sentiment
 from typing import Literal, List, Dict
 import pandas as pd
-
+from ..data.connection import insert_sentiments
 
 MODEL_SELECTION = ["finbert", "roberta"]
 QA_COLUMNS: Dict[str, str] = {
@@ -87,9 +87,7 @@ def chunk_sentiment_maker(
     chunked_df["sentiment"] = get_sentiment(list(chunked_df["chunk"]), model)
     chunked_df["score"] = chunked_df["sentiment"].apply(calculate_sentiment)
 
-    chunked_df.drop(columns=["sentiment"]).to_csv(
-        f"{STATEMENTS_DIR}/sentiment/{model}/chunk_{part}.psv", sep="|"
-    )
+    insert_sentiments(chunked_df)
     day_sentiment_maker(model, part, source_data=chunked_df)
     return chunked_df
 

@@ -73,7 +73,7 @@ The~introductory statement is a~highly structured, carefully drafted document th
 assessment, inflation dynamics, and the~evaluation of monetary and financial conditions. The~language used in this document is deliberately precise,
 relying on specific syntactical formulations to signal the~future policy path—a practice commonly known as forward-looking policy setting.
 
-In sharp contrast, the~Q\&A session introduces an element of controlled spontaneity. Advanced textual analysis and structural topic modeling applied
+In sharp contrast, the~Q\&A session introduces an element of controlled spontaneity. Advanced textual analysis and structural topic modelling applied
 to the~historical transcripts of \gls{ecb} press conferences demonstrate that the~thematic content of the~statement differs from the discourse created
 during the~Q\&A session. The~topics that dominate the~statement are persistent, structural, and strongly focused on standardized macroeconomic
 aggregates. Conversely, the~Q\&A often introduces completely new, emerging topics that were not addressed in the~prepared text. Empirical research
@@ -137,22 +137,24 @@ However, central banking verbal expression form an~even more specialized field. 
 subset of the~Reuters TRC2 dataset. This texts are less formal and instutionally independent compared to central bank texts. That was reason to
 introduce models such as CentralBankRoBERTa and other Central Bank Language Models (CB-LMs). These models were trained explicitly on specialized texts
 that include central bank speeches, \gls{mps}, and macroeconomic research papers \cite[p. 4]{BIS_WP1215_2024}. Empirical benchmarks show that CB-LMs
-significantly outperform both standard and financial models in understanding central bank idioms. Instead of positive vs. negative meaning, in central
-banking it is hawkish vs. dovish. Which describe policymaker's stances on monetary policy. Where hawkish indicate expectations to be more on
-tightening side and dovish to be on the~loosening side. So hawkish is supplement for positive and dovish for negative. CB-LMs classified the~hawkish,
-dovish, or neutral stance of official policy communications more accurately than FinBERT. By using these highly calibrated transformer models,
-researchers can extract more precise, theory-consistent signals from institutions like the~\gls{ecb} and the~\gls{fed}. Which improved
-the~predictability of market reactions and policy transmission.
+significantly outperform both standard and financial models in understanding central bank idioms. Instead of positive vs. negative stance approach, in
+central banking it is substituded by hawkish vs. dovish stances. Which describe policymaker's stances on monetary policy. Where hawkish indicate
+expectations to be more on tightening side and dovish to be on the~loosening side. So hawkish is supplement for positive and dovish for negative.
+CB-LMs classified the~hawkish, dovish, or neutral stance of official policy communications more accurately than FinBERT. By using these highly
+calibrated transformer models, researchers can extract more precise, theory-consistent signals from institutions like the~\gls{ecb} and the~\gls{fed}.
+Which improved the~predictability of market reactions and policy transmission.
 
-\subsection{Topic Modeling and Feature Extraction}
+\subsection{Topic modelling and Feature Extraction}
 Beyond simple sentiment classification, analyzing central bank communications requires sophisticated techniques to identify the~topics that
 policymakers are discussing and their developments. Information extraction transforms unstructured, qualitative narratives into structured,
 machine-readable data \cite{IBM_IE_2025}. Subtasks such as named-entity recognition allow algorithms to automatically detect and classify specific
 entities, financial instruments, or precise numerical values mentioned in the~text.
 
-% TODO - viac napísať toho, aké sú algoritmy, čo sa používa, ako to funguje...
 
-\section{Econometric Modeling in Monetary Policy}
+
+TODO - viac napísať toho, aké sú algoritmy, čo sa používa, ako to funguje...
+
+\section{Measuring Monetary Policy}
 TODO Doterajšie výsledky 
 % v skratke čo to je
 % tu by som mal aj opísať, čo je to napríklad OIS, ako sa vypočítava a čo je to ten pc1 z jkshocks

@@ -11,7 +11,7 @@ from datetime import datetime
 # ECB crisis and shock periods as tuples: (Label, Start Date, End Date)
 ecb_crises = [
     # Immediate response to the terrorist attacks in the US
-    ("9/11 Liquidity Crisis", datetime(2001, 9, 11), datetime(2001, 10, 31)),
+    ("9/11", datetime(2001, 9, 11), datetime(2001, 10, 31)),
     
     # Financial turmoil leading into the major crash
     ("Financial Turmoil", datetime(2007, 8, 9), datetime(2008, 9, 14)),
@@ -28,18 +28,26 @@ ecb_crises = [
     # Post-invasion energy prices and rate hikes
     ("Energy Shock and Inflation Surge", datetime(2022, 2, 24), datetime.now())
 ]
-
-
-
 data = return_market_data("Dataset_EA-MPD.xlsx")
 data2 = return_market_data("shocks_ecb_mpd_me_d.csv")
-data_big = pd.merge(data,data2.rename(columns={"STOXX50":"STOXX50_d"}),on="date").reset_index()
+data_big = pd.merge(data,data2.rename(columns={"STOXX50":"STOXX50_d"}),on="date").reset_index().query("'2014-01-01' < date < '2019-12-12'")
 print(data_big)
-ax = sns.lineplot(data=data_big, x="date", y=data_big["pc1"].abs().rolling(10).mean(), label="pc1")
-green_to_yellow = ["#008000", "#55a630", "#80b918", "#aacc00", "#dddf00", "#ffff00"]
-for (label, start,end), color in zip(ecb_crises,green_to_yellow):
-    ax.axvspan(start, end, alpha=0.2, label=label,color=color)
 
-sns.lineplot(data=data_big, x="date", y=data_big["pc1"].rolling(15).std(), label="pc1 std")
-plt.legend()
-plt.show()
+def plot(columns):
+    if type(columns) is str:
+        columns = [columns]
+    for column in columns:
+        ax = sns.lineplot(data=data_big, x="date", y=column, label=column)
+    green_to_yellow = ["#008000", "#55a630", "#80b918", "#aacc00", "#dddf00", "#ffff00"]
+    # for (label, start,end), color in zip(ecb_crises,green_to_yellow):
+    #     ax.axvspan(start, end, alpha=0.2, label=label,color=color)
+    ax.axhline()
+    for column in columns:
+        sns.lineplot(data=data_big, x="date", y=data_big[column].rolling(5).mean(), label=f"{column} std")
+    plt.legend()
+    plt.show()
+
+# plot("pc1")
+plot(["OIS_1M","OIS_1Y"])
+# plot("STOXX50")
+# plot("MP_pm")

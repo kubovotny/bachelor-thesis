@@ -8,7 +8,7 @@ import seaborn as sns
 df_market = return_market_data("Dataset_EA-MPD.xlsx")
 df_sentiment = return_sentiment_agg_data("roberta")
 # The Final Merge! Spojíme to podľa dátumu
-final_dataset = pd.merge(df_sentiment, df_market[['date', 'OIS_1M','OIS_3M', 'OIS_1Y']], on='date', how='inner')
+final_dataset = pd.merge(df_sentiment, df_market[['OIS_1M','OIS_3M', 'OIS_1Y']], on='date', how='inner')
 
 df = final_dataset.sort_values('date')
 def bootstrap_auc(y, x, n_boot=1000):
@@ -113,31 +113,31 @@ df['Target_Hawkish_Tail'] = (df[target_col] > hawkish_threshold).astype(int)
 # 2. Krok: Výber nášho prediktora (Sentimentu)
 # Použijeme napríklad MAX sentiment z Intro (lebo to zvykne trhy najviac prekvapiť)
 # Ak máš spojený stĺpec, použi napr. df['max_MP']
-fig, axes = plt.subplots(8,4, figsize=(20,12))
-results = {"sentiment column":[],"roc-auc":[]}
-for i, column in enumerate(df_sentiment.columns[1:-1]):
-    predictor = df[column] # Nahraď tvojím najsilnejším stĺpcom
-    ax = axes[i%8][i//8]
-    # 3. Krok: Výpočet ROC a AUC
-    fpr, tpr, thresholds = roc_curve(df['Target_Hawkish_Tail'], predictor)
-    ci = bootstrap_auc(df['Target_Hawkish_Tail'], predictor)
-    print(column, target_col, ci)
-    roc_auc = auc(fpr, tpr)
-    results["sentiment column"].append(column)
-    results["roc-auc"].append(roc_auc)
-    ax.plot(fpr, tpr, color='firebrick', lw=2, label=f'ROC Krivka (AUC = {roc_auc:.2f})')
+# fig, axes = plt.subplots(8,4, figsize=(20,12))
+# results = {"sentiment column":[],"roc-auc":[]}
+# for i, column in enumerate(df_sentiment.columns[1:-1]):
+#     predictor = df[column] # Nahraď tvojím najsilnejším stĺpcom
+#     ax = axes[i%8][i//8]
+#     # 3. Krok: Výpočet ROC a AUC
+#     fpr, tpr, thresholds = roc_curve(df['Target_Hawkish_Tail'], predictor)
+#     ci = bootstrap_auc(df['Target_Hawkish_Tail'], predictor)
+#     print(column, target_col, ci)
+#     roc_auc = auc(fpr, tpr)
+#     results["sentiment column"].append(column)
+#     results["roc-auc"].append(roc_auc)
+#     ax.plot(fpr, tpr, color='firebrick', lw=2, label=f'ROC Krivka (AUC = {roc_auc:.2f})')
 
 
-    ax.plot(fpr, tpr, color='firebrick', lw=2, label=f'ROC Krivka (AUC = {roc_auc:.2f})')
-    ax.plot([0, 1], [0, 1], color='gray', lw=1, linestyle='--') # Čiara náhody
+#     ax.plot(fpr, tpr, color='firebrick', lw=2, label=f'ROC Krivka (AUC = {roc_auc:.2f})')
+#     ax.plot([0, 1], [0, 1], color='gray', lw=1, linestyle='--') # Čiara náhody
 
-    ax.set_title(f"{column}", fontsize=14)
-    ax.set_xlabel('FP', fontsize=12)
-    ax.set_ylabel('TP', fontsize=12)
-    ax.legend(loc="lower right")
-    ax.grid(True, alpha=0.3)
+#     ax.set_title(f"{column}", fontsize=14)
+#     ax.set_xlabel('FP', fontsize=12)
+#     ax.set_ylabel('TP', fontsize=12)
+#     ax.legend(loc="lower right")
+#     ax.grid(True, alpha=0.3)
 import re
-df2 = pd.DataFrame(results)
+# df2 = pd.DataFrame(results)
 # Tvoja úprava dát (zostáva nezmenená)
 df2["roc-auc"] = df2["roc-auc"] - 0.5
 df2["column"] = df2["sentiment column"].apply(lambda x: re.sub(re.compile("(min|max|std|mean)_"),"",x))
