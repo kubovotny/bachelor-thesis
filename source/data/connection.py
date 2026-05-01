@@ -1,6 +1,6 @@
 import sqlite3
 import pandas as pd
-from .. import DATA_DIR
+from .. import DATA_DIR, PASSWORD
 from typing import Literal
 
 DATABASE = f"{DATA_DIR}/statements.db"
@@ -174,9 +174,10 @@ def insert_topics(
 
 
 if __name__ == "__main__":
-    drop_and_make_tables()
-    data = pd.read_csv(f"{DATA_DIR}/statements/scraped_v2.psv", sep="|")
-    insert_statements(data)
+    if input() == PASSWORD:
+        drop_and_make_tables()
+        data = pd.read_csv(f"{DATA_DIR}/statements/scraped_v2.psv", sep="|")
+        insert_statements(data)
     # intro = pd.read_csv(f"{DATA_DIR}/statements/intro.psv", sep="|")
     # qa = pd.read_csv(f"{DATA_DIR}/statements/qa.psv", sep="|")
     # insert_chunks(intro, qa)

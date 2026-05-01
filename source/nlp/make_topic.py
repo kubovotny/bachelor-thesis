@@ -9,7 +9,7 @@ def label_maker(
     limit: Literal[50, 100, 150, 200, 250, 300, 350] | None = None,
 ) -> None | pd.DataFrame:
     if limit is not None:
-        data = return_chunks(limit)
+        data = return_chunks(limit).sample(10)
         data["result"] = label_paragraph(list(data["chunk"]))
         data[["topic", "prob"]] = (
             data["result"]
@@ -24,4 +24,4 @@ def label_maker(
 
 
 if __name__ == "__main__":
-    label_maker()
+    label_maker(50)

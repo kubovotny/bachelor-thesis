@@ -4,6 +4,7 @@ import os
 
 load_dotenv(interpolate=True)
 DATA_DIR = os.getenv("DATA_DIR")
+PASSWORD = os.getenv("PASSWORD")
 STATEMENTS_DIR = DATA_DIR + "/statements"
 MARKET_DIR = DATA_DIR + "/market"
 GROQ_KEY = os.environ["GROQ_KEY"]
