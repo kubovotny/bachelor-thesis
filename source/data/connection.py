@@ -9,7 +9,6 @@ cur = conn.cursor()
 
 
 def drop_and_make_tables():
-
     TABLE_SCHEMA = {
         "statements": """
               date            TEXT,
@@ -32,13 +31,18 @@ def drop_and_make_tables():
               PRIMARY KEY (chunk_rowid, model_id),
               FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid),
               FOREIGN KEY (model_id) REFERENCES sentiment_models(rowid)""",
+        "topic_labels": """
+              name          TEXT,
+              description   TEXT,
+              version       INT,
+              PRIMARY KEY(name, version)""",
         "topics": """
               chunk_rowid           INT,
-              label                 TEXT,
+              label_rowid           INT,
               prob                  REAL,
-              label_version         INT,
-              PRIMARY KEY (chunk_rowid, label_version),
-              FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid)""",
+              PRIMARY KEY (chunk_rowid, label_rowid),
+              FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid)
+              FOREIGN KEY (label_rowid) REFERENCES topic_labels(rowid)""",
     }
     for table in reversed(TABLE_SCHEMA.keys()):
         cur.execute(f"DROP TABLE IF EXISTS {table}")
@@ -54,6 +58,11 @@ def return_limits():
     return [l[0] for l in cur.execute(sql).fetchall()]
 
 
+def return_topic_labels(version=0):
+    sql = "SELECT rowid, name, description FROM topic_labels WHERE version=?;"
+    return {n: (d, r) for r, n, d in cur.execute(sql, (version,)).fetchall()}
+
+
 def return_chunks(limit=200):
     sql = "SELECT rowid as chunk_rowid, chunk FROM chunks WHERE chunk_limit=?;"
     return pd.read_sql(sql, conn, params=(limit,))
@@ -61,15 +70,15 @@ def return_chunks(limit=200):
 
 def return_sentiment(limit=200, with_topic: bool = False):
     sql = f"""SELECT DATE(st.date) date, ch.part, ch.is_question, ch.chunk, se.score, sm.name sentiment_model
-    {", t.label topic, t.prob topic_prob" if with_topic else ""}  FROM sentiments se
+    {", tl.name topic, t.prob topic_prob" if with_topic else ""}  FROM sentiments se
 JOIN chunks ch ON ch.rowid = se.chunk_rowid
 JOIN statements st ON st.rowid = ch.statement_id
 JOIN sentiment_models sm ON sm.rowid = se.model_id
-{"JOIN topics t ON t.chunk_rowid = se.chunk_rowid\n" if with_topic else ""}
+{("JOIN topics t ON t.chunk_rowid = se.chunk_rowid\n" + 
+ "JOIN topic_labels tl ON tl.rowid = t.label_rowid" )if with_topic else ""}
 WHERE ch.chunk_limit = ?;
 """
     return pd.read_sql(sql, conn, parse_dates="date", params=(limit,))
-
 
 def concat_intro_qa(
     df_intro: pd.DataFrame | None = None, df_qa: pd.DataFrame | None = None
@@ -147,13 +156,26 @@ def insert_sentiments(
     conn.commit()
 
 
+def insert_topic_labels():
+    topics = {
+        "MONETARY_POLICY_AND_INFLATION": "inflation, price stability, interest rate decisions, monetary policy stance, financing conditions, bank lending, and market interest rates",
+        "ECONOMIC_PERFORMANCE": "economic growth, GDP outlook, unemployment, labor market developments, macroeconomic risks, demand, consumption, and investment",
+        "FISCAL_AND_STRUCTURAL": "government budgets, national debt, public spending, and structural reforms",
+        "OTHER_IRRELEVANT": "general greetings, purely political questions, unrelated remarks, climate change, or personal comments (excluding macroeconomic impacts)",
+    }
+    sql = "INSERT INTO topic_labels VALUES(0, ?, ?);"
+    for item in topics.items():
+        cur.execute(sql, item)
+    conn.commit()
+
+
 def insert_topics(
     df_intro: pd.DataFrame | None = None,
     df_qa: pd.DataFrame | None = None,
     df: pd.DataFrame | None = None,
 ):
     if df is not None:
-        df[["chunk_rowid", "topic", "prob"]].to_sql(
+        df[["chunk_rowid", "label_rowid", "prob"]].to_sql(
             "topics", conn, index=False, if_exists="append"
         )
         return
@@ -165,7 +187,7 @@ def insert_topics(
             """INSERT INTO topics 
                     VALUES(
                     (SELECT rowid FROM chunks WHERE statement_id = ? AND part = ? AND chunk_id = ? AND is_question = ?),
-                    ?,?
+                    (SELECT rowid FROM topic_labels WHERE name  = ?),?
                     )""",
             (statement_id, part, chunk_id, is_question, label, prob),
         )
@@ -178,6 +200,7 @@ if __name__ == "__main__":
         drop_and_make_tables()
         data = pd.read_csv(f"{DATA_DIR}/statements/scraped_v2.psv", sep="|")
         insert_statements(data)
+        insert_topic_labels()
     # intro = pd.read_csv(f"{DATA_DIR}/statements/intro.psv", sep="|")
     # qa = pd.read_csv(f"{DATA_DIR}/statements/qa.psv", sep="|")
     # insert_chunks(intro, qa)
@@ -193,3 +216,10 @@ if __name__ == "__main__":
     # qa = pd.read_csv(f"{DATA_DIR}/statements/labeled_qa.psv", sep="|")
     # insert_topic(intro, qa)
     # print(return_sentiment(True))
+"""SELECT DATE(st.date) date, ch.part, ch.is_question, ch.chunk, se.score, sm.name sentiment_model, tl.name topic, t.prob topic_prob  FROM sentiments se
+JOIN chunks ch ON ch.rowid = se.chunk_rowid
+JOIN statements st ON st.rowid = ch.statement_id
+JOIN sentiment_models sm ON sm.rowid = se.model_id
+JOIN topics t ON t.chunk_rowid = se.chunk_rowid
+JOIN topic_labels tl ON tl.rowid = t.label_rowid
+WHERE ch.chunk_limit = 200;"""

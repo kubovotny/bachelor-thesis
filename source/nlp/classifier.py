@@ -2,6 +2,7 @@ from transformers import pipeline, TextClassificationPipeline
 from typing import List, Dict, Any, Literal
 from huggingface_hub import login
 import os
+from ..data.connection import return_topic_labels
 
 HF_TOKEN = os.environ["HF_TOKEN"]
 login(token=HF_TOKEN)
@@ -46,13 +47,10 @@ ZERO_SHOT_LABELS: Dict[
         "FISCAL_AND_STRUCTURAL",
         "OTHER_IRRELEVANT",
     ],
-    str,
-] = {
-    "MONETARY_POLICY_AND_INFLATION": "inflation, price stability, interest rate decisions, monetary policy stance, financing conditions, bank lending, and market interest rates",
-    "ECONOMIC_PERFORMANCE": "economic growth, GDP outlook, unemployment, labor market developments, macroeconomic risks, demand, consumption, and investment",
-    "FISCAL_AND_STRUCTURAL": "government budgets, national debt, public spending, and structural reforms",
-    "OTHER_IRRELEVANT": "general greetings, purely political questions, unrelated remarks, climate change, or personal comments (excluding macroeconomic impacts)",
-}
+    tuple[str, int],
+] = return_topic_labels(0)
+
+
 # {
 #     "ECONOMIC_ANALYSIS": "economic activity, GDP output growth, and employment developments",
 #     "INFLATION": "consumer price inflation, price developments, and wage pressures",
@@ -64,17 +62,22 @@ ZERO_SHOT_LABELS: Dict[
 #     "STRUCTURAL_REFORM": "structural reforms, productivity, and labor market policies",
 #     "OTHER_IRRELEVANT": "general greetings, non-economic questions, unrelated remarks, climate change, or personal comments",
 # }
+def inverse_dict(original: Dict) -> Dict:
+    return {d: (n, r) for n, (d, r) in original.items()}
+
 
 ZERO_SHOT_DESC2LABEL: Dict[
     str,
-    Literal[
-        "MONETARY_POLICY_AND_INFLATION",
-        "ECONOMIC_PERFORMANCE",
-        "FISCAL_AND_STRUCTURAL",
-        "OTHER_IRRELEVANT",
+    tuple[
+        Literal[
+            "MONETARY_POLICY_AND_INFLATION",
+            "ECONOMIC_PERFORMANCE",
+            "FISCAL_AND_STRUCTURAL",
+            "OTHER_IRRELEVANT",
+        ],
+        int,
     ],
-] = {b: a for a, b in ZERO_SHOT_LABELS.items()}
-
+] = inverse_dict(ZERO_SHOT_LABELS)
 topic_classifier: TextClassificationPipeline | None = None
 
 
@@ -95,13 +98,8 @@ def label_paragraph(text: str) -> List[Dict[str, float | str]]:
 
 def label_choose(
     sequence: str = None, labels: list[str] = [], scores: list[float] = []
-) -> Literal[
-    "MONETARY_POLICY_AND_INFLATION",
-    "ECONOMIC_PERFORMANCE",
-    "FISCAL_AND_STRUCTURAL",
-    "OTHER_IRRELEVANT",
-]:
-    return f"{ZERO_SHOT_DESC2LABEL[labels[0]]},{scores[0]}"
+) -> str:
+    return f"{ZERO_SHOT_DESC2LABEL[labels[0]][1]},{scores[0]}"
 
 
 if __name__ == "__main__":

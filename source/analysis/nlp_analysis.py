@@ -35,11 +35,11 @@ chunks["length"] = chunk_lengths
 print(chunks.describe())
 
 # 1. Spravíme si kópie dát, aby sme si nepokazili originály
-original_clipped = np.clip(paragraphs_lengths, a_min=None, a_max=250)
-processed_clipped = np.clip(chunk_lengths, a_min=None, a_max=250)
+original_clipped = np.clip(paragraphs_lengths, a_min=None, a_max=350)
+processed_clipped = np.clip(chunk_lengths, a_min=None, a_max=350)
 
 # 2. Nastavíme intervaly (bins) - posledný končí presne na 250
-moje_intervaly = np.arange(0, 260, 10)
+moje_intervaly = np.arange(0, 360, 10)
 
 plt.figure(figsize=(10, 6))
 
@@ -48,7 +48,7 @@ sns.histplot(original_clipped, bins=moje_intervaly, color='grey', alpha=1, label
 sns.histplot(processed_clipped, bins=moje_intervaly, color='#4e79a7', alpha=0.5, label='Processed Segments', edgecolor='black')
 
 # 4. Úprava osi X, aby bolo jasné, že posledný bin je "špeciálny"
-plt.xticks(list(range(0, 250, 50)) + [250], [str(x) for x in range(0, 250, 50)] + ['250+'])
+plt.xticks(list(range(0, 350, 50)) + [350], [str(x) for x in range(0, 350, 50)] + ['250+'])
 
 plt.axvline(30, color='red', linestyle='--', label='Min threshold (30 words)')
 plt.axvline(200, color='darkgreen', linestyle='--', label='Max threshold (200 words)')
@@ -58,5 +58,5 @@ plt.ylabel('Frequency', fontsize=12)
 plt.title('Distribution of segment lengths after processing', fontsize=14)
 plt.legend()
 plt.grid(axis='y', alpha=0.5)
-plt.savefig(f'{OUTPUT}/data/segment_distribution.png', dpi=300, bbox_inches='tight')
+# plt.savefig(f'{OUTPUT}/data/segment_distribution.png', dpi=300, bbox_inches='tight')
 plt.show()
