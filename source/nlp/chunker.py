@@ -1,10 +1,12 @@
 from nltk.tokenize import sent_tokenize
 import re
 import pandas as pd
-from typing import Dict, List, Any
+from typing import Dict, List
 from .. import STATEMENTS_DIR
+from ..data.connection import insert_chunks
 
-FILE_SAVING = False
+DATABASE_SAVING = False
+
 
 def load_statement_file(filename: str) -> pd.DataFrame:
     data = pd.read_csv(
@@ -47,7 +49,6 @@ def process_long_paragraph(
             if current_chunk:
                 safe_chunks.append(current_chunk.strip())
             current_chunk = sentence + " "
-
     if current_chunk:
         safe_chunks.append(current_chunk.strip())
 
@@ -72,7 +73,8 @@ def make_percentile(data: pd.DataFrame) -> pd.DataFrame:
     )
     return data
 
-def paragraphs_intro(filename:str) -> pd.DataFrame:
+
+def paragraphs_intro(filename: str) -> pd.DataFrame:
     data: pd.DataFrame = load_statement_file(filename)
 
     data["text"] = data["intro"].str.split("\t")
@@ -85,15 +87,13 @@ def chunk_intro(filename: str) -> pd.DataFrame:
     df = paragraphs_intro(filename)
     df["text"] = df["text"].apply(clean_paragraph)
     df = df.query("text != ''")
-
-    df["chunk"] = df["text"].apply(process_long_paragraph)
-
-    df_w_chunked = df.explode("chunk").drop(columns=["text"])
-    df_w_chunked = make_percentile(df_w_chunked)
-    if FILE_SAVING:
-        df_w_chunked[["date", "chunk_id", "chunk_percentile", "chunk"]].to_csv(
-            f"{STATEMENTS_DIR}/intro.psv", sep="|"
-        )
+    for limit in range(50, 351, 50):
+        df["chunk"] = df["text"].apply(process_long_paragraph, max_words=limit)
+        df_w_chunked = df.explode("chunk").drop(columns=["text"])
+        df_w_chunked = make_percentile(df_w_chunked)
+        df_w_chunked["chunk_limit"] = limit
+        if DATABASE_SAVING:
+            insert_chunks(df_w_chunked.reset_index())
     return df_w_chunked
 
 
@@ -162,19 +162,17 @@ def chunk_qa(filename: str) -> pd.DataFrame:
     # df_with_qa["len"] = df_with_qa.text.str.split(" ").str.len()
 
     # print(df_with_qa.query("len > 200"))
-    df_with_qa["qa_len"] = df_with_qa["text"].str.split().str.len()
-    df_with_qa["chunk"] = df_with_qa["text"].apply(process_long_paragraph)
-    df_qa_chunked = make_percentile(df_with_qa.explode("chunk").drop(columns=["text"]))
-    if FILE_SAVING:
-        df_qa_chunked[
-            [
-                "date",
-                "chunk_id",
-                "chunk_percentile",
-                "is_question",
-                "chunk",
-            ]
-        ].to_csv(f"{STATEMENTS_DIR}/qa.psv", sep="|")
+    for limit in range(50, 351, 50):
+        df_with_qa["qa_len"] = df_with_qa["text"].str.split().str.len()
+        df_with_qa["chunk"] = df_with_qa["text"].apply(
+            process_long_paragraph, max_words=limit
+        )
+        df_qa_chunked = make_percentile(
+            df_with_qa.explode("chunk").drop(columns=["text"])
+        )
+        df_qa_chunked["chunk_limit"] = limit
+        if DATABASE_SAVING:
+            insert_chunks(df_qa=df_qa_chunked.reset_index())
     return df_qa_chunked
 
 
@@ -241,7 +239,7 @@ def check_qa():
 
 
 if __name__ == "__main__":
-    FILE_SAVING = True
-    # chunk_intro("scraped_v2")
-    # chunk_qa("scraped_v2")
+    DATABASE_SAVING = True
+    chunk_intro("scraped_v2")
+    chunk_qa("scraped_v2")
     # q_to_a_merged("scraped_v2").to_csv(f"{STATEMENTS_DIR}/qa_paired.csv", sep="|")

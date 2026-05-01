@@ -101,9 +101,7 @@ def label_choose(
     "FISCAL_AND_STRUCTURAL",
     "OTHER_IRRELEVANT",
 ]:
-    if scores[0] < 0.45:
-        return "OTHER_IRRELEVANT"
-    return ZERO_SHOT_DESC2LABEL[labels[0]]
+    return f"{ZERO_SHOT_DESC2LABEL[labels[0]]},{scores[0]}"
 
 
 if __name__ == "__main__":

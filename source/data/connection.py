@@ -19,8 +19,9 @@ def drop_and_make_tables():
               part            INT,
               chunk_id        INT,
               is_question     BOOLEAN,
+              chunk_limit     INT,
               chunk           TEXT,
-              PRIMARY KEY (statement_id, part, chunk_id),
+              PRIMARY KEY (statement_id, part, chunk_id, chunk_limit),
               FOREIGN KEY (statement_id) REFERENCES statements(rowid)""",
         "sentiment_models": """
               name            TEXT""",
@@ -32,10 +33,11 @@ def drop_and_make_tables():
               FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid),
               FOREIGN KEY (model_id) REFERENCES sentiment_models(rowid)""",
         "topics": """
-              chunk_rowid     INT,
-              label           TEXT,
-              prob            REAL,
-              PRIMARY KEY (chunk_rowid),
+              chunk_rowid           INT,
+              label                 TEXT,
+              prob                  REAL,
+              label_version         INT,
+              PRIMARY KEY (chunk_rowid, label_version),
               FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid)""",
     }
     for table in reversed(TABLE_SCHEMA.keys()):
@@ -47,14 +49,26 @@ def drop_and_make_tables():
     conn.commit()
 
 
-def return_sentiment(with_label: bool = False):
-    sql = f"""SELECT DATE(st.date) date, ch.chunk, se.score, sm.name sentiment_model{", t.label topic, t.prob topic_prob" if with_label else ""}  FROM sentiments se
+def return_limits():
+    sql = "SELECT DISTINCT chunk_limit FROM chunks;"
+    return [l[0] for l in cur.execute(sql).fetchall()]
+
+
+def return_chunks(limit=200):
+    sql = "SELECT rowid as chunk_rowid, chunk FROM chunks WHERE chunk_limit=?;"
+    return pd.read_sql(sql, conn, params=(limit,))
+
+
+def return_sentiment(limit=200, with_topic: bool = False):
+    sql = f"""SELECT DATE(st.date) date, ch.part, ch.is_question, ch.chunk, se.score, sm.name sentiment_model
+    {", t.label topic, t.prob topic_prob" if with_topic else ""}  FROM sentiments se
 JOIN chunks ch ON ch.rowid = se.chunk_rowid
 JOIN statements st ON st.rowid = ch.statement_id
 JOIN sentiment_models sm ON sm.rowid = se.model_id
-{"JOIN topics t ON t.chunk_rowid = se.chunk_rowid" if with_label else ""};
+{"JOIN topics t ON t.chunk_rowid = se.chunk_rowid\n" if with_topic else ""}
+WHERE ch.chunk_limit = ?;
 """
-    return pd.read_sql(sql, conn, parse_dates="date")
+    return pd.read_sql(sql, conn, parse_dates="date", params=(limit,))
 
 
 def concat_intro_qa(
@@ -83,25 +97,43 @@ def insert_chunks(
     df_intro: pd.DataFrame | None = None, df_qa: pd.DataFrame | None = None
 ):
     df = concat_intro_qa(df_intro, df_qa)
-    df[["statement_id", "part", "chunk_id", "is_question", "chunk"]].sort_values(
-        ["statement_id", "part", "chunk_id"]
-    ).to_sql("chunks", conn, if_exists="append", index=False)
+    df[
+        ["statement_id", "part", "chunk_id", "is_question", "chunk", "chunk_limit"]
+    ].sort_values(["statement_id", "part", "chunk_id"]).to_sql(
+        "chunks", conn, if_exists="append", index=False
+    )
 
     conn.commit()
 
 
 def insert_sentiments(
-    model: Literal["finbert", "roberta"],
+    model: Literal["finbert", "roberta"] = None,
     df_intro: pd.DataFrame | None = None,
     df_qa: pd.DataFrame | None = None,
+    df: pd.DataFrame | None = None,
 ):
+    assert model is not None or df is not None, "Model or df must be defined"
+
+    if df is not None:
+        df[["chunk_rowid", "model_id", "score"]].to_sql(
+            "sentiments", conn, if_exists="append", index=False
+        )
+        return
+    part = (
+        1
+        if df_intro is None and df_qa is not None
+        else 0 if df_intro is not None and df_qa is None else 2
+    )
     model_id = cur.execute(
         "SELECT rowid FROM sentiment_models sm WHERE sm.name = ?", (model,)
     ).fetchone()[0]
-    cur.execute(f"DELETE FROM sentiments WHERE model_id = ?;", (model_id,))
+    cur.execute(
+        f"DELETE FROM sentiments WHERE model_id = ? and part = ?;", (model_id, part)
+    )
     df = concat_intro_qa(df_intro, df_qa)[
         ["statement_id", "part", "chunk_id", "is_question", "score"]
     ]
+
     for _, (statement_id, part, chunk_id, is_question, score) in df.iterrows():
         cur.execute(
             """INSERT INTO sentiments 
@@ -115,9 +147,16 @@ def insert_sentiments(
     conn.commit()
 
 
-def insert_topic(
-    df_intro: pd.DataFrame | None = None, df_qa: pd.DataFrame | None = None
+def insert_topics(
+    df_intro: pd.DataFrame | None = None,
+    df_qa: pd.DataFrame | None = None,
+    df: pd.DataFrame | None = None,
 ):
+    if df is not None:
+        df[["chunk_rowid", "topic", "prob"]].to_sql(
+            "topics", conn, index=False, if_exists="append"
+        )
+        return
     df = concat_intro_qa(df_intro, df_qa)[
         ["statement_id", "part", "chunk_id", "is_question", "label", "prob"]
     ]
@@ -138,18 +177,18 @@ if __name__ == "__main__":
     drop_and_make_tables()
     data = pd.read_csv(f"{DATA_DIR}/statements/scraped_v2.psv", sep="|")
     insert_statements(data)
-    intro = pd.read_csv(f"{DATA_DIR}/statements/intro.psv", sep="|")
-    qa = pd.read_csv(f"{DATA_DIR}/statements/qa.psv", sep="|")
-    insert_chunks(intro, qa)
-    intro = pd.read_csv(
-        f"{DATA_DIR}/statements/sentiment/finbert/chunk_intro_labeled.psv", sep="|"
-    )
-    qa = pd.read_csv(
-        f"{DATA_DIR}/statements/sentiment/finbert/chunk_qa_labeled.psv", sep="|"
-    )
-    insert_sentiments("finbert", intro, qa)
+    # intro = pd.read_csv(f"{DATA_DIR}/statements/intro.psv", sep="|")
+    # qa = pd.read_csv(f"{DATA_DIR}/statements/qa.psv", sep="|")
+    # insert_chunks(intro, qa)
+    # intro = pd.read_csv(
+    #     f"{DATA_DIR}/statements/sentiment/finbert/chunk_intro_labeled.psv", sep="|"
+    # )
+    # qa = pd.read_csv(
+    #     f"{DATA_DIR}/statements/sentiment/finbert/chunk_qa_labeled.psv", sep="|"
+    # )
+    # insert_sentiments("finbert", intro, qa)
 
-    intro = pd.read_csv(f"{DATA_DIR}/statements/labeled_intro.psv", sep="|")
-    qa = pd.read_csv(f"{DATA_DIR}/statements/labeled_qa.psv", sep="|")
-    insert_topic(intro, qa)
-    print(return_sentiment(True))
+    # intro = pd.read_csv(f"{DATA_DIR}/statements/labeled_intro.psv", sep="|")
+    # qa = pd.read_csv(f"{DATA_DIR}/statements/labeled_qa.psv", sep="|")
+    # insert_topic(intro, qa)
+    # print(return_sentiment(True))

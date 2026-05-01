@@ -1,8 +1,13 @@
-from .. import STATEMENTS_DIR
+import time
 from .classifier import get_sentiment, calculate_sentiment
 from typing import Literal, List, Dict
 import pandas as pd
-from ..data.connection import insert_sentiments
+from ..data.connection import (
+    insert_sentiments,
+    return_chunks,
+    return_sentiment,
+    return_limits,
+)
 
 MODEL_SELECTION = ["finbert", "roberta"]
 QA_COLUMNS: Dict[str, str] = {
@@ -27,77 +32,45 @@ INTRO_COLUMNS: Dict[str, str] = {
 }
 
 
-def day_sentiment_maker(
-    model: Literal["finbert", "roberta"],
-    part: Literal["intro", "qa"] = "intro",
-    with_labels: bool = True,
-    source_data: pd.DataFrame | None = None,
-):
-    grouping_columns: List["str"] = ["date"]
-    ending: str
-    if with_labels:
-        ending = "_labeled"
-        grouping_columns.append("label")
-    else:
-        ending = ""
-    if part == "qa":
-        grouping_columns.append("is_question")
-
-    if source_data is None:
-        source_data = pd.read_csv(
-            f"{STATEMENTS_DIR}/sentiment/{model}/chunk_{part}_labeled.psv",
-            sep="|",
-            dtype=QA_COLUMNS if part == "qa" else INTRO_COLUMNS,
-            parse_dates=["date"],
-        )
-
-    data = source_data.groupby(grouping_columns).agg(
+def return_sentiment_agg(with_topic: bool = True):
+    data = return_sentiment(with_topic)
+    print(data)
+    grouping_columns: List["str"] = ["date", "part"]
+    if with_topic:
+        grouping_columns.append("topic")
+    grouping_columns += ["is_question", "sentiment_model"]
+    data_agg = data.groupby(grouping_columns).agg(
         {"score": ["min", "mean", "max", "std"]}
     )
-    data.columns = data.columns.droplevel(0)
-    data = data.reset_index().set_index("date")
-    data.columns.name = None
-    data.to_csv(f"{STATEMENTS_DIR}/sentiment/{model}/agg_{part}{ending}.csv")
+    data_agg.columns = data_agg.columns.droplevel(0)
+    data_agg = data_agg.reset_index().set_index("date")
+    data_agg.columns.name = None
+    return data_agg
 
 
 def chunk_sentiment_maker(
-    model_selection: (
-        Literal["finbert", "roberta"] | List[Literal["finbert", "roberta"]]
-    ),
-    part: Literal["intro", "qa"] = "intro",
-    chunked_df: pd.DataFrame | None = None,
-):
-    if chunked_df is None:
-        chunked_df = pd.read_csv(
-            f"{STATEMENTS_DIR}/labeled_{part}.psv",
-            sep="|",
-            index_col="statement_id",
-            parse_dates=["date"],
-        )
-
-    if type(model_selection) is list:
-        for model in model_selection:
-            chunked_df = chunk_sentiment_maker(model, part, chunked_df)
-            chunked_df.rename(
-                columns={"sentiment": f"{model}_sentiment", "score": f"{model}_score"}
-            )
+    model: Literal["finbert", "roberta"],
+    limit: Literal[50, 100, 150, 200, 250, 300, 350] | None = None,
+) -> None | pd.DataFrame:
+    if limit is not None:
+        start = time.time()
+        chunked_df = return_chunks(limit)
+        chunked_df["sentiment"] = get_sentiment(list(chunked_df["chunk"]), model)
+        chunked_df["score"] = chunked_df["sentiment"].apply(calculate_sentiment)
+        chunked_df["model_id"] = 1 if model == "finbert" else 2
+        insert_sentiments(df=chunked_df)
+        print(f"LIMIT {limit} - TIME: {time.time() - start}")
         return chunked_df
-
-    model: Literal["finbert", "roberta"] = model_selection
-    chunked_df["sentiment"] = get_sentiment(list(chunked_df["chunk"]), model)
-    chunked_df["score"] = chunked_df["sentiment"].apply(calculate_sentiment)
-
-    insert_sentiments(chunked_df)
-    day_sentiment_maker(model, part, source_data=chunked_df)
-    return chunked_df
+    limits = return_limits()
+    for limit in limits:
+        chunk_sentiment_maker(model, limit)
 
 
 if __name__ == "__main__":
     # WHOLE MAKING
-    # for part in ["intro", "qa"]:
-    #     chunk_sentiment_maker(MODEL_SELECTION)
     for model in MODEL_SELECTION:
-        day_sentiment_maker(model, "qa", False)
+        chunk_sentiment_maker(model)
+    # print(return_sentiment_agg(False))
 
 # TOPIC MODELLING:
 # 2 témy:
