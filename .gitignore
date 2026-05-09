@@ -9,7 +9,7 @@ praca/chapters/*.aux
 !praca/chapters/
 *.pdf
 *.pptx
-*.csv
+*mpd_me_d.csv
 __pycache__/
 *.xlsx*
 *.psv
