@@ -1,6 +1,5 @@
 import pandas as pd
 from typing import Literal, Dict, List
-from .. import DATABASE_DIR
 from ..data.connection import return_sentiment
 
 INTRO_COLUMNS: Dict[str, str] = {
@@ -45,9 +44,9 @@ def label_formatter(
 
 def return_sentiment_agg(
     with_label: bool = True,
-    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
+    word_limit: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
 ):
-    data = return_sentiment(limit_version, with_topic=with_label)
+    data = return_sentiment(word_limit, with_topic=with_label)
     grouping_columns: List["str"] = ["date", "part"]
     if with_label:
         grouping_columns.append("topic")
@@ -64,9 +63,9 @@ def return_sentiment_agg(
 def return_sentiment_agg_pivot(
     just_answers: bool = True,
     with_label: bool = True,
-    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
+    word_limit: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
 ) -> pd.DataFrame:
-    agg_data = return_sentiment_agg(with_label, limit_version)
+    agg_data = return_sentiment_agg(with_label, word_limit)
     if with_label:
         agg_data["label"] = agg_data[["topic", "part", "sentiment_model"]].apply(
             (lambda x: label_formatter(x["part"], x["sentiment_model"], x["topic"])),

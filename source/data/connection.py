@@ -1,9 +1,9 @@
 import sqlite3
 import pandas as pd
-from .. import DATABASE_DIR, PASSWORD
+from .. import DATA_DIR, PASSWORD
 from typing import Literal
 
-DATABASE = f"{DATABASE_DIR}/statements.db"
+DATABASE = f"{DATA_DIR}/statements.db"
 conn = sqlite3.connect(DATABASE)
 cur = conn.cursor()
 

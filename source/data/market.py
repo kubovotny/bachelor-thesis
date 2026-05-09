@@ -1,7 +1,7 @@
 import pandas as pd
 from typing import List, Dict, Literal
 from datetime import datetime
-from .. import DATABASE_DIR
+from .. import DATA_DIR
 
 SHEETNAME = "Press Conference Window"
 
@@ -38,14 +38,14 @@ def return_market_data(
     ending = which.split(".")[-1]
     if ending == "xlsx":
         market_data: pd.DataFrame = pd.read_excel(
-            f"{DATABASE_DIR}/{which}",
+            f"{DATA_DIR}/{which}",
             sheet_name=SHEETNAME,
             usecols=XLSX_COLUMNS,
             dtype=XLSX_COLUMNS_TYPES,
         )
     else:
         market_data: pd.DataFrame = pd.read_csv(
-            f"{DATABASE_DIR}/{which}", dtype=CSV_COLUMNS_TYPES
+            f"{DATA_DIR}/{which}", dtype=CSV_COLUMNS_TYPES
         )
 
     market_data["date"] = market_data.date.apply(clean_date)

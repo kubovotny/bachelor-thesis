@@ -4,8 +4,7 @@ from Scraper import get_page
 import pandas as pd
 import re
 from datetime import datetime
-
-STATEMENTS_DIR = "~/Documents/School/bachelor-thesis/source/statements"
+from .. import DATA_DIR
 
 
 def split_statement_to_intro_and_qa(
@@ -186,4 +185,4 @@ if __name__ == "__main__":
             data.append(elements)
     df = pd.DataFrame(data)
     df.index.name = "statement_id"
-    df.to_csv(f"{STATEMENTS_DIR}/scraped_v2.csv", index=True, sep="|", encoding="utf-8")
+    df.to_csv(f"{DATA_DIR}/scraped_v2.csv", index=True, sep="|", encoding="utf-8")

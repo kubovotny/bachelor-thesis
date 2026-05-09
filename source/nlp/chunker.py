@@ -2,7 +2,7 @@ from nltk.tokenize import sent_tokenize
 import re
 import pandas as pd
 from typing import Dict, List
-from .. import DATABASE_DIR
+from .. import DATA_DIR
 from ..data.connection import insert_chunks
 
 DATABASE_SAVING = False
@@ -10,7 +10,7 @@ DATABASE_SAVING = False
 
 def load_statement_file(filename: str) -> pd.DataFrame:
     data = pd.read_csv(
-        f"{DATABASE_DIR}/{filename}.psv", sep="|", index_col="statement_id"
+        f"{DATA_DIR}/{filename}.psv", sep="|", index_col="statement_id"
     )
     data.drop(columns=["url"], inplace=True)
     data["date"] = pd.to_datetime(data["date"])
@@ -239,7 +239,7 @@ def check_qa():
 
 
 if __name__ == "__main__":
-    DATABASE_SAVING = True
+    DATABASE_SAVING = False
     chunk_intro("scraped_v2")
     chunk_qa("scraped_v2")
     # q_to_a_merged("scraped_v2").to_csv(f"{STATEMENTS_DIR}/qa_paired.csv", sep="|")

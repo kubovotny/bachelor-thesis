@@ -3,7 +3,7 @@ import time
 import pandas as pd
 from groq import Groq
 from ..data.connection import return_chunks
-from .. import DATABASE_DIR, GROQ_KEY, FILENAME
+from .. import DATA_DIR, GROQ_KEY, FILENAME
 
 # Inicializácia
 client = Groq(api_key=GROQ_KEY)

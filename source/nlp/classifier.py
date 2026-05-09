@@ -117,12 +117,12 @@ def label_choose(
 
 
 if __name__ == "__main__":
-    from .. import DATABASE_DIR
+    from .. import DATA_DIR
     import pandas as pd
     import time
 
     start = time.time()
-    data = pd.read_csv(f"{DATABASE_DIR}/scraped_v2.psv").sample(500, random_state=42)
+    data = pd.read_csv(f"{DATA_DIR}/scraped_v2.psv").sample(500, random_state=42)
     data["result"] = label_paragraph(data["chunk"].to_list())
     data["topic"] = data["result"].apply(lambda x: ZERO_SHOT_DESC2LABEL[x["labels"][0]])
     data["prob"] = data["result"].apply(lambda x: x["scores"][0])

@@ -9,12 +9,15 @@ def return_data(
     market_data: Literal[
         "Dataset_EA-MPD.xlsx", "shocks_ecb_mpd_me_d.csv"
     ] = "shocks_ecb_mpd_me_d.csv",
+    word_limit: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
 ) -> pd.DataFrame:
     return pd.merge(
         return_market_data(market_data),
-        return_sentiment_agg_pivot(with_label=with_label),
+        return_sentiment_agg_pivot(with_label=with_label, word_limit=word_limit),
         on="date",
     )
 
+
 if __name__ == "__main__":
-    print(return_data())
+    print(return_data(word_limit=50))
+    print(return_data(word_limit=350))
