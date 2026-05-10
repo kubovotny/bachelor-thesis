@@ -9,9 +9,7 @@ DATABASE_SAVING = False
 
 
 def load_statement_file(filename: str) -> pd.DataFrame:
-    data = pd.read_csv(
-        f"{DATA_DIR}/{filename}.psv", sep="|", index_col="statement_id"
-    )
+    data = pd.read_csv(f"{DATA_DIR}/{filename}.psv", sep="|", index_col="statement_id")
     data.drop(columns=["url"], inplace=True)
     data["date"] = pd.to_datetime(data["date"])
     return data
@@ -83,11 +81,15 @@ def paragraphs_intro(filename: str) -> pd.DataFrame:
     return df
 
 
-def chunk_intro(filename: str) -> pd.DataFrame:
+def chunk_intro(filename: str, limit: int | None = None) -> pd.DataFrame:
     df = paragraphs_intro(filename)
     df["text"] = df["text"].apply(clean_paragraph)
     df = df.query("text != ''")
-    for limit in range(50, 351, 50):
+    if limit is None:
+        limit_range = range(50, 351, 50)
+    else:
+        limit_range = [limit]
+    for limit in limit_range:
         df["chunk"] = df["text"].apply(process_long_paragraph, max_words=limit)
         df_w_chunked = df.explode("chunk").drop(columns=["text"])
         df_w_chunked = make_percentile(df_w_chunked)
@@ -155,14 +157,17 @@ def paragraphs_qa(filename: str) -> pd.DataFrame:
     return df_with_qa.drop(columns="QA_processed")
 
 
-def chunk_qa(filename: str) -> pd.DataFrame:
+def chunk_qa(filename: str, limit: int | None = None) -> pd.DataFrame:
     df_with_qa = paragraphs_qa(filename)
     df_with_qa["text"] = df_with_qa["text"].apply(clean_paragraph, limit=80)
     df_with_qa = df_with_qa.query("text != ''")
     # df_with_qa["len"] = df_with_qa.text.str.split(" ").str.len()
-
+    if limit is None:
+        limit_range = range(50, 351, 50)
+    else:
+        limit_range = [limit]
     # print(df_with_qa.query("len > 200"))
-    for limit in range(50, 351, 50):
+    for limit in limit_range:
         df_with_qa["qa_len"] = df_with_qa["text"].str.split().str.len()
         df_with_qa["chunk"] = df_with_qa["text"].apply(
             process_long_paragraph, max_words=limit

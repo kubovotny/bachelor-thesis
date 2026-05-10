@@ -63,12 +63,25 @@ def return_topic_labels(version=0):
     return {n: (d, r) for r, n, d in cur.execute(sql, (version,)).fetchall()}
 
 
-def return_chunks(limit_version:Literal[50, 100, 150, 200, 250, 300, 350]=200):
-    sql = "SELECT rowid as chunk_rowid, chunk FROM chunks WHERE chunk_limit=?;"
-    return pd.read_sql(sql, conn, params=(limit_version,))
+def return_chunks(
+    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] | None = 200,
+):
+    if limit_version is None:
+        return pd.read_sql(
+            "SELECT rowid as chunk_rowid, * FROM chunks;", conn
+        )
+    else:
+        return pd.read_sql(
+            "SELECT rowid as chunk_rowid, chunk FROM chunks WHERE chunk_limit=?;",
+            conn,
+            params=(limit_version,),
+        )
 
 
-def return_sentiment(limit_version:Literal[50, 100, 150, 200, 250, 300, 350]=200, with_topic: bool = False):
+def return_sentiment(
+    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] | None = 200,
+    with_topic: bool = False,
+):
     sql = f"""SELECT DATE(st.date) date, CASE ch.part WHEN 0 THEN "IS" ELSE "QA" END part, ch.is_question=1 is_question, ch.chunk, se.score, sm.name sentiment_model\
 {", tl.name topic, t.prob topic_prob" if with_topic else ""} FROM sentiments se
 JOIN chunks ch ON ch.rowid = se.chunk_rowid
@@ -80,6 +93,7 @@ WHERE ch.chunk_limit = ?
 ORDER BY st.date, ch.part, ch.chunk_id;
 """
     return pd.read_sql(sql, conn, parse_dates="date", params=(limit_version,))
+
 
 def concat_intro_qa(
     df_intro: pd.DataFrame | None = None, df_qa: pd.DataFrame | None = None

@@ -34,26 +34,34 @@ INTRO_COLUMNS: Dict[str, str] = {
 
 def chunk_sentiment_maker(
     model: Literal["finbert", "roberta"],
-    limit: Literal[50, 100, 150, 200, 250, 300, 350] | None = None,
+    word_limit: Literal[50, 100, 150, 200, 250, 300, 350] | None = None,
+    sample_size: int | None = None,
+    save_to_db: bool = False,
+    apply_divisor=False,
 ) -> None | pd.DataFrame:
-    if limit is not None:
+    if word_limit is not None:
         start = time.time()
-        chunked_df = return_chunks(limit)
+        chunked_df = return_chunks(word_limit)
+        if isinstance(sample_size, int):
+            chunked_df = chunked_df.sample(sample_size, random_state=42)
         chunked_df["sentiment"] = get_sentiment(list(chunked_df["chunk"]), model)
-        chunked_df["score"] = chunked_df["sentiment"].apply(calculate_sentiment)
+        chunked_df["score"] = chunked_df["sentiment"].apply(
+            calculate_sentiment, apply_divisor=apply_divisor
+        )
         chunked_df["model_id"] = 1 if model == "finbert" else 2
-        insert_sentiments(df=chunked_df)
-        print(f"LIMIT {limit} - TIME: {time.time() - start}")
+        if save_to_db:
+            insert_sentiments(df=chunked_df)
+        print(f"LIMIT {word_limit} - TIME: {time.time() - start}")
         return chunked_df
     limits = return_limits()
-    for limit in limits:
-        chunk_sentiment_maker(model, limit)
+    for word_limit in limits:
+        chunk_sentiment_maker(model, word_limit)
 
 
 if __name__ == "__main__":
     # WHOLE MAKING
     for model in MODEL_SELECTION:
-        chunk_sentiment_maker(model)
+        print(chunk_sentiment_maker(model, save_to_db=True))
     # print(return_sentiment_agg(False))
 
 # TOPIC MODELLING:

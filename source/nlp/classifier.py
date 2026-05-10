@@ -26,19 +26,29 @@ def get_sentiment(
     else:
         raise NameError(f"{model} model is not in menu.")
     classifier = pipeline(
-        "text-classification", model=model_name, token=HF_TOKEN, device="cuda"
+        "text-classification",
+        model=model_name,
+        token=HF_TOKEN,
+        device=0,
     )
-    return classifier(text, top_k=3)
+    return classifier(text, top_k=3, batch_size=256)
 
 
-def calculate_sentiment(list_of_sentiments: List[Dict[str, str | float]]) -> float:
+def calculate_sentiment(
+    list_of_sentiments: List[Dict[str, str | float]], apply_divisor=True
+) -> float:
     score: float = 0
+    divisor: float = 0
     for sentiment in list_of_sentiments:
         if any(sentiment["label"].lower() == x for x in ["positive", "hawkish"]):
             score += sentiment["score"]
+            divisor += sentiment["score"]
         elif any(sentiment["label"].lower() == x for x in ["negative", "dovish"]):
             score -= sentiment["score"]
-    return score
+            divisor += sentiment["score"]
+    if divisor < 1e-2:
+        return 0
+    return score / (divisor if apply_divisor else 1)
 
 
 ZERO_SHOT_LABELS: Dict[

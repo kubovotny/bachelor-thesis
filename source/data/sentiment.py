@@ -46,7 +46,7 @@ def return_sentiment_agg(
     with_label: bool = True,
     word_limit: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
 ):
-    data = return_sentiment(word_limit, with_topic=with_label)
+    data = return_sentiment(word_limit, with_label)
     grouping_columns: List["str"] = ["date", "part"]
     if with_label:
         grouping_columns.append("topic")
