@@ -1,23 +1,21 @@
 import pandas as pd
-from .sentiment import return_sentiment_agg_pivot
-from .market import return_market_data
+from .sentiment import return_sentiment_agg_pivot, QA_OPTIONS
+from .market import return_market_data, LIST_OF_MARKET_DATA
 from typing import Literal, List
-
-LIST_OF_MARKET_DATA = Literal[
-    "shocks_ecb_mpd_me_d.csv", "Dataset_EA-MPD.xlsx", "ECB Money Market.xlsx", "all"
-]
 
 
 def return_data(
-    with_label: bool = False,
     market_data: (
         List[LIST_OF_MARKET_DATA] | LIST_OF_MARKET_DATA
     ) = "shocks_ecb_mpd_me_d.csv",
     word_limit: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
+    IS_QA_division: bool = True,
+    qa_options: QA_OPTIONS = "just_answers",
+    with_label: bool = False,
 ) -> pd.DataFrame:
     return pd.merge(
         return_market_data(market_data),
-        return_sentiment_agg_pivot(with_label=with_label, word_limit=word_limit),
+        return_sentiment_agg_pivot(word_limit, IS_QA_division, qa_options, with_label),
         on="date",
     )
 

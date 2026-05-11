@@ -17,40 +17,45 @@ QA_COLUMNS: Dict[str, str] = {
     "max": "float64",
     "std": "float64",
 }
+QA_OPTIONS = Literal["both_divided", "both_together", "just_answers", "just_questions"]
 
 
-def label_formatter(
-    part: Literal["QA", "IS"],
-    model: Literal["finbert", "roberta"],
-    x: (
-        Literal[
-            "MONETARY_POLICY_AND_INFLATION",
-            "ECONOMIC_PERFORMANCE",
-            "FISCAL_AND_STRUCTURAL",
-            "OTHER_IRRELEVANT",
-        ]
-        | None
-    ) = None,
-) -> str:
-    if x is None:
-        return f"{model}_{part}"
-    return {
-        "MONETARY_POLICY_AND_INFLATION": f"{model}_{part}_MP",
-        "ECONOMIC_PERFORMANCE": f"{model}_{part}_EP",
-        "FISCAL_AND_STRUCTURAL": f"{model}_{part}_FS",
-        "OTHER_IRRELEVANT": f"{model}_{part}_OI",
-    }[x]
+def label_formatter(row: pd.Series, question_labelled: bool = False) -> str:
+    label_formatted = row["sentiment_model"]
+    if "part" in row.index:
+        label_formatted += f"_{row['part']}"
+        if row["part"] == "QA" and question_labelled:
+            label_formatted += f"_{'question' if row['is_question'] else 'answer'}"
+    elif question_labelled:
+        label_formatted += f"_{'question' if row['is_question'] else 'answer'}"
+    if "topic" in row.index:
+        label_formatted += (
+            "_"
+            + {
+                "MONETARY_POLICY_AND_INFLATION": "MP",
+                "ECONOMIC_PERFORMANCE": "EP",
+                "FISCAL_AND_STRUCTURAL": "FS",
+                "OTHER_IRRELEVANT": "OI",
+            }[row["topic"]]
+        )
+    return label_formatted
 
 
 def return_sentiment_agg(
     with_label: bool = True,
     word_limit: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
+    IS_QA_division: bool = True,
+    qa_division: bool = True,
 ):
-    data = return_sentiment(word_limit, with_label)
-    grouping_columns: List["str"] = ["date", "part"]
+    data = return_sentiment_chunk_data(word_limit, with_label)
+    grouping_columns: List["str"] = ["date"]
+    if IS_QA_division:
+        grouping_columns.append("part")
     if with_label:
         grouping_columns.append("topic")
-    grouping_columns += ["is_question", "sentiment_model"]
+    if qa_division:
+        grouping_columns.append("is_question")
+    grouping_columns += ["sentiment_model"]
     data_agg = data.groupby(grouping_columns).agg(
         {"score": ["min", "mean", "max", "std"]}
     )
@@ -61,26 +66,24 @@ def return_sentiment_agg(
 
 
 def return_sentiment_agg_pivot(
-    just_answers: bool = True,
-    with_label: bool = True,
     word_limit: Literal[50, 100, 150, 200, 250, 300, 350] = 200,
+    IS_QA_division: bool = True,
+    qa_options: QA_OPTIONS = "just_answers",
+    with_label: bool = True,
 ) -> pd.DataFrame:
-    agg_data = return_sentiment_agg(with_label, word_limit)
-    if with_label:
-        agg_data["label"] = agg_data[["topic", "part", "sentiment_model"]].apply(
-            (lambda x: label_formatter(x["part"], x["sentiment_model"], x["topic"])),
-            axis=1,
-        )
-    else:
-        agg_data["label"] = agg_data[["part", "sentiment_model"]].apply(
-            (lambda x: label_formatter(x["part"], x["sentiment_model"])),
-            axis=1,
-        )
-    if just_answers:
-        agg_data = agg_data[agg_data["is_question"] == False]
-        agg_data.drop(columns=["is_question"], inplace=True)
-    # Preklopíme tabuľku (pivot)
+    agg_data = return_sentiment_agg(
+        with_label, word_limit, IS_QA_division, qa_options != "both_together"
+    )
 
+    agg_data["label"] = agg_data.apply(
+        (lambda row: label_formatter(row, qa_options == "both_divided")),
+        axis=1,
+    )
+    if qa_options.startswith("just"):
+        agg_data = agg_data[agg_data["is_question"] == (qa_options == "just_questions")]
+        agg_data.drop(columns=["is_question"], inplace=True)
+
+    # Preklopíme tabuľku (pivot)
     df_pivot: pd.DataFrame = agg_data.pivot(
         index="date", columns="label", values=["max", "mean", "min", "std"]
     )
@@ -100,4 +103,11 @@ def return_sentiment_chunk_data(
 
 
 if __name__ == "__main__":
-    print(return_sentiment_agg_pivot(with_label=True))
+    print(
+        return_sentiment_agg_pivot(
+            word_limit=50,
+            with_label=False,
+            qa_options="both_together",
+            IS_QA_division=False,
+        )
+    )

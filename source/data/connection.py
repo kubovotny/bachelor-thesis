@@ -58,6 +58,11 @@ def return_limits():
     return [l[0] for l in cur.execute(sql).fetchall()]
 
 
+def return_statements():
+    sql = "SELECT rowid statement_id, * FROM statements;"
+    return pd.read_sql(sql, conn)
+
+
 def return_topic_labels(version=0):
     sql = "SELECT rowid, name, description FROM topic_labels WHERE version=?;"
     return {n: (d, r) for r, n, d in cur.execute(sql, (version,)).fetchall()}
@@ -67,9 +72,7 @@ def return_chunks(
     limit_version: Literal[50, 100, 150, 200, 250, 300, 350] | None = 200,
 ):
     if limit_version is None:
-        return pd.read_sql(
-            "SELECT rowid as chunk_rowid, * FROM chunks;", conn
-        )
+        return pd.read_sql("SELECT rowid as chunk_rowid, * FROM chunks;", conn)
     else:
         return pd.read_sql(
             "SELECT rowid as chunk_rowid, chunk FROM chunks WHERE chunk_limit=?;",
