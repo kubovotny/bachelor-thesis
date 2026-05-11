@@ -7,6 +7,8 @@ from ..data.connection import (
     return_chunks,
     return_sentiment,
     return_limits,
+    CHUNK_LIMITS
+
 )
 
 MODEL_SELECTION = ["finbert", "roberta"]
@@ -34,7 +36,7 @@ INTRO_COLUMNS: Dict[str, str] = {
 
 def chunk_sentiment_maker(
     model: Literal["finbert", "roberta"],
-    word_limit: Literal[50, 100, 150, 200, 250, 300, 350] | None = None,
+    word_limit: CHUNK_LIMITS | None = None,
     sample_size: int | None = None,
     save_to_db: bool = False,
     apply_divisor=False,
@@ -61,7 +63,7 @@ def chunk_sentiment_maker(
 if __name__ == "__main__":
     # WHOLE MAKING
     for model in MODEL_SELECTION:
-        print(chunk_sentiment_maker(model, save_to_db=True))
+        print(chunk_sentiment_maker(model, word_limit=1, save_to_db=True))
     # print(return_sentiment_agg(False))
 
 # TOPIC MODELLING:

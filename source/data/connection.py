@@ -6,7 +6,7 @@ from typing import Literal
 DATABASE = f"{DATA_DIR}/statements.db"
 conn = sqlite3.connect(DATABASE)
 cur = conn.cursor()
-
+CHUNK_LIMITS =Literal[1, 50, 100, 150, 200, 250, 300, 350]
 
 def drop_and_make_tables():
     TABLE_SCHEMA = {
@@ -69,7 +69,7 @@ def return_topic_labels(version=0):
 
 
 def return_chunks(
-    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] | None = 200,
+    limit_version: CHUNK_LIMITS | None = 200,
 ):
     if limit_version is None:
         return pd.read_sql("SELECT rowid as chunk_rowid, * FROM chunks;", conn)
@@ -82,7 +82,7 @@ def return_chunks(
 
 
 def return_sentiment(
-    limit_version: Literal[50, 100, 150, 200, 250, 300, 350] | None = 200,
+    limit_version: CHUNK_LIMITS | None = 200,
     with_topic: bool = False,
 ):
     sql = f"""SELECT DATE(st.date) date, CASE ch.part WHEN 0 THEN "IS" ELSE "QA" END part, ch.is_question=1 is_question, ch.chunk, se.score, sm.name sentiment_model\

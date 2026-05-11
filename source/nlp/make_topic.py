@@ -1,5 +1,5 @@
 from .classifier import label_paragraph, label_choose
-from ..data.connection import insert_topics, return_chunks, return_limits
+from ..data.connection import insert_topics, return_chunks, return_limits, CHUNK_LIMITS
 from ..data import partition_indices
 from typing import Literal
 import pandas as pd
@@ -7,7 +7,7 @@ import time
 
 
 def label_maker(
-    limit: Literal[50, 100, 150, 200, 250, 300, 350] | None = None,
+    limit: CHUNK_LIMITS | None = None,
 ) -> None | pd.DataFrame:
     if limit is not None:
         data = return_chunks(limit)

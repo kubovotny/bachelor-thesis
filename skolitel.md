@@ -14,3 +14,11 @@ tieňová sadzba ?
 pozrieť sa na obdobia či šum nechytám
 MRO history - s týmito dátami "overím", či moje sentimenty, poslal školiteľ na mail
 Paper - Benanni
+
+# Poznámky a úlohy zo stretnutia 11.5
+
+TODO spraviť wordcloud analýzu - nielen podľa rokov ale aj podľa sentimentu, aby sme zistili, čo sa najviac hodnotí zle / dobre
+
+TODO vypísať zoznam extra negatívnych a pozitívnych viet (oni to ťahajú najviac od neutrálu)
+
+TODO urobiť analýzu, či je lepšie rozdeľovať text alebo nie

@@ -3,7 +3,7 @@ import re
 import pandas as pd
 from typing import Dict, List
 from .. import DATA_DIR
-from ..data.connection import insert_chunks
+from ..data.connection import insert_chunks, CHUNK_LIMITS
 
 DATABASE_SAVING = False
 
@@ -81,16 +81,16 @@ def paragraphs_intro(filename: str) -> pd.DataFrame:
     return df
 
 
-def chunk_intro(filename: str, limit: int | None = None) -> pd.DataFrame:
+def chunk_intro(filename: str, limit: CHUNK_LIMITS | None = None) -> pd.DataFrame:
     df = paragraphs_intro(filename)
-    df["text"] = df["text"].apply(clean_paragraph)
+    df["text"] = df["text"].apply(clean_paragraph,limit= 100 if limit != 1 else 40)
     df = df.query("text != ''")
     if limit is None:
         limit_range = range(50, 351, 50)
     else:
         limit_range = [limit]
     for limit in limit_range:
-        df["chunk"] = df["text"].apply(process_long_paragraph, max_words=limit)
+        df["chunk"] = df["text"].apply(process_long_paragraph, max_words=limit, min_tail_words = 30 if limit != 1 else 0)
         df_w_chunked = df.explode("chunk").drop(columns=["text"])
         df_w_chunked = make_percentile(df_w_chunked)
         df_w_chunked["chunk_limit"] = limit
@@ -157,9 +157,9 @@ def paragraphs_qa(filename: str) -> pd.DataFrame:
     return df_with_qa.drop(columns="QA_processed")
 
 
-def chunk_qa(filename: str, limit: int | None = None) -> pd.DataFrame:
+def chunk_qa(filename: str, limit: CHUNK_LIMITS | None = None) -> pd.DataFrame:
     df_with_qa = paragraphs_qa(filename)
-    df_with_qa["text"] = df_with_qa["text"].apply(clean_paragraph, limit=80)
+    df_with_qa["text"] = df_with_qa["text"].apply(clean_paragraph, limit=80 if limit != 1 else 40)
     df_with_qa = df_with_qa.query("text != ''")
     # df_with_qa["len"] = df_with_qa.text.str.split(" ").str.len()
     if limit is None:
@@ -170,7 +170,7 @@ def chunk_qa(filename: str, limit: int | None = None) -> pd.DataFrame:
     for limit in limit_range:
         df_with_qa["qa_len"] = df_with_qa["text"].str.split().str.len()
         df_with_qa["chunk"] = df_with_qa["text"].apply(
-            process_long_paragraph, max_words=limit
+            process_long_paragraph, max_words=limit, min_tail_words = 30 if limit != 1 else 0
         )
         df_qa_chunked = make_percentile(
             df_with_qa.explode("chunk").drop(columns=["text"])
@@ -244,7 +244,7 @@ def check_qa():
 
 
 if __name__ == "__main__":
-    DATABASE_SAVING = False
-    chunk_intro("scraped_v2")
-    chunk_qa("scraped_v2")
+    DATABASE_SAVING = True
+    #print(chunk_intro("scraped_v2",1))
+    print(chunk_qa("scraped_v2",1))
     # q_to_a_merged("scraped_v2").to_csv(f"{STATEMENTS_DIR}/qa_paired.csv", sep="|")
