@@ -1,6 +1,6 @@
 from typing import List, Tuple, Dict
 from bs4 import BeautifulSoup
-from Scraper import get_page
+from .Scraper import get_page
 import pandas as pd
 import re
 from datetime import datetime
