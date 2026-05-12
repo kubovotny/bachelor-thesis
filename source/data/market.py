@@ -1,7 +1,8 @@
 import pandas as pd
-from typing import List, Dict, Literal
+from typing import List, Dict, Literal, Hashable
 from datetime import datetime
 from .. import DATA_DIR
+from pandas._typing import DtypeArg
 
 MPD_SHEETNAME = "Press Conference Window"
 ECB_SHEETNAME = "MM"
@@ -31,15 +32,14 @@ MPD_COLUMNS_TYPES: Dict[str, str] = {col: "float64" for col in MPD_COLUMNS[1:]}
 ECB_COLUMN_TYPES: Dict[str, str] = {col: "float64" for col in ECB_COLUMNS[1:]}
 
 CSV_COLUMNS = ["pc1", "STOXX50", "MP_pm", "CBI_pm", "MP_median", "CBI_median"]
-CSV_COLUMNS_TYPES: Dict[str, str] = {col: "float64" for col in CSV_COLUMNS}
+CSV_COLUMNS_TYPES: Dict[Hashable, DtypeArg] = {col: "float64" for col in CSV_COLUMNS}
 
 LIST_OF_MARKET_DATA = Literal[
     "shocks_ecb_mpd_me_d.csv", "Dataset_EA-MPD.xlsx", "ECB Money Market.xlsx", "all"
 ]
 
-
-def clean_date(date: str) -> datetime:
-    if type(date) is not str:
+def clean_date(date: str | datetime) -> datetime:
+    if not isinstance(date,str):
         return date
     if "/" in date:
         date = "-".join(date.split("/")[::-1])
@@ -50,7 +50,11 @@ def return_market_data(
     which: List[LIST_OF_MARKET_DATA] | LIST_OF_MARKET_DATA = "shocks_ecb_mpd_me_d.csv",
 ) -> pd.DataFrame:
     if which == "all":
-        which = ["shocks_ecb_mpd_me_d.csv", "Dataset_EA-MPD.xlsx", "ECB Money Market.xlsx"]
+        which = [
+            "shocks_ecb_mpd_me_d.csv",
+            "Dataset_EA-MPD.xlsx",
+            "ECB Money Market.xlsx",
+        ]
     if isinstance(which, list):
         market_data = return_market_data(which[0])
         for name in which[1:]:

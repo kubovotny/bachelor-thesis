@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import Literal, Dict, List
-from ..data.connection import return_sentiment, CHUNK_LIMITS
+from ..data.connection import return_sentiment, CHUNK_LIMIT_TYPE
 
 INTRO_COLUMNS: Dict[str, str] = {
     "label": "str",
@@ -43,7 +43,7 @@ def label_formatter(row: pd.Series, question_labelled: bool = False) -> str:
 
 def return_sentiment_agg(
     with_label: bool = True,
-    word_limit: CHUNK_LIMITS = 200,
+    word_limit: CHUNK_LIMIT_TYPE = 200,
     IS_QA_division: bool = True,
     qa_division: bool = True,
 ):
@@ -66,7 +66,7 @@ def return_sentiment_agg(
 
 
 def return_sentiment_agg_pivot(
-    word_limit: CHUNK_LIMITS = 200,
+    word_limit: CHUNK_LIMIT_TYPE = 200,
     IS_QA_division: bool = True,
     qa_options: QA_OPTIONS = "just_answers",
     with_label: bool = True,
@@ -96,7 +96,7 @@ def return_sentiment_agg_pivot(
 
 
 def return_sentiment_chunk_data(
-    limit_version: CHUNK_LIMITS = 200,
+    limit_version: CHUNK_LIMIT_TYPE = 200,
     with_label: bool = True,
 ) -> pd.DataFrame:
     return return_sentiment(limit_version, with_label)

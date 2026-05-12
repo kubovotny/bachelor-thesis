@@ -1,12 +1,14 @@
 import sqlite3
 import pandas as pd
 from .. import DATA_DIR, PASSWORD
-from typing import Literal
+from typing import Literal, List
 
 DATABASE = f"{DATA_DIR}/statements.db"
 conn = sqlite3.connect(DATABASE)
 cur = conn.cursor()
-CHUNK_LIMITS =Literal[1, 50, 100, 150, 200, 250, 300, 350]
+CHUNK_LIMIT_TYPE = Literal[1, 50, 100, 150, 200, 250, 300, 350]
+CHUNK_LIMITS: List[CHUNK_LIMIT_TYPE] = [1, 50, 100, 150, 200, 250, 300, 350]
+
 
 def drop_and_make_tables():
     TABLE_SCHEMA = {
@@ -69,7 +71,7 @@ def return_topic_labels(version=0):
 
 
 def return_chunks(
-    limit_version: CHUNK_LIMITS | None = 200,
+    limit_version: CHUNK_LIMIT_TYPE | None = 200,
 ):
     if limit_version is None:
         return pd.read_sql("SELECT rowid as chunk_rowid, * FROM chunks;", conn)
@@ -82,7 +84,7 @@ def return_chunks(
 
 
 def return_sentiment(
-    limit_version: CHUNK_LIMITS | None = 200,
+    limit_version: CHUNK_LIMIT_TYPE | None = 200,
     with_topic: bool = False,
 ):
     sql = f"""SELECT DATE(st.date) date, CASE ch.part WHEN 0 THEN "IS" ELSE "QA" END part, ch.is_question=1 is_question, ch.chunk, se.score, sm.name sentiment_model\
@@ -92,10 +94,13 @@ JOIN statements st ON st.rowid = ch.statement_id
 JOIN sentiment_models sm ON sm.rowid = se.model_id
 {("JOIN topics t ON t.chunk_rowid = se.chunk_rowid\n" + 
  "JOIN topic_labels tl ON tl.rowid = t.label_rowid\n" )if with_topic else ""}\
-WHERE ch.chunk_limit = ?
+{"WHERE ch.chunk_limit = ?" if limit_version is not None else ""}
 ORDER BY st.date, ch.part, ch.chunk_id;
 """
-    return pd.read_sql(sql, conn, parse_dates="date", params=(limit_version,))
+    if limit_version is not None:
+        return pd.read_sql(sql, conn, parse_dates=["date"], params=(limit_version,))
+    else:
+        return pd.read_sql(sql, conn, parse_dates=["date"])
 
 
 def concat_intro_qa(
@@ -134,7 +139,7 @@ def insert_chunks(
 
 
 def insert_sentiments(
-    model: Literal["finbert", "roberta"] = None,
+    model: Literal["finbert", "roberta"] | None = None,
     df_intro: pd.DataFrame | None = None,
     df_qa: pd.DataFrame | None = None,
     df: pd.DataFrame | None = None,

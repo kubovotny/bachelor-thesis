@@ -7,11 +7,10 @@ from ..data.connection import (
     return_chunks,
     return_sentiment,
     return_limits,
-    CHUNK_LIMITS
-
+    CHUNK_LIMIT_TYPE,
 )
 
-MODEL_SELECTION = ["finbert", "roberta"]
+MODEL_SELECTION: List[Literal["finbert", "roberta"]] = ["finbert", "roberta"]
 QA_COLUMNS: Dict[str, str] = {
     "statement_id": "int",
     "is_question": "bool",
@@ -36,7 +35,7 @@ INTRO_COLUMNS: Dict[str, str] = {
 
 def chunk_sentiment_maker(
     model: Literal["finbert", "roberta"],
-    word_limit: CHUNK_LIMITS | None = None,
+    word_limit: CHUNK_LIMIT_TYPE | None = None,
     sample_size: int | None = None,
     save_to_db: bool = False,
     apply_divisor=False,
@@ -46,7 +45,9 @@ def chunk_sentiment_maker(
         chunked_df = return_chunks(word_limit)
         if isinstance(sample_size, int):
             chunked_df = chunked_df.sample(sample_size, random_state=42)
-        chunked_df["sentiment"] = get_sentiment(list(chunked_df["chunk"]), model)
+        chunked_df["sentiment"] = pd.Series(
+            get_sentiment(list(chunked_df["chunk"]), model)
+        ).to_list()
         chunked_df["score"] = chunked_df["sentiment"].apply(
             calculate_sentiment, apply_divisor=apply_divisor
         )
@@ -62,8 +63,12 @@ def chunk_sentiment_maker(
 
 if __name__ == "__main__":
     # WHOLE MAKING
-    for model in MODEL_SELECTION:
-        print(chunk_sentiment_maker(model, word_limit=1, save_to_db=True))
+    # for model in MODEL_SELECTION:
+    print(
+        chunk_sentiment_maker(
+            MODEL_SELECTION[0], word_limit=100, save_to_db=False, sample_size=10
+        )
+    )
     # print(return_sentiment_agg(False))
 
 # TOPIC MODELLING:

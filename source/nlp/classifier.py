@@ -1,9 +1,14 @@
-from transformers import pipeline, TextClassificationPipeline
+from transformers import (
+    pipeline,
+    TextClassificationPipeline,
+    ZeroShotClassificationPipeline,
+)
 from typing import List, Dict, Any, Literal
 from huggingface_hub import login
 import os
 from ..data.connection import return_topic_labels
 import torch
+import pandas as pd
 
 HF_TOKEN = os.environ["HF_TOKEN"]
 login(token=HF_TOKEN)
@@ -18,8 +23,8 @@ MODELS: Dict[Literal["finbert", "roberta"], str] = {
 
 
 def get_sentiment(
-    text: List[str | float] | str, model: Literal["finbert", "roberta"] = "finbert"
-) -> List[Dict[str, Any]]:
+    text: List[str] | str, model: Literal["finbert", "roberta"] = "finbert"
+) -> List[Dict[str, str | float]] | List[List[Dict[str, str | float]]]:
     global classifier
     if model in MODELS:
         model_name = MODELS[model]
@@ -35,17 +40,17 @@ def get_sentiment(
 
 
 def calculate_sentiment(
-    list_of_sentiments: List[Dict[str, str | float]], apply_divisor=True
+    list_of_sentiments: List[Dict[str, str | float]], apply_divisor=False
 ) -> float:
     score: float = 0
     divisor: float = 0
     for sentiment in list_of_sentiments:
-        if any(sentiment["label"].lower() == x for x in ["positive", "hawkish"]):
-            score += sentiment["score"]
-            divisor += sentiment["score"]
-        elif any(sentiment["label"].lower() == x for x in ["negative", "dovish"]):
-            score -= sentiment["score"]
-            divisor += sentiment["score"]
+        if any(str(sentiment["label"]).lower() == x for x in ["positive", "hawkish"]):
+            score += float(sentiment["score"])
+            divisor += float(sentiment["score"])
+        elif any(str(sentiment["label"]).lower() == x for x in ["negative", "dovish"]):
+            score -= float(sentiment["score"])
+            divisor += float(sentiment["score"])
     if divisor < 1e-2:
         return 0
     return score / (divisor if apply_divisor else 1)
@@ -89,12 +94,11 @@ ZERO_SHOT_DESC2LABEL: Dict[
         int,
     ],
 ] = inverse_dict(ZERO_SHOT_LABELS)
-topic_classifier: TextClassificationPipeline | None = None
+topic_classifier: ZeroShotClassificationPipeline | None = None
 
 
-def label_paragraph(text: str | List[str]) -> List[Dict[str, float | str]]:
+def label_paragraph(text: str | List[str]) -> List[Dict[str, List[str | float] | str]]:
     global topic_classifier
-
     # Zabezpečíme, aby text bol list, kvôli tqdm a batchingu
     if isinstance(text, str):
         text = [text]
@@ -121,7 +125,7 @@ def label_paragraph(text: str | List[str]) -> List[Dict[str, float | str]]:
 
 
 def label_choose(
-    sequence: str = None, labels: list[str] = [], scores: list[float] = []
+    sequence: str | None = None, labels: list[str] = [], scores: list[float] = []
 ) -> str:
     return f"{ZERO_SHOT_DESC2LABEL[labels[0]][1]},{scores[0]}"
 
@@ -133,7 +137,7 @@ if __name__ == "__main__":
 
     start = time.time()
     data = pd.read_csv(f"{DATA_DIR}/scraped_v2.psv").sample(500, random_state=42)
-    data["result"] = label_paragraph(data["chunk"].to_list())
+    data["result"] = pd.Series(label_paragraph(data["chunk"].to_list())).to_list()
     data["topic"] = data["result"].apply(lambda x: ZERO_SHOT_DESC2LABEL[x["labels"][0]])
     data["prob"] = data["result"].apply(lambda x: x["scores"][0])
     end = time.time()
