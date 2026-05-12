@@ -91,7 +91,7 @@ use a pipeline that reduces noise, considers limitations of models and adds meta
 
 The output of this pipeline is split into two specialized datasets that describe the \gls{is} and \gls{qa} components. The pipeline identifies themes
 through topic modelling. Moreover, it measures the emotional tone of each observation via sentiment analysis. Unique identifiers are used to track
-the~original order of segments. This maintains the chronological and contextual integrity of the discourse. Binary classification
+the~original order of segments. This sustains the chronological and contextual integrity of the discourse. Binary classification
 is applied to the \gls{qa} dataset to separate journalistic inquiries from official responses. This ensures the analysis focuses on signals from
 \gls{ecb} officials.
 
@@ -150,7 +150,7 @@ which compares the word count distribution before and after the transformation.
 \subsection{Zero-Shot Topic Classification}
 While the segments are now technically structured, they remain unlabelled raw text. To transform these strings into meaningful predictors, we must
 categorize them based on their thematic content. We considered several approaches to this task. Traditional Dictionary-based (Bag-of-Words) methods
-were dismissed due to their inability to capture context, such as negations or complex sentence structures. Furthermore, training a custom Topic
+were dismissed due to their inability to capture context, such as negations or complex sentence patterns. Furthermore, training a custom Topic
 modelling transformer on annotated data was not feasible given the project’s time constraints and the lack of a pre-labelled domain-specific dataset.
 
 Consequently, we decided to implement Zero-Shot Classification. This approach allows for the classification of text into prescribed categories without
