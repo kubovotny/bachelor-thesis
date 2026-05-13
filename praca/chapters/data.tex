@@ -1,15 +1,8 @@
 \chapter{Data and Methodology}
-This chapter outlines the~data collection framework and the~implementation of NLP and Machine Learning. The~empirical foundation of this methodology
-rests upon data scraping and preprocessing.
+This chapter outlines the~data collection framework and the~implementation of NLP and Machine Learning. The~empirical foundation of this methodology rests upon data scraping and preprocessing.
 
 \section{Data Scraping and Preprocessing}
-Datasets of \gls{ecb} communications are publicly available. Nonetheless, for fine-grained sentiment analysis, they lack the~neccessary level of
-detail. Moreover, most sources provide uniform text blocks without distinguishing between the~\gls{is} and \gls{qa} components. Our decision to
-develop a~custom scraping pipeline was driven by the~need to isolate the~responses of \gls{ecb} officials from the~questions posed by journalists.
-This allowed for a~more precise extraction of \gls{mp} signals, which are free from the~sentiment bias caused by journalistic questioning. The~first
-phase focuses on the~preparation of a dataset of transcripts from \gls{gc} conferences. This preparation is divided into two primary tasks. The~first
-task involves the~retrieval of hyperlinks to scrape webpages, while the~second focuses on parsing the~content into two logical segments and storing
-these parts in a~robust, structured format.
+Datasets of \gls{ecb} communications are publicly available. Nonetheless, for fine-grained sentiment analysis, they lack the~neccessary level of detail. Moreover, most sources provide uniform text blocks without distinguishing between the~\gls{is} and \gls{qa} components. Our decision to develop a~custom scraping pipeline was driven by the~need to isolate the~responses of \gls{ecb} officials from the~questions posed by journalists. This allowed for a~more precise extraction of \gls{mp} signals, which are free from the~sentiment bias caused by journalistic questioning. The~first phase focuses on the~preparation of a dataset of transcripts from \gls{gc} conferences. This preparation is divided into two primary tasks. The~first task involves the~retrieval of hyperlinks to scrape webpages, while the~second focuses on parsing the~content into two logical segments and storing these parts in a~robust, structured format.
 
 % Samotný diagram
 \begin{figure}[ht]
@@ -41,35 +34,16 @@ these parts in a~robust, structured format.
 
 \subsection{Iterative Extraction of ECB Discourse}
 
-Before the~text extraction from the~transcript of the~press conference, the~acquisition of the~hyperlink list was required. The~entire acquisition
-pipeline is visualized in Figure \ref{fig:data_pipeline_snake}. To acquire a complete list of meeting URLs, the~\textit{HTML} source of the~official
-\href{https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/html/index.en.html}{ECB monetary policy statement list} was analyzed.
-The~primary index page is interactive and necessitates scrolling to load every hyperlink. Therefore, we needed the~implementation of
-a~\textit{Selenium WebDriver} for browser automation. However, we discovered a more algorithmically efficient alternative. We managed to retrieve
-the~backend structure with year-specific placeholders: \nolinkurl{https:// www.ecb.europa.eu/press/press\_conference/monetary-policy-statement/{year}/
-html/index\_include.en.html}. Hence, we applied the~iterative loop across all relevant years. This streamlines the~hypertext link extraction process
-by avoiding browser interactions. This process, spanning from the~\gls{ecb}'s establishment to the~present, yielded a total of $291$ unique
-transcripts.
+Before the~text extraction from the~transcript of the~press conference, the~acquisition of the~hyperlink list was required. The~entire acquisition pipeline is visualized in Figure \ref{fig:data_pipeline_snake}. To acquire a complete list of meeting URLs, the~\textit{HTML} source of the~official \href{https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/html/index.en.html}{ECB monetary policy statement list} was analyzed. The~primary index page is interactive and necessitates scrolling to load every hyperlink. Therefore, we needed the~implementation of a~\textit{Selenium WebDriver} for browser automation. However, we discovered a more algorithmically efficient alternative. We managed to retrieve the~backend structure with year-specific placeholders: \nolinkurl{https:// www.ecb.europa.eu/press/press\_conference/monetary-policy-statement/{year}/ html/index\_include.en.html}. Hence, we applied the~iterative loop across all relevant years. This streamlines the~hypertext link extraction process by avoiding browser interactions. This process, spanning from the~\gls{ecb}'s establishment to the~present, yielded a total of $291$ unique transcripts.
 
 \subsection{Content Parsing and Data Structuring}
 
 The~link provides access to the~\gls{mps}, which is described in greater detail in Section \ref{subsection:mps}. Text extraction from the~\gls{mps}
-encountered visually organized yet, within the~underlying \textit{HTML} hierarchy, unsystematic \textit{HTML} code. We had to address an itemized
-list, which protrudes from the~main section; paragraphs and headings, which are enumerated below. Furthermore, the~\gls{qa} section is not separated
-from the~ introductory statement by any \textit{HTML} tag. Consequently, the~heuristic approach, combining conditional logic with regular expressions,
-executes the~bifurcation of the~document into logical parts.
+encountered visually organized yet, within the~underlying \textit{HTML} hierarchy, unsystematic \textit{HTML} code. We had to address an itemized list, which protrudes from the~main section; paragraphs and headings, which are enumerated below. Furthermore, the~\gls{qa} section is not separated from the~ introductory statement by any \textit{HTML} tag. Consequently, the~heuristic approach, combining conditional logic with regular expressions, executes the~bifurcation of the~document into logical parts.
 
-Both parts are segmented into paragraphs, with each paragraph designed to address a single subject. Consequently, the~paragraph functions as an~atomic
-component. Therefore, questions and answers do not coexist in the~same paragraph in the~\gls{qa} section. For this reason \textit{HTML} content is
-parsed and stored in a Pipe-Separated Values (PSV) file. This format was specifically chosen to prevent delimiter collisions with the~punctuation
-utilized by the~\gls{ecb} discourse. The~resulting dataset consists of five primary features: \textbf{statement\_id} (unique identifier),
-\textbf{date}, \textbf{url}, \textbf{intro} (the~prepared introductory statement), and \textbf{qa} (the~unscripted dialogue).
+Both parts are segmented into paragraphs, with each paragraph designed to address a single subject. Consequently, the~paragraph functions as an~atomic component. Therefore, questions and answers do not coexist in the~same paragraph in the~\gls{qa} section. For this reason \textit{HTML} content is parsed and stored in a Pipe-Separated Values (PSV) file. This format was specifically chosen to prevent delimiter collisions with the~punctuation utilized by the~\gls{ecb} discourse. The~resulting dataset consists of five primary features: \textbf{statement\_id} (unique identifier), \textbf{date}, \textbf{url}, \textbf{intro} (the~prepared introductory statement), and \textbf{qa} (the~unscripted dialogue).
 
-To preserve the~internal structure of the~paragraphs, both \textit{intro} and \textit{qa} columns are tab-delimited for paragraph separation.
-The~column containing the~\gls{qa} segment has an~extra feature: square brackets to maintain italic or bold style. These styles are utilized in
-the~\gls{qa} section to distinguish a~journalist's question and a~president's answer. As visualized in Figure \ref{fig:qa.styling}, questions are bold
-or italic, while answers are plain text. However, this structure is not universally applied; certain \gls{qa} segments are instead prefixed with
-identifiers such as \{question:\} or the~speaker's name, followed by unformatted text.
+To preserve the~internal structure of the~paragraphs, both \textit{intro} and \textit{qa} columns are tab-delimited for paragraph separation. The~column containing the~\gls{qa} segment has an~extra feature: square brackets to maintain italic or bold style. These styles are utilized in the~\gls{qa} section to distinguish a~journalist's question and a~president's answer. As visualized in Figure \ref{fig:qa.styling}, questions are bold or italic, while answers are plain text. However, this structure is not universally applied; certain \gls{qa} segments are instead prefixed with identifiers such as \{question:\} or the~speaker's name, followed by unformatted text.
 
 \begin{figure}[ht]
     \centering
@@ -85,26 +59,17 @@ identifiers such as \{question:\} or the~speaker's name, followed by unformatted
 TODO market description with plotting the data behaviour
 
 \section{Quantifying Central Bank Communications}
-The transition from qualitative narratives to quantitative market predictors requires a systematic transformation of the raw textual data. This stage
-of the methodology is concerned with the transformation of the previous structured base dataset into a more refined analytical collection. For this we
-use a pipeline that reduces noise, considers limitations of models and adds metadata to the text.
+The transition from qualitative narratives to quantitative market predictors requires a systematic transformation of the raw textual data. This stage of the methodology is concerned with the transformation of the previous structured base dataset into a more refined analytical collection. For this we use a pipeline that reduces noise, considers limitations of models and adds metadata to the text.
 
-The output of this pipeline is split into two specialized datasets that describe the \gls{is} and \gls{qa} components. The pipeline identifies themes
-through topic modelling. Moreover, it measures the emotional tone of each observation via sentiment analysis. Unique identifiers are used to track
-the~original order of segments. This sustains the chronological and contextual integrity of the discourse. Binary classification
-is applied to the \gls{qa} dataset to separate journalistic inquiries from official responses. This ensures the analysis focuses on signals from
-\gls{ecb} officials.
+The output of this pipeline is split into two specialized datasets that describe the \gls{is} and \gls{qa} components. The pipeline identifies themes through topic modelling. Moreover, it measures the emotional tone of each observation via sentiment analysis. Unique identifiers are used to track the~original order of segments. This sustains the chronological and contextual integrity of the discourse. Binary classification is applied to the \gls{qa} dataset to separate journalistic inquiries from official responses. This ensures the analysis focuses on signals from\gls{ecb} officials.
 
 \subsection{Text Segmentation and Contextual Windowing}
 
-Further analysis requires strict rules, which enhance model behavior. By analyzing lengths and list of the smallest paragraphs, we set the minimum
-length of a paragraph to $100$ characters. In this list, we observed redundant paragraphs, examples of which are provided in Table\ref{tab:redundant}.
-These passages are contextually sparse for transformers to identify the sentiment or the topic. Moreover, they do not hold valuable information for
-the~market audience.
+Further analysis requires strict rules, which enhance model behavior. By analyzing lengths and list of the smallest paragraphs, we set the minimum length of a paragraph to $100$ characters. In this list, we observed redundant paragraphs, examples of which are provided in Table\ref{tab:redundant}. These passages are contextually sparse for transformers to identify the sentiment or the topic. Moreover, they do not hold valuable information for the~market audience.
 
 \begin{table}[ht]
     \centering
-TODO doplniť reálne veci do tabuľky
+    TODO doplniť reálne veci do tabuľky
     % v tabulke sa popis zvykne davat nad tabulku
     \caption{Illustrative examples of noisy paragraphs excluded from the dataset.}
     %id tabulky
@@ -119,24 +84,11 @@ TODO doplniť reálne veci do tabuľky
     \end{tabular}
 \end{table}
 
-Apart from this noise reduction, paragraph lengths often reach a transformer’s token constraint, which is $512$ tokens per input for BERT-based models,
-including FinBERT and CentralBankRoBERTa. To address this, long paragraphs are processed into segments with an upper bound of $200$ words. This
-processing starts by partitioning passages into sentences using the \textit{nltk.tokenize} library, which handles abbreviations and punctuation more
-robustly than simple splitting rules. The~preservation of full sentences is necessary for the model's correct insight into the context and syntactical
-structure of the passage.
+Apart from this noise reduction, paragraph lengths often reach a transformer’s token constraint, which is $512$ tokens per input for BERT-based models, including FinBERT and CentralBankRoBERTa. To address this, long paragraphs are processed into segments with an upper bound of $200$ words. This processing starts by partitioning passages into sentences using the \textit{nltk.tokenize} library, which handles abbreviations and punctuation more robustly than simple splitting rules. The~preservation of full sentences is necessary for the model's correct insight into the context and syntactical structure of the passage.
 
-Our implementation follows an iterative approach where sentences are merged into a~segment until the~addition of the~next sentence would exceed
-the~maximum size. At that point, the segment is closed, and a new one is formed. Finally, for the remaining text, we examine the length of the last
-segment of each paragraph. If this segment contains fewer than $30$ words, it is appended to the preceding segment rather than being treated as
-an~independent input. This ensures that every segment processed by the model contains sufficient semantic density, while the combined length remains
-safely within the transformer's token limitations.
+Our implementation follows an iterative approach where sentences are merged into a~segment until the~addition of the~next sentence would exceed the~maximum size. At that point, the segment is closed, and a new one is formed. Finally, for the remaining text, we examine the length of the last segment of each paragraph. If this segment contains fewer than $30$ words, it is appended to the preceding segment rather than being treated as an~independent input. This ensures that every segment processed by the model contains sufficient semantic density, while the combined length remains safely within the transformer's token limitations.
 
-Short paragraphs (that is, longer than $100$ characters but shortetr than $30$ words) are maintained as independent segments. While shorter inputs may
-provide less context, their semantic integrity as independent statements or questions is considered more important for the analysis than fulfilling
-a~word-count target. Finally, to ensure traceability, each segment retains the metadata of its parent paragraph, including the date, speaker identity,
-and section type (\gls{is}vs. \gls{qa}). This structure prevents the ``dilution'' of sentiment scores that occurs in excessively long text blocks and
-ensures that no segment istruncated. The effectiveness of this segmentation and merging strategy is illustrated in Figure \ref{fig:distribution},
-which compares the word count distribution before and after the transformation.
+Short paragraphs (that is, longer than $100$ characters but shortetr than $30$ words) are maintained as independent segments. While shorter inputs may provide less context, their semantic integrity as independent statements or questions is considered more important for the analysis than fulfilling a~word-count target. Finally, to ensure traceability, each segment retains the metadata of its parent paragraph, including the date, speaker identity, and section type (\gls{is}vs. \gls{qa}). This structure prevents the ``dilution'' of sentiment scores that occurs in excessively long text blocks and ensures that no segment istruncated. The effectiveness of this segmentation and merging strategy is illustrated in Figure \ref{fig:distribution}, which compares the word count distribution before and after the transformation.
 
 \begin{figure}[ht]
     \centering
@@ -148,21 +100,11 @@ which compares the word count distribution before and after the transformation.
 \end{figure}
 
 \subsection{Zero-Shot Topic Classification}
-While the segments are now technically structured, they remain unlabelled raw text. To transform these strings into meaningful predictors, we must
-categorize them based on their thematic content. We considered several approaches to this task. Traditional Dictionary-based (Bag-of-Words) methods
-were dismissed due to their inability to capture context, such as negations or complex sentence patterns. Furthermore, training a custom Topic
-modelling transformer on annotated data was not feasible given the project’s time constraints and the lack of a pre-labelled domain-specific dataset.
+While the segments are now technically structured, they remain unlabelled raw text. To transform these strings into meaningful predictors, we must categorize them based on their thematic content. We considered several approaches to this task. Traditional Dictionary-based (Bag-of-Words) methods were dismissed due to their inability to capture context, such as negations or complex sentence patterns. Furthermore, training a custom Topic modelling transformer on annotated data was not feasible given the project’s time constraints and the lack of a pre-labelled domain-specific dataset.
 
-Consequently, we decided to implement Zero-Shot Classification. This approach allows for the classification of text into prescribed categories without
-requiring  explicit training on those specific labels. After reviewing current state-of-the-art models, we selected the
-\textit{facebook/bart-large-mnli} model. This model is particularly suitable for our use case. Thus, it is pre-trained on Natural Language Inference
-(NLI) tasks. Further, it enables treating thematic labels as hypotheses to be tested against the text segments.
+Consequently, we decided to implement Zero-Shot Classification. This approach allows for the classification of text into prescribed categories without requiring  explicit training on those specific labels. After reviewing current state-of-the-art models, we selected the \textit{facebook/bart-large-mnli} model. This model is particularly suitable for our use case. Thus, it is pre-trained on Natural Language Inference (NLI) tasks. Further, it enables treating thematic labels as hypotheses to be tested against the text segments.
 
-We also started with a list of ten detailed topics. This turned out to be a mistake, because the model suffered from a sort of decision paralysis
-(much like a human struggling to choose from a massive menu). It became indecisive and ended up dumping almost everything into a broad ``Risk
-Assessment'' category. To fix this, we radically simplified the taxonomy to four core themes and replaced the short titles with descriptive hypothesis
-strings. By narrowing the choices and enriching the context of each label, we forced the model to be more certain. The final set of labels and their
-descriptive strings are detailed in Table \ref{tab:labels}.
+We also started with a list of ten detailed topics. This turned out to be a mistake, because the model suffered from a sort of decision paralysis (much like a human struggling to choose from a massive menu). It became indecisive and ended up dumping almost everything into a broad ``Risk Assessment'' category. To fix this, we radically simplified the taxonomy to four core themes and replaced the short titles with descriptive hypothesis strings. By narrowing the choices and enriching the context of each label, we forced the model to be more certain. The final set of labels and their descriptive strings are detailed in Table \ref{tab:labels}.
 \begin{table}[ht]
     \centering
     \caption{Thematic labels and descriptive strings for Zero-Shot Classification}
@@ -180,41 +122,25 @@ descriptive strings are detailed in Table \ref{tab:labels}.
     \end{tabular}
 \end{table}
 
-The ``Other'' category is our final filter. It catches thematic noise. This noise includes politeness and procedural talk that doesn't actually move
-markets. By isolating these, we can later test if stripping away the fluff actually sharpens our sentiment-based market predictions.
+The ``Other'' category is our final filter. It catches thematic noise. This noise includes politeness and procedural talk that doesn't actually move markets. By isolating these, we can later test if stripping away the fluff actually sharpens our sentiment-based market predictions.
 
 \subsection{Multi-Model Sentiment Extraction}
-Once the segments are labeled, the next step involves extracting the actual emotional tone (the sentiment) from the text. We decided not to rely on
-just one algorithm. Different models can pick up on different nuances. Instead, we use a two models paralleling approach (FinBERT and
-CentralBankRoBERTa) to evaluate every chunk in both the \gls{is} and \gls{qa} datasets.
+Once the segments are labeled, the next step involves extracting the actual emotional tone (the sentiment) from the text. We decided not to rely on just one algorithm. Different models can pick up on different nuances. Instead, we use a two models paralleling approach (FinBERT and CentralBankRoBERTa) to evaluate every chunk in both the \gls{is} and \gls{qa} datasets.
 
-The choice of these two models is intentional. FinBERT is the industry standard for general financial text. Whereas CentralBankRoBERTa is specifically
-tuned to recognize the unique language of central bankers. It understands categories like ``Hawkish'' (signaling tighter policy) and ``Dovish'' (signaling
-looser policy), which are far more useful for our analysis than simple positive or negative labels. For both models, we calculate a net sentiment
-score for each chunk using the following formula:
+The choice of these two models is intentional. FinBERT is the industry standard for general financial text. Whereas CentralBankRoBERTa is specifically tuned to recognize the unique language of central bankers. It understands categories like ``Hawkish'' (signaling tighter policy) and ``Dovish'' (signaling looser policy), which are far more useful for our analysis than simple positive or negative labels. For both models, we calculate a net sentiment score for each chunk using the following formula:
 
 \begin{equation}
     Score = P_{positive/hawkish} - P_{negative/dovish}
 \end{equation}
 
 In this setup, neutral sentences are assigned a value of zero. This is a premeditated choice, because neutral segments effectively act as a ``diluent''
-that reduces the overall intensity of the signal. If a press conference is filled with neutral filler text, the final score should naturally gravitate
-toward zero.
+that reduces the overall intensity of the signal. If a press conference is filled with neutral filler text, the final score should naturally gravitate toward zero.
 
-Instead of just looking at the average sentiment, we calculate a whole suite of metrics for the entire \gls{is} and \gls{qa} components separately.
-These include the mean, minimum, maximum, and the standard deviation of the scores. Our logic is that financial markets don't always react to the
-average tone. Sometimes, a single extreme statement (the maximum or minimum) can move the needle more than the rest of the speech combined. The
-standard deviation also helps us see if the ECB's message was consistent or if it fluctuated wildly during the session.
+Instead of just looking at the average sentiment, we calculate a whole suite of metrics for the entire \gls{is} and \gls{qa} components separately. These include the mean, minimum, maximum, and the standard deviation of the scores. Our logic is that financial markets don't always react to the average tone. Sometimes, a single extreme statement (the maximum or minimum) can move the needle more than the rest of the speech combined. The standard deviation also helps us see if the ECB's message was consistent or if it fluctuated wildly during the session.
 
-Finally, we produce two distinct outputs for our empirical model. The first is a ``general'' sentiment, which looks at the text as a whole without any
-filters. The second is a ``labeled'' sentiment, where we weight the scores based on the topics identified in the previous step. This allows us to test
-a key hypothesis: does the market care more about the sentiment regarding inflation than, for example, the sentiment regarding general economic
-growth?
+Finally, we produce two distinct outputs for our empirical model. The first is a ``general'' sentiment, which looks at the text as a whole without any filters. The second is a ``labeled'' sentiment, where we weight the scores based on the topics identified in the previous step. This allows us to test a key hypothesis: does the market care more about the sentiment regarding inflation than, for example, the sentiment regarding general economic growth?
 
-To demonstrate how these models process the ECB's language in practice, we provide a few illustrative examples in Table \ref{tab:sentiment_examples}.
-These segments show how FinBERT and CentralBankRoBERTa assign different weights to the same sentence, which justifies our choice to use both. For
-instance, a sentence about stagnant growth might be seen as purely ``Negative'' by FinBERT, while CentralBankRoBERTa might interpret it as
-a ``Dovish'' signal for future interest rates.
+To demonstrate how these models process the ECB's language in practice, we provide a few illustrative examples in Table \ref{tab:sentiment_examples}. These segments show how FinBERT and CentralBankRoBERTa assign different weights to the same sentence, which justifies our choice to use both. For instance, a sentence about stagnant growth might be seen as purely ``Negative'' by FinBERT, while CentralBankRoBERTa might interpret it as a ``Dovish'' signal for future interest rates.
 
 \begin{table}[ht]
     \centering
@@ -223,9 +149,9 @@ a ``Dovish'' signal for future interest rates.
     \begin{tabular}{@{}lp{7cm}cc@{}}
         \toprule
         \textbf{Source} & \textbf{Text Segment (Sample)}                             & \textbf{FinBERT} & \textbf{RoBERTa} \\ \midrule
-        IS              & ``Inflation is expected to remain too high for too long.'' & 0.12             & 0.88 \\ \addlinespace
-        Q\&A            & ``Economic activity has stagnated in recent quarters.''    & -0.75            & -0.42 \\ \addlinespace
-        IS              & ``We will continue to follow a data-dependent approach.''  & 0.00             & 0.05 \\ \bottomrule
+        IS              & ``Inflation is expected to remain too high for too long.'' & 0.12             & 0.88             \\ \addlinespace
+        Q\&A            & ``Economic activity has stagnated in recent quarters.''    & -0.75            & -0.42            \\ \addlinespace
+        IS              & ``We will continue to follow a data-dependent approach.''  & 0.00             & 0.05             \\ \bottomrule
     \end{tabular}
 \end{table}
 

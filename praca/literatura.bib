@@ -3,19 +3,45 @@
 	# "\newcommand{\singleletter}[1]{#1} "
 	# "\newcommand{\switchargs}[2]{#2#1} " }
 
-@techreport{NBERw11898,
-  title       = {Central Bank Communication and Policy Effectiveness},
-  author      = {Woodford, Michael},
-  institution = {National Bureau of Economic Research},
-  type        = {Working Paper},
-  series      = {Working Paper Series},
-  number      = {11898},
-  year        = {2005},
-  month       = {December},
-  doi         = {10.3386/w11898},
-  url         = {http://www.nber.org/papers/w11898}
+@article{altavilla2019measuring,
+  author  = {Altavilla, Carlo and Brugnolini, Luca and G{\"u}rkaynak, Refet S. and Motto, Roberto and Ragusa, Giuseppe},
+  title   = {Measuring euro area monetary policy},
+  journal = {Journal of Monetary Economics},
+  volume  = {108},
+  pages   = {162--179},
+  year    = {2019},
+  doi     = {10.1016/j.jmoneco.2019.08.016}
 }
-@techreport{blinder2008central,
+@article{araci2019finbert,
+  title   = {Finbert: Financial sentiment analysis with pre-trained language models},
+  author  = {Araci, Dogu},
+  journal = {arXiv preprint arXiv:1908.10063},
+  year    = {2019}
+}
+
+@techreport{BIS_WP1215_2024,
+  author      = {Gambacorta, Leonardo and Kwon, Byeungchun and Park, Taejin and Patelli, Pietro and Zhu, Sonya},
+  title       = {CB-LMs: language models for central bankin},
+  institution = {Bank for International Settlements},
+  type        = {BIS Working Papers},
+  number      = {1215},
+  year        = {2024},
+  month       = {October},
+  url         = {https://www.bis.org/publ/work1215.htm},
+  urldate     = {2026-02-27}
+}
+
+@article{blei2003latent,
+  author  = {Blei, David M. and Ng, Andrew Y. and Jordan, Michael I.},
+  title   = {Latent {Dirichlet} Allocation},
+  journal = {Journal of Machine Learning Research},
+  volume  = {3},
+  number  = {Jan},
+  pages   = {993--1022},
+  year    = {2003}
+}
+
+ @techreport{blinder2008central,
   title       = {Central Bank Communication and Monetary Policy: A Survey of Theory and Evidence},
   author      = {Blinder, Alan S and Ehrmann, Michael and Fratzscher, Marcel and de Haan, Jakob and Jansen, David-Jan},
   year        = {2008},
@@ -24,6 +50,17 @@
   number      = {898},
   month       = {May},
   url         = {https://ssrn.com/abstract=1120764}
+}
+
+@article{CorbisieroLawton2021,
+  author  = {Corbisiero, Giuseppe and Lawton, Zita},
+  title   = {The {ECB} review of its monetary policy strategy},
+  journal = {Central Bank of Ireland Quarterly Bulletin},
+  year    = {2021},
+  number  = {4},
+  volume  = {2021},
+  pages   = {26--27},
+  url     = {https://www.centralbank.ie/docs/default-source/publications/quarterly-bulletins/quarterly-bulletin-signed-articles/the-ecb-review-of-its-monetary-policy-strategy-(corbisiero-and-lawton).pdf}
 }
 
 @article{daly2025dynamic,
@@ -39,28 +76,13 @@
   publisher = {Federal Reserve Bank of San Francisco}
 }
 
-@inproceedings{filardo2008transparency,
-  title     = {Transparency and communication in monetary policy: a survey of Asian central banks},
-  author    = {Filardo, Andrew and Guinigundo, Diwa},
-  booktitle = {BSP-BIS High-Level Conference on Transparency and Communication in Monetary Policy, Manila},
-  volume    = {1},
-  year      = {2008}
-}
-
- @misc{ITC_ECB_Schedule,
-  author       = {{InTouch Capital Markets}},
-  title        = {European Central Bank ({ECB}) Meeting Schedule},
-  howpublished = {\url{https://www.itcmarkets.com/european-central-bank-ecb-meeting-schedule/}},
-  year         = {2024},
-  note         = {Accessed: 2026-02-25}
-}
-
-@misc{ECB2022_NewTimes,
+@misc{ECB_Statement_Oct2025,
   author       = {{European Central Bank}},
-  title        = {New times for {ECB}'s monetary policy decisions and press conference},
-  howpublished = {Press Release, 27 June},
-  year         = {2022},
-  note         = {\url{https://www.ecb.europa.eu/press/pr/date/2022/html/ecb.pr220627~73acedf868.en.html} [Accessed: 2026-02-25]}
+  title        = {Monetary Policy Statement (with {Q\&A}): {Christine Lagarde}, {President} of the {ECB}, {Luis de Guindos}, {Vice-President} of the {ECB}},
+  howpublished = {\url{https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/2025/html/ecb.is251030~4f74dde15e.en.html}},
+  year         = {2025},
+  month        = {October 30},
+  note         = {[Accessed: 2025-12-15]}
 }
 
 @techreport{ECB_WP2742,
@@ -73,13 +95,38 @@
   url         = {https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2742~d05e72b213.en.pdf}
 }
 
-@misc{ECB_Statement_Oct2025,
+@misc{ECB2022_NewTimes,
   author       = {{European Central Bank}},
-  title        = {Monetary Policy Statement (with {Q\&A}): {Christine Lagarde}, {President} of the {ECB}, {Luis de Guindos}, {Vice-President} of the {ECB}},
-  howpublished = {\url{https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/2025/html/ecb.is251030~4f74dde15e.en.html}},
+  title        = {New times for {ECB}'s monetary policy decisions and press conference},
+  howpublished = {Press Release, 27 June},
+  year         = {2022},
+  note         = {\url{https://www.ecb.europa.eu/press/pr/date/2022/html/ecb.pr220627~73acedf868.en.html} [Accessed: 2026-02-25]}
+}
+
+@inproceedings{filardo2008transparency,
+  title     = {Transparency and communication in monetary policy: a survey of Asian central banks},
+  author    = {Filardo, Andrew and Guinigundo, Diwa},
+  booktitle = {BSP-BIS High-Level Conference on Transparency and Communication in Monetary Policy, Manila},
+  volume    = {1},
+  year      = {2008}
+}
+
+  @article{gentzkow2019text,
+  title   = {Text as data},
+  author  = {Gentzkow, Matthew and Kelly, Bryan and Taddy, Matt},
+  journal = {Journal of Economic Literature},
+  volume  = {57},
+  number  = {3},
+  pages   = {535--74},
+  year    = {2019}
+}
+
+@misc{IBM_IE_2025,
+  author       = {{IBM}},
+  title        = {What is Information Extraction?},
+  howpublished = {\url{https://www.ibm.com/think/topics/information-extraction}},
   year         = {2025},
-  month        = {October 30},
-  note         = {[Accessed: 2025-12-15]}
+  note         = {Accessed: 2026-02-28}
 }
 
 @techreport{Istrefi2021ECB,
@@ -93,123 +140,13 @@
   url         = {https://www.banque-france.fr/system/files/2025-05/WP859_0.pdf}
 }
 
-@misc{press_to_speeches,
-  author = {{European Central Bank}},
-  title  = {From press conferences to speeches: the impact of the {ECB}'s monetary policy communication},
-  url    = {https://www.ecb.europa.eu/press/economic-bulletin/focus/2025/html/ecb.ebbox202501_07~c37ab82e06.en.html},
-  note   = {[Accessed 2026-02-26]}
-}
 
-@misc{MP_accounts,
-  author       = {{European Central Bank}},
-  title        = {Monetary Policy accounts},
-  howpublished = {\url{https://www.ecb.europa.eu/press/accounts/html/index.en.html}},
-  note         = {[Accessed 2025-15-15]}
-}
-
-  @article{CorbisieroLawton2021,
-  author  = {Corbisiero, Giuseppe and Lawton, Zita},
-  title   = {The {ECB} review of its monetary policy strategy},
-  journal = {Central Bank of Ireland Quarterly Bulletin},
-  year    = {2021},
-  number  = {4},
-  volume  = {2021},
-  pages   = {26--27},
-  url     = {https://www.centralbank.ie/docs/default-source/publications/quarterly-bulletins/quarterly-bulletin-signed-articles/the-ecb-review-of-its-monetary-policy-strategy-(corbisiero-and-lawton).pdf}
-}
-
-@misc{IBM_IE_2025,
-  author       = {{IBM}},
-  title        = {What is Information Extraction?},
-  howpublished = {\url{https://www.ibm.com/think/topics/information-extraction}},
-  year         = {2025},
-  note         = {Accessed: 2026-02-28}
-}
-
-@inproceedings{xing2020financial,
-  title     = {Financial sentiment analysis: An investigation into common mistakes and silver bullets},
-  author    = {Xing, Frank and Malandri, Lorenzo and Zhang, Yue and Cambria, Erik},
-  booktitle = {Proceedings of the 28th international conference on computational linguistics},
-  pages     = {978--987},
-  year      = {2020}
-}
-
-
-@article{LoughranMcDonald2011,
-  author  = {Loughran, Tim and McDonald, Bill},
-  title   = {When is a Liability not a Liability? {Textual} Analysis, Dictionaries, and 10-{K}s},
-  journal = {The Journal of Finance},
-  volume  = {66},
-  number  = {1},
-  pages   = {35--65},
-  year    = {2011},
-  doi     = {10.1111/j.1540-6261.2010.01625.x}
-}
-
-@techreport{BIS_WP1215_2024,
-  author      = {Gambacorta, Leonardo and Kwon, Byeungchun and Park, Taejin and Patelli, Pietro and Zhu, Sonya},
-  title       = {CB-LMs: language models for central bankin},
-  institution = {Bank for International Settlements},
-  type        = {BIS Working Papers},
-  number      = {1215},
-  year        = {2024},
-  month       = {October},
-  url         = {https://www.bis.org/publ/work1215.htm},
-  urldate     = {2026-02-27}
-}
-
-@article{araci2019finbert,
-  title   = {Finbert: Financial sentiment analysis with pre-trained language models},
-  author  = {Araci, Dogu},
-  journal = {arXiv preprint arXiv:1908.10063},
-  year    = {2019}
-}
-
-
-@article{blei2003latent,
-  author  = {Blei, David M. and Ng, Andrew Y. and Jordan, Michael I.},
-  title   = {Latent {Dirichlet} Allocation},
-  journal = {Journal of Machine Learning Research},
-  volume  = {3},
-  number  = {Jan},
-  pages   = {993--1022},
-  year    = {2003}
-}
-
-@inproceedings{yin2019benchmarking,
-  author    = {Yin, Wenpeng and Hay, Jamaal and Roth, Dan},
-  title     = {Benchmarking Zero-shot Text Classification: Datasets, Evaluation and Entailment Approach},
-  booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
-  pages     = {3914--3923},
-  year      = {2019},
-  doi       = {10.18653/v1/D19-1404}
-}
-
-@article{lewis2019bart,
-  author  = {Lewis, Mike and Liu, Yinhan and Goyal, Naman and Ghazvininejad, Marjan and Mohamed, Abdelrahman and Levy, Omer and Stoyanov, Veselin and Zettlemoyer, Luke},
-  title   = {{BART}: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension},
-  journal = {arXiv preprint arXiv:1910.13461},
-  year    = {2019}
-}
-
-@article{gentzkow2019text,
-  title   = {Text as data},
-  author  = {Gentzkow, Matthew and Kelly, Bryan and Taddy, Matt},
-  journal = {Journal of Economic Literature},
-  volume  = {57},
-  number  = {3},
-  pages   = {535--74},
-  year    = {2019}
-}
-
-@article{altavilla2019measuring,
-  author  = {Altavilla, Carlo and Brugnolini, Luca and G{\"u}rkaynak, Refet S. and Motto, Roberto and Ragusa, Giuseppe},
-  title   = {Measuring euro area monetary policy},
-  journal = {Journal of Monetary Economics},
-  volume  = {108},
-  pages   = {162--179},
-  year    = {2019},
-  doi     = {10.1016/j.jmoneco.2019.08.016}
+@misc{ITC_ECB_Schedule,
+  author       = {{InTouch Capital Markets}},
+  title        = {European Central Bank ({ECB}) Meeting Schedule},
+  howpublished = {\url{https://www.itcmarkets.com/european-central-bank-ecb-meeting-schedule/}},
+  year         = {2024},
+  note         = {Accessed: 2026-02-25}
 }
 
 @article{jarocinski2020deconstructing,
@@ -232,4 +169,67 @@
   pages   = {135--138},
   year    = {2013},
   doi     = {10.1016/j.econlet.2012.10.011}
+}
+
+
+@article{lewis2019bart,
+  author  = {Lewis, Mike and Liu, Yinhan and Goyal, Naman and Ghazvininejad, Marjan and Mohamed, Abdelrahman and Levy, Omer and Stoyanov, Veselin and Zettlemoyer, Luke},
+  title   = {{BART}: Denoising Sequence-to-Sequence Pre-training for Natural Language Generation, Translation, and Comprehension},
+  journal = {arXiv preprint arXiv:1910.13461},
+  year    = {2019}
+}
+
+@article{LoughranMcDonald2011,
+  author  = {Loughran, Tim and McDonald, Bill},
+  title   = {When is a Liability not a Liability? {Textual} Analysis, Dictionaries, and 10-{K}s},
+  journal = {The Journal of Finance},
+  volume  = {66},
+  number  = {1},
+  pages   = {35--65},
+  year    = {2011},
+  doi     = {10.1111/j.1540-6261.2010.01625.x}
+}
+
+@misc{MP_accounts,
+  author       = {{European Central Bank}},
+  title        = {Monetary Policy accounts},
+  howpublished = {\url{https://www.ecb.europa.eu/press/accounts/html/index.en.html}},
+  note         = {[Accessed 2025-15-15]}
+}
+
+@techreport{NBERw11898,
+  title       = {Central Bank Communication and Policy Effectiveness},
+  author      = {Woodford, Michael},
+  institution = {National Bureau of Economic Research},
+  type        = {Working Paper},
+  series      = {Working Paper Series},
+  number      = {11898},
+  year        = {2005},
+  month       = {December},
+  doi         = {10.3386/w11898},
+  url         = {http://www.nber.org/papers/w11898}
+}
+
+@misc{press_to_speeches,
+  author = {{European Central Bank}},
+  title  = {From press conferences to speeches: the impact of the {ECB}'s monetary policy communication},
+  url    = {https://www.ecb.europa.eu/press/economic-bulletin/focus/2025/html/ecb.ebbox202501_07~c37ab82e06.en.html},
+  note   = {[Accessed 2026-02-26]}
+}
+
+@inproceedings{xing2020financial,
+  title     = {Financial sentiment analysis: An investigation into common mistakes and silver bullets},
+  author    = {Xing, Frank and Malandri, Lorenzo and Zhang, Yue and Cambria, Erik},
+  booktitle = {Proceedings of the 28th international conference on computational linguistics},
+  pages     = {978--987},
+  year      = {2020}
+}
+
+@inproceedings{yin2019benchmarking,
+  author    = {Yin, Wenpeng and Hay, Jamaal and Roth, Dan},
+  title     = {Benchmarking Zero-shot Text Classification: Datasets, Evaluation and Entailment Approach},
+  booktitle = {Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)},
+  pages     = {3914--3923},
+  year      = {2019},
+  doi       = {10.18653/v1/D19-1404}
 }
