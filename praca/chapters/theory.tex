@@ -1,10 +1,10 @@
 \chapter{Theoretical Background}\label{chap:theory}
-This chapter establishes the~theoretical foundation for the~research in this thesis by connecting the~macroeconomic concepts of \gls{mp} with advanced language technology. The~first section looks at the~evolution of central bank communication. It looks at the~mechanics of the \gls{mps}, the~distinct roles of prepared speeches versus Q\&A sessions, and how they communicate between meetings. The~second section introduces \gls{nlp} and how it is used in the~financial domain, providing the~methodological background for extracting useful information from unstructured central bank texts. It covers the shift from traditional dictionary-based sentiment analysis to transformer models, such as BERT and its domain-specific adaptations. The~last sections explain the~theoretical basics of time series analysis and portfolio optimization, which are essential for the~practical application of the~extracted sentiment signals in financial forecasting and the~development of investment strategies.
+This chapter establishes the~theoretical foundation for the~research in this thesis by connecting the~macroeconomic concepts of \gls{mp} with advanced language technology. The~first section looks at the~evolution of central bank communication. It looks at the~mechanics of the \gls{mps}, the~distinct roles of prepared speeches versus Q\&A sessions, and how they communicate between meetings. The~second section introduces \gls{nlp} and how it is used in the~financial domain, providing the~methodological background for extracting useful information from unstructured central bank texts. It covers the shift from traditional dictionary-based sentiment analysis to transformer models, such as BERT and its domain-specific adaptations. The final section explains the theoretical framework for measuring monetary policy and market uncertainty. It defines the official policy instruments, such as the \gls{mro} rate and shadow rates, alongside high-frequency financial indicators such as \gls{ois} and structural policy shocks. These metrics provide the quantitative targets necessary to assess the real-world impact of central bank text.
 
 \section{Central Bank Communication}
-Over the~past three decades, central banking has undergone profound and fundamental changes in the~structure of its disclosures. In the~past, central banks shrouded their operations in secrecy. Before the~1990s, there was no public explanation of why monetary policy decisions were made. Policymakers believed that their decisions should surprise the~market. They believed that a degree of unpredictability enhanced the~effectiveness of policy interventions. This period of institutional unpredictability, famously defined by the~“Secrets of the~Temple” mentality during the~early Alan Greenspan's tenure at the~\gls{fed}—the~central bank of the~United States, was characterized by a~marked lack of formal public guidance \cite[p. 3]{NBERw11898}. Market participants repeatedly had to guess the~target interest rate and the~bank's policy setting. They relied on the~size, timing, and nature of the~operations conducted by the~\gls{fed} trading departments in the~open market.
+Over the~past three decades, central banking has undergone fundamental changes in its disclosure structures. Historically, central banks operated with minimal public transparency. Before the~1990s, there was no public explanation of why monetary policy decisions were made. Policymakers argued that decisions should surprise the~market. They believed that a degree of unpredictability enhanced the~effectiveness of policy interventions. This period of institutional unpredictability, often characterized by the~“Secrets of the~Temple” mentality during the~early Alan Greenspan's tenure at the~\gls{fed}—the~central bank of the~United States, was characterized by a~marked lack of formal public guidance \cite[p. 3]{NBERw11898}. Market participants repeatedly had to guess the~target interest rate and the~bank's policy setting. They relied on the~size, timing, and nature of the~operations conducted by the~\gls{fed} trading departments in the~open market.
 
-Since then, however, there has been a~fundamental paradigm shift that repositioned communication from a~peripheral public relations function to a~core, independent instrument of \gls{mp}. Public institutions have an inherent duty to share information, and central banks have increaingly recognized that transparency and accountability are fundamental public service obligations \cite[p. 15--18]{blinder2008central}. Beyond mere institutional accountability itself, the~evolution of \gls{mp} frameworks has demonstrated that transparent and credible central banks are considered important for maintaining long-term price stability\cite{daly2025dynamic}. Particularly, the~widespread adoption of inflation targeting across advanced and emerging economies. Empirically, clear communication has been shown to enhance central bank independence, strengthen institutional credibility, and actively anchor inflation expectations in complex macroeconomic environments \cite[p. 7]{filardo2008transparency}.
+Since then, communication has evolved from a~peripheral public relations function to a~core instrument of \gls{mp}. Central banks have increasingly recognized transparency and accountability as fundamental public service obligations \cite[p. 15--18]{blinder2008central}. Beyond mere institutional accountability, the~evolution of \gls{mp} frameworks has demonstrated that transparent and credible central banks are considered important for maintaining long-term price stability \cite{daly2025dynamic}. This is particularly evident in the widespread adoption of inflation targeting across advanced and emerging economies. Empirically, clear communication has been shown to enhance central bank independence, strengthen institutional credibility, and actively anchor inflation expectations in complex macroeconomic environments \cite[p. 7]{filardo2008transparency}.
 
 \subsection{Monetary Policy Statement}
 \label{subsection:mps}
@@ -12,7 +12,7 @@ At the~operational core of the~\gls{ecb}'s communication strategy is the~\gls{mp
 \cite{ITC_ECB_Schedule}.
 
 \subsubsection{Schedule of the Governing Council Meeting Day}
-The~organization of the~announcement day is highly standardized, reflecting the~institution's strict commitment to predictability and to mitigating of market volatility. Starting from July 21, 2022, the~\gls{ecb} modified its historical publication timeline to optimize the~way financial markets process complex policy signals \cite{ECB2022_NewTimes}. The~initial policy decision—usually a~short press release detailing the~exact interest rate parameters, deposit facility rates, and main structural changes to asset purchase programs—is published at 14:15 CET. Shortly afterward, the~press conference begins at 14:45 CET, during which the~\gls{ecb} President and Vice-President present the~detailed \gls{mps} and interact directly with the financial press. In parallel with the~start of the~Q\&A segment, the~full written text of the~\gls{mps} is published on the~\gls{ecb}'s digital platforms at 15:00 CET. At 17:00, European stock markets close independently of the~\gls{ecb}, ending the~day's reactions to the~\gls{ecb} actions.
+The~organization of the~announcement day is highly standardized, reflecting the~institution's strict commitment to predictability and the~mitigation of market volatility. Starting from July 21, 2022, the~\gls{ecb} modified its historical publication timeline to optimize the~way financial markets process complex policy signals \cite{ECB2022_NewTimes}. The~initial policy decision—usually a~short press release detailing the~exact interest rate parameters, deposit facility rates, and main structural changes to asset purchase programs—is published at 14:15 CET. Shortly afterward, the~press conference begins at 14:45 CET, during which the~\gls{ecb} President and Vice-President present the~detailed \gls{mps} and interact directly with the financial press. In parallel with the~start of the~Q\&A segment, the~full written text of the~\gls{mps} is published on the~\gls{ecb}'s digital platforms at 15:00 CET. At 17:00, European stock markets close independently of the~\gls{ecb}, ending the~day's reactions to the~\gls{ecb} actions.
 
 \begin{table}[ht]
     % v tabulke sa popis zvykne davat nad tabulku
@@ -37,17 +37,17 @@ The~organization of the~announcement day is highly standardized, reflecting the~
 
 
 \subsubsection{Structure of the~Press Conference}
-The~press conference itself is divided into two distinct communication phases: the~reading of the~formally prepared introductory statement and the~subsequent unscripted Question-and-Answer (Q\&A) session. This structural division is not merely procedural; it has profound empirical implications for financial markets, as the~two sections serve completely different epistemological functions and generate distinct asset price dynamics.
+The~press conference itself is divided into two distinct communication phases: the~reading of the~formally prepared introductory statement and the~subsequent unscripted Question-and-Answer (Q\&A) session. This structural division is not merely procedural; it has significant empirical implications for financial markets, as the~two sections serve different informational functions and generate distinct asset price dynamics.
 
-The~introductory statement is a~highly structured, carefully drafted document that represents the~\gls{gc}'s absolute consensus view \cite{ECB_WP2742}. It offers a~comprehensive, linear overview of the~integrated analytical framework that progressively details the~economic assessment, inflation dynamics, and the~evaluation of monetary and financial conditions. The~language used in this document is deliberately precise, relying on specific syntactical formulations to signal the~future policy path—a practice commonly known as forward guidance.
+The~introductory statement is a~highly structured, carefully drafted document that represents the~\gls{gc}'s consensus view \cite{ECB_WP2742}. It provides a~linear overview of the economic assessment, inflation dynamics, and the~evaluation of monetary and financial conditions. The~language used in this document is deliberately precise, relying on specific syntactical formulations to signal the~future policy path—a practice commonly known as forward guidance.
 
-In sharp contrast, the~Q\&A session introduces a semi-structured interaction. Advanced textual analysis and structural topic modeling of the~historical transcripts of \gls{ecb} press conferences demonstrate that the~thematic content of the~statement differs from the discourse during the~Q\&A session. The~topics that dominate the~statement are persistent, structural, and they are strongly focused on standardized macroeconomic aggregates. Conversely, the~Q\&A often introduces new topics that were not addressed in the~prepared text. Empirical research reveals that the~first six most prevalent topics within a~vast sample of press conference transcripts are predominantly driven by the~Q\&A segments. This suggests that a significant share of the added value of the~press conference lies largely in the~Q\&A phase, which provides the~public and market participants with detailed explanations regarding the~\gls{ecb}'s decisions in real time \cite{ECB_WP2742}.
+In contrast, the~Q\&A session introduces a semi-structured interaction. Advanced textual analysis and structural topic modeling of the~historical transcripts of \gls{ecb} press conferences demonstrate that the~thematic content of the~statement differs from the discourse during the~\gls{qa} session. The topics dominating the statement are persistent, structural, and strongly focused on standardized macroeconomic aggregates. Conversely, the~\gls{qa} often introduces new topics that were not addressed in the~prepared text. Empirical research reveals that the~first six most prevalent topics within a~vast sample of press conference transcripts are predominantly driven by the~\gls{qa} segments. This suggests that a significant share of the added value of the~press conference lies largely in the~\gls{qa} phase, which provides the~public and market participants with detailed explanations regarding the~\gls{ecb}'s decisions in real time \cite{ECB_WP2742}.
 
 \subsection{Other Communication Channels}
-While the~\gls{mps} and the~accompanying press conference represent the~focal point of the~\gls{ecb}'s communication apparatus, they operate within a~much broader, continuously active ecosystem of publications, reports, and public engagements. To continuously steer the~yield curve, anchor long-term expectations, and fulfill its mandate of transparency, the~\gls{ecb} leverages several supplementary communication channels in the~weeks between formal \gls{gc} meetings. This ``inter-meeting communication'' is a~powerful tool for addressing structural complexities and the~mechanics of financial transmission. These details cannot be mentioned in a~single monthly press conference \cite{Istrefi2021ECB}.
+While the~\gls{mps} and the~accompanying press conference represent the~focal point of the~\gls{ecb}'s communication strategy, they are complemented by a broader set of publications, reports, and public engagements. To continuously influence the~yield curve, anchor long-term expectations, and fulfill its mandate of transparency, the~\gls{ecb} leverages several supplementary communication channels in the~weeks between formal \gls{gc} meetings. This ``inter-meeting communication'' is a~powerful tool for addressing structural complexities and the~mechanics of financial transmission. These details cannot be fully addressed in a~single monthly press conference \cite{Istrefi2021ECB}.
 
 \subsubsection{The~Economic Bulletin}
-The~Economic Bulletin is a~comprehensive, data-rich analytical publication that serves to fully explain the~reasons behind the~\gls{ecb}'s Governing Council's monetary policy decisions. Published eight times a~year—generally two weeks after the~corresponding \gls{mp} meeting—the~Bulletin contextualizes the~Governing Council's decisions against the~detailed backdrop of prevailing economic, financial, and monetary conditions
+The~Economic Bulletin is a~comprehensive, data-rich analytical publication that serves to fully explain the~reasons behind the~\gls{mp} decisions of the \gls{ecb}'s Governing Council. Published eight times a~year—generally two weeks after the~corresponding \gls{mp} meeting—the~Bulletin contextualizes the~Governing Council's decisions against the~detailed backdrop of prevailing economic, financial, and monetary conditions
 \cite{press_to_speeches}.
 
 \subsubsection{The~Monetary Policy Accounts}
@@ -56,10 +56,10 @@ In a~major step toward heightened transparency, the~\gls{ecb} began publishing r
 The~documents offer a~detailed, synthesized overview of the~Governing Council's internal deliberations. They outline the~delicate balance of arguments, the~range of risk assessments considered by various members, and the~different perspectives on the~economic outlook. By documenting the~full range of analytical debates, the~accounts help market participants understand the~central bank's internal response function and the~specific macroeconomic thresholds that might trigger future policy interventions \cite[p. 26--27]{CorbisieroLawton2021}.
 
 \section{Natural Language Processing in Finance}
-The~exponential growth of the~volume of digital information has fundamentally transformed the~methodology of financial and macroeconomic research. Historically, empirical finance has relied almost exclusively on structured, quantitative data. However, language has always shaped financial markets, and unstructured textual data—ranging from earnings call transcripts to central bank \gls{mps}—contains critical information about the~future. \gls{nlp} serves as a~technological bridge, enabling researchers and practitioners to systematically extract structured, machine-readable signals from these vast corpora of unstructured text \cite{IBM_IE_2025}. In the~context of \gls{mp}, \gls{nlp} algorithms are used to quantify the~qualitative narratives of central bankers, capturing nuances in market psychology and institutional sentiment.
+The~growing availability of digital information has transformed the~methodology of financial and macroeconomic research. Historically, empirical finance has relied almost exclusively on structured, quantitative data. However, language has always shaped financial markets, and unstructured textual data—ranging from earnings call transcripts to central bank \gls{mps}—contains critical information about the~future. \gls{nlp} serves as a~technological bridge, enabling researchers and practitioners to systematically extract structured, machine-readable signals from these vast corpora of unstructured text \cite{IBM_IE_2025}. In the~context of \gls{mp}, \gls{nlp} algorithms are used to quantify the~qualitative narratives of central bankers, capturing nuances in market psychology and institutional sentiment.
 
 \subsection{Concept of Sentiment Analysis}
-Sentiment analysis is the computational extraction of subjective information and emotional states from text, primarily focused on classifying a document's underlying polarity \cite{xing2020financial}. Traditionally, this polarity is categorized into positive, neutral, or negative dimensions. 
+Sentiment analysis is the computational extraction of subjective information and emotional states from text, primarily focused on classifying a document's underlying polarity \cite{xing2020financial}. Traditionally, this polarity is categorized into positive, neutral, or negative dimensions.
 
 Early applications in finance relied heavily on dictionary-based approaches, which measure sentiment by aggregating the frequency of predefined terms. A common metric in this tradition is a normalized difference between positive and negative word counts. However, as noted by \text{Loughran and McDonald (2011)}, standard baseline dictionaries routinely misclassify common financial terminology; for example, the word ``liability'' is negative in general parlance but serves as a neutral, descriptive accounting term in financial filings. This difference necessitated the development of domain-specific lexicons to accurately measure sentiment in corporate and macroeconomic contexts \cite{LoughranMcDonald2011}.
 
@@ -67,15 +67,15 @@ With the advent of deep learning, the methodology of sentiment quantification ha
 
 \begin{equation}
     \label{eq:sentiment}
-    S = P_{positive/hawkish} - P_{negative/dovish}
+    Score = P_{positive/hawkish} - P_{negative/dovish}
 \end{equation}
 
-where $P \in [0, 1]$ represents the softmax probability assigned by the transformer model to each respective label. This transformation maps the model's qualitative assessment onto a linear scale ranging from $-1$ to $+1$, where $0$ signifies a strictly neutral stance.
+where $P \in [0, 1]$ represents the softmax probability assigned by the transformer model to each respective label. This transformation maps the model's qualitative assessment onto a linear scale ranging from $-1$ to $+1$, where $0$ signifies a balanced or neutral stance.
 
 \subsection{Transformer Models and Contextual Embeddings}
 The transition from static lexicons to transformer-based architectures, such as BERT (Bidirectional Encoder Representations from Transformers), addressed the inherent inability of Bag-of-words models to capture context-dependent relationships. Unlike previous methods that processed words in isolation, BERT evaluates each word in relation to all other words in a sentence, allowing for a more nuanced understanding of syntax, negation, and complex economic narratives.
 
-However, the linguistic requirements of central bank analysis necessitate further specialization. General-purpose models trained on Wikipedia or common literature often struggle with the highly technical and coded lexicon used by monetary authorities \cite{BIS_WP1215_2024}. This limitation led to the development of fine-tuned models such as FinBERT \cite{araci2019finbert}, and more recently, Central Bank Language Models (CB-LMs) like CentralBankRoBERTa. 
+However, the linguistic requirements of central bank analysis necessitate further specialization. General-purpose models trained on Wikipedia or common literature often struggle with the highly technical and coded lexicon used by monetary authorities \cite{BIS_WP1215_2024}. This limitation led to the development of fine-tuned models such as FinBERT \cite{araci2019finbert}, and more recently, Central Bank Language Models (CB-LMs) like CentralBankRoBERTa.
 
 The evolution of these models represents a progressive narrowing of focus toward specific institutional vocabularies. While FinBERT is optimized for general financial news (e.g., Reuters), CB-LMs are specifically calibrated for the ``hawkish--dovish'' spectrum typical of central bank discourse. The differences in their training objectives and linguistic nuances are summarized in Table \ref{tab:model_comparison}. By utilizing these highly calibrated transformer models, researchers can extract more precise, theory-consistent signals from institutions like the \gls{ecb} and the \gls{fed}, ultimately improving the predictive power of models focusing on market reactions and policy transmission.
 
@@ -85,17 +85,17 @@ The evolution of these models represents a progressive narrowing of focus toward
     \label{tab:model_comparison}
     \begin{tabular}{@{}lll@{}}
         \toprule
-        \textbf{Model} & \textbf{Training Corpus} & \textbf{Linguistic Nuance} \\ \midrule
-        BERT & General (Wikipedia, Books) & High (General Context) \\
-        FinBERT & Financial News (Reuters TRC2) & Domain-Specific (Financial) \\
-        CB-LM (RoBERTa) & ECB/Fed Speeches and Reports & Policy-Specific (Monetary) \\ \bottomrule
+        \textbf{Model}  & \textbf{Training Corpus}      & \textbf{Linguistic Nuance}  \\ \midrule
+        BERT            & General (Wikipedia, Books)    & High (General Context)      \\
+        FinBERT         & Financial News (Reuters TRC2) & Domain-Specific (Financial) \\
+        CB-LM (RoBERTa) & ECB/Fed Speeches and Reports  & Policy-Specific (Monetary)  \\ \bottomrule
     \end{tabular}
 \end{table}
 
 \subsection{Zero-Shot Classification and the NLI Mechanism}
 Traditionally, the thematic analysis of central bank communication was dominated by probabilistic generative models, most notably Latent Dirichlet Allocation (LDA) \cite{blei2003latent}. While useful for broad explorations, these "bag-of-words" approaches suffer from significant limitations, specifically an inability to capture semantic context and the requirement for users to pre-specify a fixed number of topics without a deeper understanding of linguistic nuance. In response to these challenges, the field of financial NLP has increasingly shifted toward neural architectures leveraging transformers and Natural Language Inference (NLI) frameworks \cite{yin2019benchmarking}.
 
-This paradigm shift enables the implementation of Zero-Shot Classification, a technique where a model can categorize text into user-defined categories without requiring task-specific supervised training on specific examples. The process operates via the "NLI trick," reframing a classification task as a logical relationship between a premise (the original central bank text) and a hypothesis (a template representing the candidate label, such as "This text is about monetary policy") \cite{yin2019benchmarking}.
+This architectural shift enables the implementation of Zero-Shot Classification. A~technique where a model can categorize text into user-defined categories without requiring task-specific supervised training on specific examples. The process leverages NLI methodologies by reframing a classification task as a logical relationship between a premise (the original central bank text) and a hypothesis (a template representing the candidate label, such as "This text is about monetary policy") \cite{yin2019benchmarking}.
 
 To derive a final confidence score for a specific category, the model's raw output scores (logits) for logical entailment and contradiction are processed. In many practical implementations utilizing models like \textit{BART} \cite{lewis2019bart}, the neutral label is ignored, and a softmax function is applied to calculate the probability $P(c_i)$ for a candidate label $c_i$:
 
@@ -106,10 +106,47 @@ To derive a final confidence score for a specific category, the model's raw outp
 where $l_{entail}$ and $l_{contra}$ represent the model's raw logits for entailment and contradiction, respectively. This mathematical framework allows the resulting thematic weight to reflect the relative strength of the logical link between the bank's statement and the defined hypothesis.
 
 \section{Measuring Monetary Policy}
-TODO Doterajšie výsledky
-% v skratke čo to je
-% tu by som mal aj opísať, čo je to napríklad OIS, ako sa vypočítava a čo je to ten pc1 z jkshocks
-% v praktickej časti:
-% - mám text -> sentimenty (rozdelený text na viac častí a~z neho sentimenty)
-% - mám spracované time-series -> spárujem to so sentimentom
-% - potom trénujem model -> aby predvídal nejaké rasty / poklesy
+To bridge the gap between qualitative NLP outputs and econometric modeling, it is essential to define the quantitative metrics that represent the monetary policy stance and market expectations. This section details the primary indicators used as targets for predictive modeling, ranging from official policy rates to structural market shocks.
+
+\subsection{Official Policy Rates and the Shadow Rate}
+The primary instrument of the \gls{ecb}'s monetary policy is the \gls{mro} rate, which sets the cost of liquidity for the banking system. While the MRO rate is the explicit signal of the policy stance, its effectiveness as a continuous variable is limited when interest rates reach the Zero Lower Bound (ZLB).
+
+To measure the stance when nominal rates are constrained, researchers employ the \textit{Shadow Rate}. As proposed by \cite{krippner2013measuring}, the shadow rate is a model-based construct that translates unconventional policy measures, such as large-scale asset purchases and forward guidance, into a single interest rate equivalent. Unlike the MRO, the shadow rate can move into negative territory, providing a more granular metric of monetary conditions during periods of intensive central bank intervention.
+
+\subsection{Market Expectations and OIS Volatility}
+Real-time market reactions to central bank communication are primarily captured using \gls{ois}. An \gls{ois} is a financial derivative where a fixed interest rate is exchanged for a floating overnight rate (specifically the €STR in the Eurozone) over the duration of the contract. Since there is no exchange of principal and the floating leg is based on an overnight rate, \gls{ois} rates are considered a "risk-free" proxy for the market's expectation of the future path of monetary policy.
+
+In the context of the \text{EA-MPD} dataset \cite{altavilla2019measuring}, the focus is on the \textit{change} in these rates ($\Delta \text{\gls{ois}}$) during the press conference window. The dataset provides a term structure of expectations ranging from 1-month to 10-years, each serving a distinct analytical purpose:
+\begin{itemize}
+    \item \textbf{Short-end (1M to 6M):} Reflects immediate expectations regarding the next few Governing Council meetings and changes in the key policy rates (\gls{mro}, DFR).
+    \item \textbf{Mid-curve (1Y to 2Y):} Captures the effectiveness of forward guidance and the market's perception of the medium-term policy trajectory.
+    \item \textbf{Long-end (5Y to 10Y):} Acts as a gauge for long-term inflation anchoring and the credibility of the central bank's commitment to its mandate.
+\end{itemize}
+
+Furthermore, the volatility of these rates during the announcement serves as a proxy for market uncertainty. A divergence between the Introductory Statement and the \gls{qa} session—often referred to as a "communication mismatch"—typically manifests as heightened intraday volatility. The key indicators used as targets in this research are summarized in Table \ref{tab:mp_indicators}.
+
+\begin{table}[ht]
+    \centering
+    \caption{Key Monetary Policy Indicators}
+    \label{tab:mp_indicators}
+    \begin{tabular}{@{}lll@{}}
+        \toprule
+        \textbf{Indicator}        & \textbf{Economic Significance}                                        \\ \midrule
+        \gls{mro} Rate            & Direct policy signal and cost of liquidity.                           \\
+        Shadow Rate               & Policy stance proxy in ZLB environments \cite{krippner2013measuring}. \\
+        \gls{ois} Rates (1M--10Y) & Forward-looking expectations across the yield curve.                  \\
+        $PC1$ (Shocks)            & Aggregated policy surprise \cite{jarocinski2020deconstructing}.       \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Structural Shocks and Principal Component Analysis}
+The "pure" impact of a policy announcement is often clouded by the information effect, where markets react to the central bank's economic outlook rather than the policy change itself. To isolate the intended policy signal, \cite{jarocinski2020deconstructing} and \cite{altavilla2019measuring} utilize structural decomposition.
+
+By observing the co-movement of interest rates and stock prices, researchers separate these shocks into "pure monetary" and "information" components. To simplify the multi-dimensional nature of interest rate moves across the yield curve, Principal Component Analysis (PCA) is applied. The First Principal Component ($PC1$) is extracted to represent the overarching shift in expectations:
+
+\begin{equation}
+    \label{eq:pc1}
+    PC1_t = \sum_{j=1}^{n} \omega_j \cdot \text{Shock}_{j,t}
+\end{equation}
+
+where $\omega_j$ represents the weights for structural shocks at maturity $j$. This $PC1$ serves as a robust target variable for machine learning models, as it captures the dominant policy surprise while filtering out idiosyncratic noise from individual maturities.
