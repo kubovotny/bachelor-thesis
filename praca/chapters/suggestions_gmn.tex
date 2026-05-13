@@ -1,0 +1,4 @@
+\chapter{Data and Methodology}
+This chapter details the data engineering pipeline and the econometric framework used in this research. The process follows a linear progression from automated raw data collection to a structured relational repository, ensuring that every textual signal is precisely mapped to its financial impact.
+
+The pipeline begins with the automated retrieval of official \gls{ecb} monetary policy transcripts. Due to the structural inconsistencies in historical documents, we developed a custom scraping utility to extract raw content directly from the \gls{ecb} digital archives. During this initial phase, the data is stored in a temporary Pipe-Separated Values (.psv) format. This intermediate staging area allows for efficient bulk retrieval and serves as a local backup of the raw transcripts before they undergo further transformation.
