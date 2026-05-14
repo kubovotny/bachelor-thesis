@@ -15,16 +15,15 @@ MPD_COLUMNS: List[str] = [
     "OIS_3M",
     "OIS_6M",
     "OIS_1Y",
-    *[f"{c}{y}Y" for y in years for c in countries],
+    # *[f"{c}{y}Y" for y in years for c in countries],
     "STOXX50",
 ]
 ECB_COLUMNS: List[str] = [
     "date",
     "MRO",
     "MRO announced",
-    "MRO effective",
-    "DF announced",
-    "DF effective",
+    # "DF announced",
+    # "DF effective",
     "Wu-Xia shadow rate",
 ]
 

@@ -8,14 +8,11 @@ conn = sqlite3.connect(DATABASE)
 cur = conn.cursor()
 CHUNK_LIMIT_TYPE = Literal[1, 50, 100, 150, 200, 250, 300, 350]
 CHUNK_LIMITS: List[CHUNK_LIMIT_TYPE] = [1, 50, 100, 150, 200, 250, 300, 350]
-
-
-def drop_and_make_tables():
-    TABLE_SCHEMA = {
-        "statements": """
+TABLE_SCHEME = {
+    "statements": """
               date            TEXT,
               url             TEXT""",
-        "chunks": """
+    "chunks": """
               statement_id    INT,
               part            INT,
               chunk_id        INT,
@@ -24,31 +21,39 @@ def drop_and_make_tables():
               chunk           TEXT,
               PRIMARY KEY (statement_id, part, chunk_id, chunk_limit),
               FOREIGN KEY (statement_id) REFERENCES statements(rowid)""",
-        "sentiment_models": """
+    "sentiment_models": """
               name            TEXT""",
-        "sentiments": """
+    "sentiments": """
               chunk_rowid     INT,
               model_id        INT,
               score           REAL,
               PRIMARY KEY (chunk_rowid, model_id),
               FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid),
               FOREIGN KEY (model_id) REFERENCES sentiment_models(rowid)""",
-        "topic_labels": """
+    "topic_labels": """
               name          TEXT,
               description   TEXT,
               version       INT,
               PRIMARY KEY(name, version)""",
-        "topics": """
+    "topics": """
               chunk_rowid           INT,
               label_rowid           INT,
               prob                  REAL,
               PRIMARY KEY (chunk_rowid, label_rowid),
               FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid)
               FOREIGN KEY (label_rowid) REFERENCES topic_labels(rowid)""",
-    }
-    for table in reversed(TABLE_SCHEMA.keys()):
+}
+
+
+def return_database_scheme():
+    for name, schema in TABLE_SCHEME.items():
+        print(f"CREATE TABLE {name}({schema});")
+
+
+def drop_and_make_tables():
+    for table in reversed(TABLE_SCHEME.keys()):
         cur.execute(f"DROP TABLE IF EXISTS {table}")
-    for name, schema in TABLE_SCHEMA.items():
+    for name, schema in TABLE_SCHEME.items():
         cur.execute(f"CREATE TABLE {name}({schema})")
 
     cur.execute('INSERT INTO sentiment_models VALUES("finbert"),("roberta")')
@@ -219,6 +224,7 @@ def insert_topics(
 
 
 if __name__ == "__main__":
+    # return_database_scheme()
     if input() == PASSWORD:
         drop_and_make_tables()
         data = pd.read_csv(f"{DATA_DIR}/statements/scraped_v2.psv", sep="|")
