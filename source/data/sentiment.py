@@ -86,7 +86,9 @@ def return_sentiment_agg_pivot(
         agg_data.drop(columns=["is_question"], inplace=True)
 
     # Pivot the long table into wide format
-    df_pivot: pd.DataFrame = agg_data.pivot(...)
+    df_pivot: pd.DataFrame = agg_data.pivot(
+        index="date", columns="label", values=["max", "mean", "min", "std"]
+    )
     # Flatten the MultiIndex columns into single-level names (e.g. 'mean_QA_MP')
     df_pivot.columns = [f"{col[1]}_{col[0]}" for col in df_pivot.columns]
     df_pivot = df_pivot.reset_index()

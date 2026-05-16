@@ -60,7 +60,7 @@ Despite their different ranges, the~models tell the~same story. Table~\ref{tab:c
 \section{Sanity Check: Validation against Historical Events}
 \label{sec:sanity}
 
-An AI model doesn't know what is happening in the~real world—it only reads text. To trust our results, we must do a ``sanity check'': do the~sentiment scores drop during major economic crises and rise during good times? Figure~\ref{fig:events} places our sentiment lines over seven major historical events.
+A language model trained only on text do not have knowledge of what is going on market. To trust our results, we must do a ``sanity check'': do the~sentiment scores drop during major economic crises and rise during good times? Figure~\ref{fig:events} places our sentiment lines over seven major historical events.
 
 \begin{figure}[ht]
     \centering
@@ -83,9 +83,7 @@ The~chart closely matches the~actual history of the~European economy. Let's look
 
 \textbf{The recent hiking cycle (2022--2023).} To fight skyrocketing inflation, the~\gls{ecb} raised interest rates at record speed. In response, both models shoot up to their highest levels in years. Words like ``restrictive'' or ``determined'' are correctly understood by the~AI as hawkish (strict) policy.
 
-\textbf{Comparing our results.} Earlier studies, like Tobback et al. (2017) \cite{tobback2017hawks}, measured \gls{ecb} tone by reading newspaper articles. Our results match their findings for older crises. However, because we analyze the~\gls{ecb}'s transcripts directly, our measure is faster, avoids journalistic bias, and successfully covers modern events like the~COVID-19 crash and the~recent inflation spikes.
-
-Ultimately, this sanity check proves neither model is just guessing. They both capture 25 years of European monetary policy just by reading the~words the~central bankers used.
+When \textbf{comparing our results} to the~existing literature, our findings align closely with earlier benchmarks for historical crises. For instance, \cite{tobback2017hawks} historically measured \gls{ecb} tone by analyzing newspaper coverage rather than official communications. By contrast, because our framework analyzes the~\gls{ecb}'s transcripts directly, the~resulting sentiment measure is inherently faster, completely avoids downstream journalistic bias, and successfully scales to cover modern macroeconomic transformations such as the~COVID-19 market crash and the~recent inflation spikes. Ultimately, this validation check demonstrates that neither machine learning model is merely guessing; instead, both architectures successfully capture 25 years of European monetary policy dynamics simply by decoding the~exact vocabulary deployed by central bankers.
 
 %─────────────────────────────────────────────────────────────────────────────
 %  §3.3  Sectional Analysis: Prepared Speech versus Live Q&A
