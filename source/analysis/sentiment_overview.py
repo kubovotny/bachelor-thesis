@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.patches as mpatches
 import pandas as pd
-import numpy as np
 from pathlib import Path
 
 # ── adjust this import to match your package structure ──────────────────────
@@ -18,7 +17,7 @@ from ..data.model_data import return_data
 from .. import OUTPUT
 # ────────────────────────────────────────────────────────────────────────────
 
-OUTPUT_DIR = Path(OUTPUT) / "results"
+OUTPUT_DIR = Path(OUTPUT) / "results/base"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 # ── Matplotlib style ─────────────────────────────────────────────────────────
@@ -49,7 +48,7 @@ ROLLING_WINDOW = "180D"   # 6-month time-based window — consistent across all 
 # ── Historical events for Figure 3.2 ────────────────────────────────────────
 EVENTS = [
     ("2008-10-08", "GFC\nrate cut",       "below"),
-    ("2012-07-26", '"Whatever\nit takes"', "above"),
+    ("2012-07-26", '"Whatever\nit takes"', "below"),
     ("2015-01-22", "QE\nlaunched",         "below"),
     ("2019-09-12", "Rates\nneg. again",    "above"),
     ("2020-03-12", "COVID\nemergency",     "below"),
@@ -61,9 +60,10 @@ EVENTS = [
 # ── Data loading ─────────────────────────────────────────────────────────────
 def load_data() -> pd.DataFrame:
     df = return_data(
-        market_data="ECB Money Market.xlsx",   # contains MRO — not needed for 3.1 but kept for later reuse
+        market_data="ECB Money Market.xlsx",
         IS_QA_division=False,
-        qa_options="both_together",
+        qa_options="just_answers",
+        word_limit=150,
         with_label=False,
     )
     df = df.sort_values("date").reset_index(drop=True)
@@ -152,7 +152,7 @@ def plot_fig_3_1(df: pd.DataFrame, save: bool = True):
 
     fig.tight_layout()
     if save:
-        path = OUTPUT_DIR / "fig_3_1_aggregate_sentiment.pdf"
+        path = OUTPUT_DIR / "fig_aggregate_sentiment.pdf"
         fig.savefig(path, bbox_inches="tight")
         print(f"Saved → {path}")
     return fig, ax
@@ -197,11 +197,10 @@ def plot_fig_3_2(df: pd.DataFrame, save: bool = True):
 
     fig.tight_layout()
     if save:
-        path = OUTPUT_DIR / "fig_3_2_sentiment_events.pdf"
+        path = OUTPUT_DIR / "fig_sentiment_events.pdf"
         fig.savefig(path, bbox_inches="tight")
         print(f"Saved → {path}")
     return fig, ax
-
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
@@ -211,6 +210,6 @@ if __name__ == "__main__":
     print(f"Date range: {df['date'].min().date()} → {df['date'].max().date()}")
     print(f"N meetings: {len(df)}")
 
-    plot_fig_3_1(df, False)
-    plot_fig_3_2(df, False)
+    plot_fig_3_1(df)
+    plot_fig_3_2(df)
     plt.show()
