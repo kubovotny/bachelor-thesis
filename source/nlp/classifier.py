@@ -13,7 +13,8 @@ from .. import DATA_DIR
 import pandas as pd
 import time
 
-SENTIMENT_MODELS: Dict[Literal["finbert", "roberta"], str] = {
+SENTIMENT_MODEL_NAME = Literal["finbert", "roberta"]
+SENTIMENT_MODELS: Dict[SENTIMENT_MODEL_NAME, str] = {
     "roberta": "Moritz-Pfeifer/CentralBankRoBERTa-sentiment-classifier",
     "finbert": "ProsusAI/finbert",
 }
@@ -27,7 +28,7 @@ except:
     HF_TOKEN = None
 
 
-def get_sentiment(text, model: Literal["finbert", "roberta"] = "finbert"):
+def get_sentiment(text, model: SENTIMENT_MODEL_NAME = "finbert"):
     if model not in _classifier_cache:
         _classifier_cache[model] = pipeline(
             "text-classification",
@@ -94,15 +95,15 @@ ZERO_SHOT_DESC2LABEL: Dict[
     ],
 ] = inverse_dict(ZERO_SHOT_LABELS)
 _topic_classifier_cache: Dict[str, ZeroShotClassificationPipeline] = {}
-
-SENTIMENT_MODELS: Dict[Literal["facebook", "moritz"], str] = {
+TOPIC_MODEL_NAME = Literal["facebook", "moritz"]
+TOPIC_MODELS: Dict[TOPIC_MODEL_NAME, str] = {
     "facebook": "facebook/bart-large-mnli",
     "moritz": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",
 }
 
 
 def label_paragraph(
-    text, multi_label: bool = True, model: Literal["facebook", "moritz"] = "facebook"
+    text, multi_label: bool = True, model: TOPIC_MODEL_NAME = "facebook"
 ):
     if isinstance(text, str):
         text = [text]

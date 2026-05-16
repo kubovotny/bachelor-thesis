@@ -14,7 +14,8 @@ def drop_and_make_tables():
     for name, schema in TABLE_SCHEME.items():
         cur.execute(f"CREATE TABLE {name}({schema})")
 
-    cur.execute('INSERT INTO sentiment_models VALUES("finbert"),("roberta")')
+    cur.execute('INSERT INTO sentiment_models VALUES("finbert"),("roberta");')
+    cur.execute('INSERT INTO topic_models VALUES("facebook"),("moritz");')
     conn.commit()
 
 

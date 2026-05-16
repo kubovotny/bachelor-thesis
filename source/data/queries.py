@@ -46,12 +46,13 @@ def return_sentiment(
 ):
     conn, cur = connect_to_db()
     sql = f"""SELECT DATE(st.date) date, ch.rowid, CASE ch.part WHEN 0 THEN "IS" ELSE "QA" END part, ch.is_question=1 is_question, ch.chunk, se.score, sm.name sentiment_model\
-{", tl.name topic, t.prob topic_prob" if with_label else ""} FROM sentiments se
+{", tl.name topic, t.prob topic_prob, tm.name topic_model" if with_label else ""} FROM sentiments se
 JOIN chunks ch ON ch.rowid = se.chunk_rowid
 JOIN statements st ON st.rowid = ch.statement_id
 JOIN sentiment_models sm ON sm.rowid = se.model_id
 {("JOIN topics t ON t.chunk_rowid = se.chunk_rowid\n" + 
- "JOIN topic_labels tl ON tl.rowid = t.label_rowid\n" )if with_label else ""}\
+ "JOIN topic_labels tl ON tl.rowid = t.label_rowid\n" + 
+"JOIN topic_models tm ON tm.rowid = t.model_id " )if with_label else ""}\
 {"WHERE ch.chunk_limit = ?" if limit_version is not None else ""}
 ORDER BY st.date, ch.part, ch.chunk_id;
 """
@@ -148,7 +149,7 @@ def insert_topic_labels():
         "FISCAL_AND_STRUCTURAL": "government budgets, national debt, public spending, and structural reforms",
         "OTHER_IRRELEVANT": "general greetings, purely political questions, unrelated remarks, climate change, or personal comments (excluding macroeconomic impacts)",
     }
-    sql = "INSERT INTO topic_labels VALUES(0, ?, ?);"
+    sql = "INSERT INTO topic_labels(version, name, description) VALUES(0, ?, ?);"
     for item in topics.items():
         cur.execute(sql, item)
     conn.commit()
@@ -161,21 +162,30 @@ def insert_topics(
 ):
     conn, cur = connect_to_db()
     if df is not None:
-        df[["chunk_rowid", "label_rowid", "prob"]].to_sql(
+        df[["chunk_rowid", "label_rowid", "prob", "model_id"]].to_sql(
             "topics", conn, index=False, if_exists="append"
         )
         return
     df = concat_intro_qa(df_intro, df_qa)[
-        ["statement_id", "part", "chunk_id", "is_question", "label", "prob"]
+        ["statement_id", "part", "chunk_id", "is_question", "label", "prob", "model_id"]
     ]
-    for _, (statement_id, part, chunk_id, is_question, label, prob) in df.iterrows():
+    for _, (
+        statement_id,
+        part,
+        chunk_id,
+        is_question,
+        label,
+        prob,
+        model_id,
+    ) in df.iterrows():
         print(
             """INSERT INTO topics 
                     VALUES(
                     (SELECT rowid FROM chunks WHERE statement_id = ? AND part = ? AND chunk_id = ? AND is_question = ?),
-                    (SELECT rowid FROM topic_labels WHERE name  = ?),?
+                    (SELECT rowid FROM topic_labels WHERE name  = ?),?,
+                    ?
                     )""",
-            (statement_id, part, chunk_id, is_question, label, prob),
+            (statement_id, part, chunk_id, is_question, label, prob, model_id),
         )
 
     conn.commit()

@@ -47,15 +47,20 @@ def return_sentiment_agg(
     word_limit: CHUNK_LIMIT_TYPE = 200,
     IS_QA_division: bool = True,
     qa_division: bool = True,
+    topic_model: Literal["moritz", "facebook"] = "facebook",
+    drop_irrelevant: bool = False,
 ):
-    data = return_sentiment_chunk_data(word_limit, with_label)
+    data = return_sentiment_chunk_data(word_limit, topic_model, drop_irrelevant)
     grouping_columns: List["str"] = ["date"]
     if IS_QA_division:
         grouping_columns.append("part")
     if with_label:
         grouping_columns.append("topic")
+    else:
+        data = data.drop(columns=["topic", "topic_prob"]).drop_duplicates()
     if qa_division:
         grouping_columns.append("is_question")
+
     grouping_columns += ["sentiment_model"]
     data_agg = data.groupby(grouping_columns).agg(
         {"score": ["min", "mean", "max", "std"]}
@@ -71,12 +76,19 @@ def return_sentiment_agg_pivot(
     IS_QA_division: bool = True,
     qa_options: QA_OPTIONS = "just_answers",
     with_label: bool = True,
+    topic_model: Literal["moritz", "facebook"] = "facebook",
+    drop_irrelevant: bool = False,
 ) -> pd.DataFrame:
 
     agg_data = return_sentiment_agg(
-        with_label, word_limit, IS_QA_division, qa_options != "both_together"
+        with_label,
+        word_limit,
+        IS_QA_division,
+        qa_options != "both_together",
+        topic_model=topic_model,
+        drop_irrelevant=drop_irrelevant,
     )
-
+    print(agg_data)
     agg_data["label"] = agg_data.apply(
         (lambda row: label_formatter(row, qa_options == "both_divided")),
         axis=1,
@@ -84,7 +96,6 @@ def return_sentiment_agg_pivot(
     if qa_options.startswith("just"):
         agg_data = agg_data[agg_data["is_question"] == (qa_options == "just_questions")]
         agg_data.drop(columns=["is_question"], inplace=True)
-
     # Pivot the long table into wide format
     df_pivot: pd.DataFrame = agg_data.pivot(
         index="date", columns="label", values=["max", "mean", "min", "std"]
@@ -110,6 +121,7 @@ def return_sentiment_agg_pivot(
 
 def return_sentiment_chunk_data(
     limit_version: CHUNK_LIMIT_TYPE = 200,
+    topic_model: Literal["facebook", "moritz"] = "facebook",
     drop_irrelevant: bool = False,
 ) -> pd.DataFrame:
     data = return_sentiment(limit_version, with_label=True)
@@ -117,33 +129,33 @@ def return_sentiment_chunk_data(
         data = data[
             ~((data["topic"] == "OTHER_IRRELEVANT") & (data["topic_prob"] > 0.7))
         ]
-    return data
+    return data[data["topic_model"] == topic_model].drop(columns="topic_model")
 
 
 if __name__ == "__main__":
-    # print(
-    #     return_sentiment_agg_pivot(
-    #         word_limit=50,
-    #         with_label=False,
-    #         qa_options="both_together",
-    #         IS_QA_division=False,
-    #     )
-    # )
-    data = pd.pivot_table(
-        return_sentiment_chunk_data(drop_irrelevant=True),
-        ["score"],
-        ["date", "chunk", "part"],
-        ["sentiment_model"],
-    ).reset_index()
-    data.columns = [col[1] if col[1] else col[0] for col in data.columns]
-    # print(data.columns)
-    data["diff"] = abs(data["finbert"] - data["roberta"])
-    data["length"] = data["chunk"].str.len()
-    # data["lendiff"] = data["diff"] / data["len"] ** 1.2
     print(
-        data.query("length < 150")
-        .sort_values("diff", ascending=True)
-        .head(100)
-        .sample(1)[["part", "chunk", "finbert", "roberta"]]
-        .to_csv()
+        return_sentiment_agg_pivot(
+            word_limit=350,
+            with_label=True,
+            qa_options="both_together",
+            IS_QA_division=False,
+        )
     )
+    # data = pd.pivot_table(
+    #     return_sentiment_chunk_data(drop_irrelevant=True),
+    #     ["score"],
+    #     ["date", "chunk", "part"],
+    #     ["sentiment_model"],
+    # ).reset_index()
+    # data.columns = [col[1] if col[1] else col[0] for col in data.columns]
+    # # print(data.columns)
+    # data["diff"] = abs(data["finbert"] - data["roberta"])
+    # data["length"] = data["chunk"].str.len()
+    # # data["lendiff"] = data["diff"] / data["len"] ** 1.2
+    # print(
+    #     data.query("length < 150")
+    #     .sort_values("diff", ascending=True)
+    #     .head(100)
+    #     .sample(1)[["part", "chunk", "finbert", "roberta"]]
+    #     .to_csv()
+    # )

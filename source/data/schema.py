@@ -35,12 +35,19 @@ TABLE_SCHEME = {
               chunk_rowid           INT,
               label_rowid           INT,
               prob                  REAL,
+              model_id              INT,
               PRIMARY KEY (chunk_rowid, label_rowid),
               FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid)
-              FOREIGN KEY (label_rowid) REFERENCES topic_labels(rowid)""",
+              FOREIGN KEY (label_rowid) REFERENCES topic_labels(rowid),
+              FOREIGN KEY (model_id) REFERENCES topic_models(rowid)""",
+    "topic_models": """
+              name            TEXT""",
 }
 
 
 def return_database_scheme():
     for name, schema in TABLE_SCHEME.items():
         print(f"CREATE TABLE {name}({schema});")
+
+if __name__ == "__main__":
+    return_database_scheme()
