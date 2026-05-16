@@ -120,7 +120,7 @@ def label_paragraph(
     for out in _topic_classifier_cache[model](
         text if isinstance(text, list) else text.to_list(),
         candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()),
-        batch_size=BATCH_SIZE_TOPIC,
+        batch_size=BATCH_SIZE_TOPIC // (2 if model == "moritz" else 1),
         multi_label=multi_label,  # ← key change
         hypothesis_template="This passage discusses {}.",  # ← domain-tuned template
     ):
@@ -131,12 +131,12 @@ def label_paragraph(
 def label_choose_multi(out: dict, threshold: float = 0.45):
     """Return list of (label_rowid, prob) tuples above threshold; fall back to top-1 if none."""
     pairs = [
-        (ZERO_SHOT_DESC2LABEL[lbl][0], s)
+        (ZERO_SHOT_DESC2LABEL[lbl][1], s)
         for lbl, s in zip(out["labels"], out["scores"])
         if s >= threshold
     ]
     if not pairs:
-        pairs = [(ZERO_SHOT_DESC2LABEL[out["labels"][0]][0], out["scores"][0])]
+        pairs = [(ZERO_SHOT_DESC2LABEL[out["labels"][0]][1], out["scores"][0])]
     return pairs
 
 

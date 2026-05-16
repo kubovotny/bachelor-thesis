@@ -37,5 +37,5 @@ def label_maker(
 
 
 if __name__ == "__main__":
-    for limit in 200, 50, 1:
-        label_maker(MODEL_SELECTION[0], limit, save_to_db=True)
+    for limit in 350, 200, 50, 1:
+        label_maker(MODEL_SELECTION[1], limit, save_to_db=True)
