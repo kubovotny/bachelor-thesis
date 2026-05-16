@@ -23,11 +23,11 @@ A persistent vertical gap separates the two series throughout the sample. FinBER
     \label{tab:descriptives}
     \begin{tabular}{@{}lrrrrr@{}}
         \toprule
-        \textbf{Model}    & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} & $\boldsymbol{n}$ \\ \midrule
-        FinBERT [IS]      & $+0.197$      & $0.20$       & $-0.38$      & $+0.73$      & $272$            \\
-        FinBERT [Q\&A]    & $+0.057$      & $0.07$       & $-0.18$      & $+0.27$      & $272$            \\
-        CB-RoBERTa [IS]   & $-0.147$      & $0.16$       & $-0.63$      & $+0.30$      & $272$            \\
-        CB-RoBERTa [Q\&A] & $-0.340$      & $0.08$       & $-0.56$      & $-0.04$      & $272$            \\ \bottomrule
+        \textbf{Model} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} & $\boldsymbol{n}$ \\ \midrule
+        FinBERT [IS]            & $+0.197$ & $0.20$ & $-0.38$ & $+0.73$ & $272$ \\
+        FinBERT [Q\&A]          & $+0.057$ & $0.07$ & $-0.18$ & $+0.27$ & $272$ \\
+        CB-RoBERTa [IS]         & $-0.147$ & $0.16$ & $-0.63$ & $+0.30$ & $272$ \\
+        CB-RoBERTa [Q\&A]       & $-0.340$ & $0.08$ & $-0.56$ & $-0.04$ & $272$ \\ \bottomrule
     \end{tabular}
 \end{table}
 
@@ -39,9 +39,9 @@ To formalise the visual co-movement, Table~\ref{tab:correlation} reports the Pea
     \label{tab:correlation}
     \begin{tabular}{@{}lrr@{}}
         \toprule
-        \textbf{Section}       & \textbf{Pearson $r$} & \textbf{$p$-value} \\ \midrule
-        Introductory Statement & $0.246$              & $< 0.001$          \\
-        Q\&A Session           & $0.275$              & $< 0.001$          \\ \bottomrule
+        \textbf{Section} & \textbf{Pearson $r$} & \textbf{$p$-value} \\ \midrule
+        Introductory Statement & $0.246$ & $< 0.001$ \\
+        Q\&A Session           & $0.275$ & $< 0.001$ \\ \bottomrule
     \end{tabular}
 \end{table}
 
@@ -58,7 +58,7 @@ A correlated pair of series can still be jointly wrong. To verify that the signa
     \label{fig:sentiment_events}
 \end{figure}
 
-The sentiment series turn down sharply at the GFC anchor, recover during the ``Whatever it takes'' window, drift downward through the~protracted \gls{zlb} accommodation, dip again in 2020, and turn unambiguously upward at the onset of the 2022 hiking cycle. The qualitative alignment is sufficient to certify that the signal is not artefactual; the~more demanding tests of co-movement with continuous market variables are deferred to Section~\ref{sec:results_cycle}.
+The sentiment series turn down sharply at the GFC anchor, recover during the ``Whatever it takes'' window, drift downward through the protracted \gls{zlb} accommodation, dip again in 2020, and turn unambiguously upward at the onset of the 2022 hiking cycle. The qualitative alignment is sufficient to certify that the signal is not artefactual; the more demanding tests of co-movement with continuous market variables are deferred to Section~\ref{sec:results_cycle}.
 
 %─────────────────────────────────────────────────────────────────────────────
 \section{The Sectional Anatomy of Policy Communication}
@@ -220,20 +220,19 @@ Two regularities are visible. First, the correlation between sentiment and the p
     \centering
     \caption[Top sentiment features by absolute predictive correlation]{Top sentiment features by absolute predictive correlation. \texttt{[t-k]} denotes the feature lagged by $k$ meetings; \texttt{FB}~$=$~FinBERT, \texttt{RB}~$=$~CentralBankRoBERTa; \texttt{MP}, \texttt{QA}, \texttt{IS}~denote the topic and section subsets defined in Section~\ref{sec:aggregation}. ``Full'' uses $\Delta\text{MRO}$ on the entire sample; the \gls{zlb} column uses the Wu--Xia shadow rate.}
     \label{tab:summary}
-    TODO when random forest and topic labelling is done
     \begin{tabular}{@{}lrrrr@{}}
         \toprule
-        \textbf{Feature}      & \textbf{Pre-ZLB} & \textbf{ZLB} & \textbf{Hiking} & \textbf{Full} \\ \midrule
-        FB MP $\mu$ [t$-$1]   & $+0.67$          & $-0.65$      & $+0.64$         & $+0.60$       \\
-        FB MP $\mu$ [t$-$2]   & $+0.63$          & $-0.66$      & $+0.79$         & $+0.57$       \\
-        FB     $\mu$ [t$-$5]  & $+0.81$          & $-0.55$      & $+0.57$         & $+0.56$       \\
-        FB MP $\mu$ [t$-$4]   & $+0.55$          & $-0.62$      & $+0.82$         & $+0.56$       \\
-        FB QA $\mu$ [t$-$2]   & $+0.54$          & $-0.43$      & $+0.43$         & $+0.52$       \\
-        FB QA $\mu$ [t$-$5]   & $+0.54$          & $-0.35$      & $+0.49$         & $+0.51$       \\
-        FB     $\mu$ [t$-$2]  & $+0.81$          & $-0.58$      & $+0.29$         & $+0.50$       \\
-        FB     $\mu$ [t$-$7]  & $+0.56$          & $-0.53$      & $+0.78$         & $+0.49$       \\
-        RB EP $\mu$ [t$-$3]   & $+0.75$          & $-0.41$      & $-0.17$         & $+0.49$       \\
-        FB     $\mu$ [t$-$11] & $+0.38$          & $-0.45$      & $+0.83$         & $+0.47$       \\ \bottomrule
+        \textbf{Feature}    & \textbf{Pre-ZLB} & \textbf{ZLB} & \textbf{Hiking} & \textbf{Full} \\ \midrule
+        FB MP $\mu$ [t$-$1] & $+0.67$ & $-0.65$ & $+0.64$ & $+0.60$ \\
+        FB MP $\mu$ [t$-$2] & $+0.63$ & $-0.66$ & $+0.79$ & $+0.57$ \\
+        FB     $\mu$ [t$-$5] & $+0.81$ & $-0.55$ & $+0.57$ & $+0.56$ \\
+        FB MP $\mu$ [t$-$4] & $+0.55$ & $-0.62$ & $+0.82$ & $+0.56$ \\
+        FB QA $\mu$ [t$-$2] & $+0.54$ & $-0.43$ & $+0.43$ & $+0.52$ \\
+        FB QA $\mu$ [t$-$5] & $+0.54$ & $-0.35$ & $+0.49$ & $+0.51$ \\
+        FB     $\mu$ [t$-$2] & $+0.81$ & $-0.58$ & $+0.29$ & $+0.50$ \\
+        FB     $\mu$ [t$-$7] & $+0.56$ & $-0.53$ & $+0.78$ & $+0.49$ \\
+        RB EP $\mu$ [t$-$3] & $+0.75$ & $-0.41$ & $-0.17$ & $+0.49$ \\
+        FB     $\mu$ [t$-$11]& $+0.38$ & $-0.45$ & $+0.83$ & $+0.47$ \\ \bottomrule
     \end{tabular}
 \end{table}
 
@@ -242,44 +241,47 @@ The lag-and-era pattern in Table~\ref{tab:summary} motivates the feature selecti
 \subsection{Predicting the Direction of ECB Rate Decisions}
 \label{sec:results_prediction}
 
-The predictive task is operationalised as a three-class classification problem. Each press conference is assigned a label $y_t \in \{-1, 0, +1\}$ corresponding to the sign of the change in the \gls{mro} rate at that meeting: $-1$ if the rate is cut, $0$ if held, and $+1$ if hiked. The class distribution is heavily skewed towards \emph{hold} ($79.2\%$ of meetings), which sets a high naive baseline: a classifier that always predicts \emph{hold} achieves $79.2\%$ accuracy.
+The predictive task is operationalised as a three-class classification problem. Each press conference is assigned a label $y_t \in \{-1, 0, +1\}$ corresponding to the sign of the change in the \gls{mro} rate at that meeting: $-1$ if cut, $0$ if held, and $+1$ if hiked. The class distribution is heavily skewed towards \emph{hold} ($79.2\%$ of $280$ meetings), which sets a demanding naive baseline: a classifier that always predicts \emph{hold} achieves $79.2\%$ raw accuracy.
 
-Four classifiers are compared:
-\begin{itemize}
-    \item \textbf{M1 (Baseline)}: a logistic regression on $\{\text{mro\_lag},\, \text{mro\_change\_lag}\}$. This is the rate-history-only benchmark.
-    \item \textbf{M2 (Sentiment)}: a logistic regression on four sentiment features. FinBERT overall mean at lag $2$, FinBERT overall mean at lag $5$, FinBERT \gls{is} mean at lag $2$, and the FinBERT \gls{is} standard deviation. This isolates the marginal informational content of the textual signal.
-    \item \textbf{M3 (Augmented)}: a logistic regression on the union of M1 and M2 features. This tests whether sentiment adds information beyond the rate history.
-    \item \textbf{M4 (Random Forest)}: a random-forest classifier on the M3 feature set. This relaxes the linearity assumption and allows the model to capture interactions between rate history and sentiment.
-\end{itemize}
-
-All models are fitted with class-balanced loss weights and evaluated by $5$-fold time-series cross-validation, which respects the temporal ordering of the meetings and never trains on future data. The performance metrics are the cross-validated accuracy (point estimate $\pm$ across-fold standard deviation) and the multi-class area under the receiver-operating curve (AUC, one-vs-rest). Figure~\ref{fig:performance} reports both metrics for the four models; the dashed grey line marks the naive baseline.
+Four classifiers are compared. \textbf{M1 (Baseline)} is a logistic regression on the rate history only $\{\Delta\text{MRO}_{t-1},\, \text{MRO}_{t-1}\}$. \textbf{M2 (Sentiment)} is a logistic regression on four sentiment features---FinBERT \gls{is} mean at lag $2$, FinBERT overall mean at lags $2$ and $5$, and the FinBERT \gls{is} standard deviation---isolating the marginal content of the textual signal. \textbf{M3 (Augmented)} adds the M1 rate-history features to M2, testing whether sentiment adds information beyond the rate history. \textbf{M4 (Random Forest)} applies a 400-tree ensemble with bootstrapping and restricted depth ($\texttt{max\_depth}=4$) to the M3 feature set, relaxing the linearity assumption while guarding against over-fitting on the small sample of changed meetings ($n_{\text{changed}} \approx 58$). All models use class-balanced loss weights and are evaluated by $5$-fold time-series cross-validation, which respects the temporal ordering of meetings and never conditions on future data.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\linewidth]{images/results/model/fig_performance.pdf}
-    \caption[Cross-validated performance of the four predictive models]{Cross-validated performance of the four predictive models. Solid bars: accuracy; outlined bars: AUC (one-vs-rest). Error bars on the accuracy bars show the standard deviation across folds. The dashed line marks the naive baseline of always predicting \textit{hold}.}
+    \caption[Cross-validated performance of the four predictive models]{Cross-validated performance of the four predictive models ($n = 275$--$278$). Solid bars: CV accuracy; outlined bars: AUC (one-vs-rest). Error bars show the standard deviation of accuracy across the five folds. The dashed line marks the naive baseline of always predicting \textit{hold}.}
     \label{fig:performance}
 \end{figure}
 
-Three observations follow. First, the accuracy of the sentiment-only model (M2) is below the naive baseline. This is the expected outcome of a class-balanced classifier on a heavily imbalanced sample: M2 makes positive predictions for the minority classes (\textit{hike} and \textit{cut}) and is consequently penalised on accuracy whenever those predictions are wrong, even when the model identifies the correct direction. Accuracy therefore systematically understates the value of M2 on this dataset, which is why we read the comparison primarily through the AUC. Second, the AUC ordering is M1 $<$ M2 $<$ M3 $<$ M4. Adding sentiment to the rate-history baseline lifts AUC from approximately $0.68$ (M1) to $0.72$ (M3). The random-forest extension (M4) provides a further modest gain, consistent with the presence of mild non-linearities and interactions between rate history and sentiment that the logistic specification cannot capture. Third, the gap between M3 and M2 is informative: the sentiment-only model does almost as well in terms of AUC as the augmented model, which means most of the predictive content captured by M3 is in the sentiment features rather than the rate-history features.
+Figure~\ref{fig:performance} reports accuracy and AUC for all four models. Three observations follow. First, M2's raw accuracy ($0.46 \pm 0.18$) is well below the naive baseline. This is the expected outcome of a class-balanced classifier on a heavily imbalanced sample: M2 actively predicts the minority classes (\textit{hike} and \textit{cut}) and is penalised on accuracy whenever those predictions are incorrect, even when the model successfully identifies the direction. Raw accuracy therefore understates M2's value, and the primary metric for comparison is the AUC. Second, the AUC ordering is strict: M1 ($0.680$) $<$ M2 ($0.706$) $<$ M3 ($0.719$) $<$ M4 ($0.741$). Each successive model adds a meaningful increment: the largest single step arises from adding sentiment to the rate history (M1 $\rightarrow$ M3, $+0.039$), while relaxing the linearity assumption adds a further $+0.022$ (M3 $\rightarrow$ M4). Third, the gap between M2 and M3 is small: the sentiment-only model captures most of the uplift over the rate-history baseline, confirming that the textual features rather than the rate-history features drive the incremental predictability.
+
+To compare the two best models in detail, Figure~\ref{fig:comparison_m3_m4} places the confusion matrices of M3 and M4 side by side.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.55\linewidth]{images/results/model/fig_confusion.pdf}
-    \caption[Confusion matrix of the augmented model (M3)]{Confusion matrix of the augmented logistic model (M3). Rows are true labels; columns are predicted labels.}
-    \label{fig:confusion}
+    \includegraphics[width=\linewidth]{images/results/model/fig_comparison_m3_m4.pdf}
+    \caption[Confusion matrices of M3 and M4]{Confusion matrices of M3 (Augmented Logit, left) and M4 (Random Forest, right). Rows are true labels; columns are predicted labels. Per-class recall is reported in the subtitle of each panel.}
+    \label{fig:comparison_m3_m4}
 \end{figure}
 
-The confusion matrix in Figure~\ref{fig:confusion} disaggregates the M3 predictions by true class. The model identifies $25$ of $29$ cuts ($86\%$) and $22$ of $28$ hikes ($79\%$), but only $128$ of $218$ holds ($59\%$). The errors on the \emph{hold} class are not symmetric: $48$ holds are mistakenly classified as cuts and $42$ as hikes. In substantive terms, the model is reliable for the directional question (\textit{is the next move up or down?}) but less precise about the timing of the actual move within a sequence of holds---exactly the pattern one would expect from a sentiment signal that leads the rate change by several meetings (Section~\ref{sec:results_correlations}).
+The confusion matrices in Figure~\ref{fig:comparison_m3_m4} reveal a clear qualitative difference between the two models. M3 identifies $24$ of $29$ cuts (recall $83\%$) and $22$ of $28$ hikes ($79\%$), but only $127$ of $218$ holds ($58\%$): $48$ holds are labelled as cuts and $43$ as hikes. M4's full-sample confusion matrix is markedly better---Cut $97\%$, Hold $77\%$, Hike $89\%$---but these full-sample figures should be read with care. A bootstrap-aggregating ensemble fits its own training sample very closely, so the training-set confusion matrix overstates the out-of-sample precision; the honest comparison between M3 and M4 is the cross-validated AUC ($0.719$ versus $0.741$). What the side-by-side confusion matrices do illustrate reliably is the direction of improvement: M4 meaningfully reduces the false positives on the \textit{hold} class relative to M3, recovering meetings that the linear specification misclassifies as directional decisions. The substantive interpretation remains the same for both models: they are reliable for the directional question (\textit{is the next move up or down?}) but less precise about the timing within a sequence of hold meetings, exactly the pattern expected from a signal that leads the rate by several meetings.
+
+The signed coefficients of M3 and the feature importances of M4 are reported separately in Figures~\ref{fig:coefficients} and~\ref{fig:rf_importances} to preserve the interpretive clarity of each representation.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/model/fig_coefficients.pdf}
-    \caption[Standardised coefficients of the augmented logistic model (M3)]{Standardised coefficients of the augmented logistic model (M3). Coefficients are reported for each of the three classes (cut, hold, hike) and each of the model's input features.}
+    \caption[Standardised coefficients of M3 by class]{Standardised multinomial logistic coefficients of M3 (Augmented Logit) by target class (cut, hold, hike).}
     \label{fig:coefficients}
 \end{figure}
 
-The signed coefficients in Figure~\ref{fig:coefficients} confirm the economic intuition. The FinBERT overall mean at lag $5$ loads positively on the \textit{hike} class and negatively on the \textit{cut} class, i.e. hawkish language five meetings ago is associated with a higher probability of a hike today and a lower probability of a cut. The FinBERT \gls{is} mean at lag $2$ shows the same sign pattern but at a shorter horizon, consistent with the \gls{is}-led short-run channel identified in Section~\ref{sec:event_study}. The lagged \gls{mro} rate loads positively on \textit{hold}, capturing the institutional reality that the \gls{ecb} rarely reverses direction at consecutive meetings. The standard deviation of \gls{is} sentiment loads negatively on \textit{hold}, indicating that meetings preceded by more volatile communication are more likely to be followed by an actual decision rather than a continuation of the status quo.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.80\linewidth]{images/results/model/fig_rf_importancies.pdf}
+    \caption[M4 Random Forest feature importance]{Impurity-decrease feature importance of M4 (Random Forest). Features are labelled consistently with Figure~\ref{fig:coefficients}.}
+    \label{fig:rf_importances}
+\end{figure}
+
+The two representations are mutually consistent and reinforce the same economic narrative. In M3, FinBERT overall mean at lag $2$ loads positively on \textit{hike} and negatively on \textit{cut}: hawkish language two meetings ago is the strongest short-horizon directional predictor. FinBERT overall mean at lag $5$ carries the same sign pattern at a longer horizon, consistent with the six-meeting telegraphing window identified in Section~\ref{sec:event_study}. The lagged \gls{mro} rate loads positively on \textit{hold}, capturing the low sequential reversal rate of the \gls{ecb}. The standard deviation of \gls{is} sentiment loads negatively on \textit{hold}: internally volatile communication is a marker of a meeting at which an actual decision is forthcoming. In M4, FinBERT overall mean at lag $2$ is the single highest-importance feature (impurity decrease $\approx 0.20$), with FinBERT \gls{is} mean at lag $2$ and $\Delta\text{MRO}_{t-1}$ close behind. The Random Forest thus assigns the greatest discriminating power to the same short-horizon textual channel that the logistic specification identifies, rather than uncovering an entirely different non-linear signal. The $+0.022$ AUC gain of M4 over M3 is therefore best interpreted as a quantitative tightening of a pattern already present in M3, not as evidence of a qualitatively different informational source.
 
 \subsection{Communication Surprise and Market Volatility}
 \label{sec:results_surprise}
@@ -296,4 +298,4 @@ The predictive analysis has so far focused on the level of sentiment and its lag
 The results echo Section~\ref{sec:divergence}: the directional correlations between communication surprise and the directional OIS move are statistically indistinguishable from zero (top row, all $|r| < 0.05$), but the standard deviation of sentiment is mildly negatively correlated with the absolute size of the OIS move ($r = -0.137$ for the CentralBankRoBERTa overall standard deviation, $p < 0.05$, bottom-right panel). The sign mirrors the communicative-cancellation finding: more internally variable communication is associated with smaller market reactions. This is consistent with a market that interprets internal variability as an absence of decisive policy news and therefore declines to revise its rate expectations.
 
 \paragraph{Summary of Chapter Findings.}
-Across the four arcs of analysis, four substantive findings have emerged. First, the two sentiment classifiers produce coherent, mutually validating signals that align with the major historical turning points of euro-area monetary policy. Second, the prepared \gls{is} and the spontaneous \gls{qa} are structurally different communicative acts, and the journalist--\gls{ecb} gap is a stable institutional feature that, if not separated by the pipeline, would have contaminated the policy signal by approximately $0.3$ on the unit scale. Third, sentiment leads the \gls{ecb}'s rate decisions by between two and ten meetings, with the lead being long and gradual in the pre-\gls{zlb} era and approximately symmetric in the post-\gls{zlb} hiking cycle. Fourth, sentiment features carry incremental predictive content beyond the rate history itself: AUC rises from $0.68$ for the rate-history baseline to $0.72$--$0.74$ once sentiment and its non-linear interactions are added. The implications of these findings for policy makers, for the design of future sentiment pipelines, and for the limitations that remain are discussed in Chapter~\ref{ch:discussion}.
+Across the four arcs of analysis, four substantive findings have emerged. First, the two sentiment classifiers produce coherent, mutually validating signals that align with the major historical turning points of euro-area monetary policy. Second, the prepared \gls{is} and the spontaneous \gls{qa} are structurally different communicative acts, and the journalist--\gls{ecb} gap is a stable institutional feature that, if not separated by the pipeline, would have contaminated the policy signal by approximately $0.3$ on the unit scale. Third, sentiment leads the \gls{ecb}'s rate decisions by between two and ten meetings, with the lead being long and gradual in the pre-\gls{zlb} era and approximately symmetric in the post-\gls{zlb} hiking cycle. Fourth, sentiment features carry incremental predictive content beyond the rate history itself: AUC rises from $0.680$ (M1, rate-history only) to $0.706$ (M2, sentiment only) and $0.719$ (M3, augmented logit); a Random Forest on the same features adds a further increment to $0.741$, consistent with mild non-linear interactions at the small-sample limit. The implications of these findings for policy makers, for the design of future sentiment pipelines, and for the limitations that remain are discussed in Chapter~\ref{ch:discussion}.
