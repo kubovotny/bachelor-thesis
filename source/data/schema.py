@@ -4,6 +4,8 @@ from typing import Literal, List
 DATABASE = f"{DATA_DIR}/statements.db"
 CHUNK_LIMIT_TYPE = Literal[1, 50, 200, 350]
 CHUNK_LIMITS: List[CHUNK_LIMIT_TYPE] = [1, 50, 200, 350]
+
+
 TABLE_SCHEME = {
     "statements": """
               date            TEXT,

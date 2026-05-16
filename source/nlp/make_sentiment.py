@@ -2,11 +2,12 @@ import time
 from .classifier import get_sentiment, calculate_sentiment
 from typing import Literal, List, Dict
 import pandas as pd
-from ..data.connection import (
+from ..data.queries import (
     insert_sentiments,
     return_chunks,
     return_limits,
     CHUNK_LIMIT_TYPE,
+    clear_sentiment_for_limit_model,
 )
 
 MODEL_SELECTION: List[Literal["finbert", "roberta"]] = ["finbert", "roberta"]
@@ -52,6 +53,7 @@ def chunk_sentiment_maker(
         )
         chunked_df["model_id"] = 1 if model == "finbert" else 2
         if save_to_db:
+            clear_sentiment_for_limit_model(word_limit, model)
             insert_sentiments(df=chunked_df)
         print(f"LIMIT {word_limit} - TIME: {time.time() - start}")
         return chunked_df

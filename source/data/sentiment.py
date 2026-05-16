@@ -142,10 +142,11 @@ def return_sentiment_chunk_data(
 if __name__ == "__main__":
     print(
         return_sentiment_agg_pivot(
-            word_limit=350,
+            word_limit=200,
             with_label=True,
             qa_options="both_together",
             IS_QA_division=False,
+            topic_model="facebook"
         )
     )
     # data = pd.pivot_table(

@@ -1,11 +1,11 @@
 from .connection import connect_to_db
 import pandas as pd
 from .. import DATA_DIR, PASSWORD
-from typing import Literal, List
+from typing import Literal
+from .schema import CHUNK_LIMIT_TYPE, CHUNK_LIMITS
 
 DATABASE = f"{DATA_DIR}/statements.db"
-CHUNK_LIMIT_TYPE = Literal[1, 50, 100, 150, 200, 250, 300, 350]
-CHUNK_LIMITS: List[CHUNK_LIMIT_TYPE] = [1, 50, 100, 150, 200, 250, 300, 350]
+
 
 
 def return_limits():
@@ -191,7 +191,7 @@ def insert_topics(
     conn.commit()
 
 
-def clear_topics_for_limit(chunk_limit: int, model:Literal["facebook","moritz"]):
+def clear_topics_for_limit_model(word_limit: int, model: Literal["facebook", "moritz"]):
     model_id = 1 if model == "facebook" else 2
     conn, cur = connect_to_db()
     cur.execute(
@@ -199,9 +199,25 @@ def clear_topics_for_limit(chunk_limit: int, model:Literal["facebook","moritz"])
         DELETE FROM topics
         WHERE chunk_rowid IN (SELECT rowid FROM chunks WHERE chunk_limit = ?) AND model_id = ?
     """,
-        (chunk_limit, model_id),
+        (word_limit, model_id),
     )
     conn.commit()
+
+
+def clear_sentiment_for_limit_model(
+    word_limit: int, model: Literal["finbert", "roberta"]
+):
+    conn, cur = connect_to_db()
+    cur.execute(
+        """DELETE FROM sentiments
+           WHERE model_id = ?
+             AND chunk_rowid IN (
+                 SELECT rowid FROM chunks WHERE chunk_limit = ?
+             )""",
+        (1 if model == "finbert" else 2, word_limit),
+    )
+    conn.commit()
+    conn.close()
 
 
 if __name__ == "__main__":

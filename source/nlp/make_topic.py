@@ -1,5 +1,5 @@
 from .classifier import label_paragraph, label_choose_multi, TOPIC_MODEL_NAME
-from ..data.queries import insert_topics, return_chunks, clear_topics_for_limit
+from ..data.queries import insert_topics, return_chunks, clear_topics_for_limit_model
 from ..data.schema import CHUNK_LIMIT_TYPE
 import pandas as pd
 from typing import List
@@ -28,7 +28,7 @@ def label_maker(
     long_df["model_id"] = 1 if model == "facebook" else 2
     start_store = time.time()
     if save_to_db:
-        clear_topics_for_limit(limit, model=model)
+        clear_topics_for_limit_model(limit, model=model)
         insert_topics(df=long_df)
     print(
         f"LIMIT {limit} - LABEL TIME: {start_store - start_label}, STORE TIME: {time.time() - start_store}"
