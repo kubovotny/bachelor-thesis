@@ -3,7 +3,7 @@ from transformers import (
     TextClassificationPipeline,
     ZeroShotClassificationPipeline,
 )
-from typing import List, Dict, Literal
+from typing import Dict, Literal
 from huggingface_hub import login
 import os
 from ..data.queries import return_topic_labels
@@ -13,9 +13,9 @@ from .. import DATA_DIR
 import pandas as pd
 import time
 
-MODELS: Dict[Literal["finbert", "roberta"], str] = {
+SENTIMENT_MODELS: Dict[Literal["finbert", "roberta"], str] = {
     "roberta": "Moritz-Pfeifer/CentralBankRoBERTa-sentiment-classifier",
-    "finbert": "ProsusAI/finbert"
+    "finbert": "ProsusAI/finbert",
 }
 BATCH_SIZE = 256
 
@@ -27,11 +27,11 @@ except:
     HF_TOKEN = None
 
 
-def get_sentiment(text, model="finbert"):
+def get_sentiment(text, model: Literal["finbert", "roberta"] = "finbert"):
     if model not in _classifier_cache:
         _classifier_cache[model] = pipeline(
             "text-classification",
-            model=MODELS[model],
+            model=SENTIMENT_MODELS[model],
             token=HF_TOKEN,
             device=0 if torch.cuda.is_available() else -1,
             top_k=None,  # full distribution, no truncation
@@ -45,10 +45,10 @@ def calculate_sentiment(list_of_sentiments, apply_divisor=False) -> float:
     for sentiment in list_of_sentiments:
         lbl = str(sentiment["label"]).lower()
         if lbl == "positive":
-            score   += float(sentiment["score"])
+            score += float(sentiment["score"])
             divisor += float(sentiment["score"])
         elif lbl == "negative":
-            score   -= float(sentiment["score"])
+            score -= float(sentiment["score"])
             divisor += float(sentiment["score"])
     if divisor < 1e-2:
         return 0.0
@@ -93,23 +93,29 @@ ZERO_SHOT_DESC2LABEL: Dict[
         int,
     ],
 ] = inverse_dict(ZERO_SHOT_LABELS)
-topic_classifier: ZeroShotClassificationPipeline | None = None
+_topic_classifier_cache: Dict[str, ZeroShotClassificationPipeline] = {}
+
+SENTIMENT_MODELS: Dict[Literal["facebook", "moritz"], str] = {
+    "facebook": "facebook/bart-large-mnli",
+    "moritz": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",
+}
 
 
-def label_paragraph(text, multi_label: bool = True):
-    global topic_classifier
+def label_paragraph(
+    text, multi_label: bool = True, model: Literal["facebook", "moritz"] = "facebook"
+):
     if isinstance(text, str):
         text = [text]
-    if topic_classifier is None:
-        topic_classifier = pipeline(
+    if model not in _topic_classifier_cache:
+        _topic_classifier_cache[model] = pipeline(
             "zero-shot-classification",
-            model="facebook/bart-large-mnli",  # KEEP — theory.tex still valid
+            model=SENTIMENT_MODELS[model],  # KEEP — theory.tex still valid
             token=HF_TOKEN,
             device=0 if torch.cuda.is_available() else -1,
             torch_dtype=torch.float16,
         )
     results = []
-    for out in topic_classifier(
+    for out in _topic_classifier_cache[model](
         text if isinstance(text, list) else text.to_list(),
         candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()),
         batch_size=128,
@@ -123,12 +129,12 @@ def label_paragraph(text, multi_label: bool = True):
 def label_choose_multi(out: dict, threshold: float = 0.45):
     """Return list of (label_rowid, prob) tuples above threshold; fall back to top-1 if none."""
     pairs = [
-        (ZERO_SHOT_DESC2LABEL[lbl][1], s)
+        (ZERO_SHOT_DESC2LABEL[lbl][0], s)
         for lbl, s in zip(out["labels"], out["scores"])
         if s >= threshold
     ]
     if not pairs:
-        pairs = [(ZERO_SHOT_DESC2LABEL[out["labels"][0]][1], out["scores"][0])]
+        pairs = [(ZERO_SHOT_DESC2LABEL[out["labels"][0]][0], out["scores"][0])]
     return pairs
 
 
