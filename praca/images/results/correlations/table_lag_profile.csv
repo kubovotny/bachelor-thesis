@@ -1,0 +1,385 @@
+Era,Feature,Base,Lag,r,p,sig,n,target
+Full,finbert_mean,finbert_mean,0,0.1425,0.3088,,53,MRO_diff
+Full,finbert_QA_mean,finbert_QA_mean,0,0.3241,0.0179,*,53,MRO_diff
+Full,finbert_MP_mean,finbert_MP_mean,0,0.4072,0.0025,**,53,MRO_diff
+Full,roberta_EP_mean,roberta_EP_mean,0,0.3443,0.0116,*,53,MRO_diff
+Full,finbert_IS_MP_mean,finbert_IS_MP_mean,0,0.3054,0.0262,*,53,MRO_diff
+Full,finbert_QA_MP_mean,finbert_QA_MP_mean,0,0.1498,0.2844,,53,MRO_diff
+Full,finbert_mean:lag1,finbert_mean,1,0.2772,0.0445,*,53,MRO_diff
+Full,finbert_mean:lag2,finbert_mean,2,0.5017,0.0001,***,53,MRO_diff
+Full,finbert_mean:lag3,finbert_mean,3,0.4266,0.0014,**,53,MRO_diff
+Full,finbert_mean:lag4,finbert_mean,4,0.468,0.0004,***,53,MRO_diff
+Full,finbert_mean:lag5,finbert_mean,5,0.5649,0.0,***,52,MRO_diff
+Full,finbert_mean:lag6,finbert_mean,6,0.4504,0.0008,***,52,MRO_diff
+Full,finbert_mean:lag7,finbert_mean,7,0.4934,0.0002,***,52,MRO_diff
+Full,finbert_mean:lag8,finbert_mean,8,0.4436,0.001,***,52,MRO_diff
+Full,finbert_mean:lag9,finbert_mean,9,0.3539,0.0101,*,52,MRO_diff
+Full,finbert_mean:lag10,finbert_mean,10,0.3336,0.0157,*,52,MRO_diff
+Full,finbert_mean:lag11,finbert_mean,11,0.4715,0.0005,***,51,MRO_diff
+Full,finbert_mean:lag12,finbert_mean,12,0.2676,0.0577,,51,MRO_diff
+Full,finbert_mean:lag13,finbert_mean,13,0.1595,0.2637,,51,MRO_diff
+Full,finbert_mean:lag14,finbert_mean,14,0.3085,0.0293,*,50,MRO_diff
+Full,finbert_mean:lag15,finbert_mean,15,0.1638,0.2608,,49,MRO_diff
+Full,finbert_QA_mean:lag1,finbert_QA_mean,1,0.3544,0.0092,**,53,MRO_diff
+Full,finbert_QA_mean:lag2,finbert_QA_mean,2,0.5226,0.0001,***,53,MRO_diff
+Full,finbert_QA_mean:lag3,finbert_QA_mean,3,0.4351,0.0011,**,53,MRO_diff
+Full,finbert_QA_mean:lag4,finbert_QA_mean,4,0.411,0.0022,**,53,MRO_diff
+Full,finbert_QA_mean:lag5,finbert_QA_mean,5,0.5084,0.0001,***,52,MRO_diff
+Full,finbert_QA_mean:lag6,finbert_QA_mean,6,0.3897,0.0043,**,52,MRO_diff
+Full,finbert_QA_mean:lag7,finbert_QA_mean,7,0.4246,0.0017,**,52,MRO_diff
+Full,finbert_QA_mean:lag8,finbert_QA_mean,8,0.3328,0.0159,*,52,MRO_diff
+Full,finbert_QA_mean:lag9,finbert_QA_mean,9,0.3716,0.0067,**,52,MRO_diff
+Full,finbert_QA_mean:lag10,finbert_QA_mean,10,0.1991,0.1571,,52,MRO_diff
+Full,finbert_QA_mean:lag11,finbert_QA_mean,11,0.4507,0.0009,***,51,MRO_diff
+Full,finbert_QA_mean:lag12,finbert_QA_mean,12,0.2801,0.0465,*,51,MRO_diff
+Full,finbert_QA_mean:lag13,finbert_QA_mean,13,0.2634,0.0619,,51,MRO_diff
+Full,finbert_QA_mean:lag14,finbert_QA_mean,14,0.2144,0.1349,,50,MRO_diff
+Full,finbert_QA_mean:lag15,finbert_QA_mean,15,0.1975,0.1737,,49,MRO_diff
+Full,finbert_MP_mean:lag1,finbert_MP_mean,1,0.5964,0.0,***,53,MRO_diff
+Full,finbert_MP_mean:lag2,finbert_MP_mean,2,0.5733,0.0,***,53,MRO_diff
+Full,finbert_MP_mean:lag3,finbert_MP_mean,3,0.4429,0.0009,***,53,MRO_diff
+Full,finbert_MP_mean:lag4,finbert_MP_mean,4,0.563,0.0,***,53,MRO_diff
+Full,finbert_MP_mean:lag5,finbert_MP_mean,5,0.3567,0.0094,**,52,MRO_diff
+Full,finbert_MP_mean:lag6,finbert_MP_mean,6,0.449,0.0008,***,52,MRO_diff
+Full,finbert_MP_mean:lag7,finbert_MP_mean,7,0.4469,0.0009,***,52,MRO_diff
+Full,finbert_MP_mean:lag8,finbert_MP_mean,8,0.3922,0.004,**,52,MRO_diff
+Full,finbert_MP_mean:lag9,finbert_MP_mean,9,0.2283,0.1036,,52,MRO_diff
+Full,finbert_MP_mean:lag10,finbert_MP_mean,10,0.3137,0.0235,*,52,MRO_diff
+Full,finbert_MP_mean:lag11,finbert_MP_mean,11,0.2726,0.0529,,51,MRO_diff
+Full,finbert_MP_mean:lag12,finbert_MP_mean,12,0.1189,0.4059,,51,MRO_diff
+Full,finbert_MP_mean:lag13,finbert_MP_mean,13,0.1991,0.1613,,51,MRO_diff
+Full,finbert_MP_mean:lag14,finbert_MP_mean,14,0.1777,0.217,,50,MRO_diff
+Full,finbert_MP_mean:lag15,finbert_MP_mean,15,0.1746,0.2302,,49,MRO_diff
+Full,roberta_EP_mean:lag1,roberta_EP_mean,1,0.3948,0.0034,**,53,MRO_diff
+Full,roberta_EP_mean:lag2,roberta_EP_mean,2,0.3706,0.0063,**,53,MRO_diff
+Full,roberta_EP_mean:lag3,roberta_EP_mean,3,0.4903,0.0002,***,53,MRO_diff
+Full,roberta_EP_mean:lag4,roberta_EP_mean,4,0.4303,0.0013,**,53,MRO_diff
+Full,roberta_EP_mean:lag5,roberta_EP_mean,5,0.4474,0.0009,***,52,MRO_diff
+Full,roberta_EP_mean:lag6,roberta_EP_mean,6,0.4029,0.0031,**,52,MRO_diff
+Full,roberta_EP_mean:lag7,roberta_EP_mean,7,0.3431,0.0128,*,52,MRO_diff
+Full,roberta_EP_mean:lag8,roberta_EP_mean,8,0.3249,0.0188,*,52,MRO_diff
+Full,roberta_EP_mean:lag9,roberta_EP_mean,9,0.2713,0.0517,,52,MRO_diff
+Full,roberta_EP_mean:lag10,roberta_EP_mean,10,0.32,0.0207,*,52,MRO_diff
+Full,roberta_EP_mean:lag11,roberta_EP_mean,11,0.1756,0.2177,,51,MRO_diff
+Full,roberta_EP_mean:lag12,roberta_EP_mean,12,0.118,0.4095,,51,MRO_diff
+Full,roberta_EP_mean:lag13,roberta_EP_mean,13,0.2395,0.0906,,51,MRO_diff
+Full,roberta_EP_mean:lag14,roberta_EP_mean,14,0.1954,0.1739,,50,MRO_diff
+Full,roberta_EP_mean:lag15,roberta_EP_mean,15,0.1773,0.223,,49,MRO_diff
+Full,finbert_IS_MP_mean:lag1,finbert_IS_MP_mean,1,0.4687,0.0004,***,53,MRO_diff
+Full,finbert_IS_MP_mean:lag2,finbert_IS_MP_mean,2,0.3999,0.003,**,53,MRO_diff
+Full,finbert_IS_MP_mean:lag3,finbert_IS_MP_mean,3,0.3731,0.0059,**,53,MRO_diff
+Full,finbert_IS_MP_mean:lag4,finbert_IS_MP_mean,4,0.4534,0.0007,***,53,MRO_diff
+Full,finbert_IS_MP_mean:lag5,finbert_IS_MP_mean,5,0.2832,0.0419,*,52,MRO_diff
+Full,finbert_IS_MP_mean:lag6,finbert_IS_MP_mean,6,0.3944,0.0038,**,52,MRO_diff
+Full,finbert_IS_MP_mean:lag7,finbert_IS_MP_mean,7,0.4555,0.0007,***,52,MRO_diff
+Full,finbert_IS_MP_mean:lag8,finbert_IS_MP_mean,8,0.3776,0.0058,**,52,MRO_diff
+Full,finbert_IS_MP_mean:lag9,finbert_IS_MP_mean,9,0.2492,0.0749,,52,MRO_diff
+Full,finbert_IS_MP_mean:lag10,finbert_IS_MP_mean,10,0.3175,0.0218,*,52,MRO_diff
+Full,finbert_IS_MP_mean:lag11,finbert_IS_MP_mean,11,0.2727,0.0529,,51,MRO_diff
+Full,finbert_IS_MP_mean:lag12,finbert_IS_MP_mean,12,0.2154,0.129,,51,MRO_diff
+Full,finbert_IS_MP_mean:lag13,finbert_IS_MP_mean,13,0.1518,0.2877,,51,MRO_diff
+Full,finbert_IS_MP_mean:lag14,finbert_IS_MP_mean,14,0.1644,0.2538,,50,MRO_diff
+Full,finbert_IS_MP_mean:lag15,finbert_IS_MP_mean,15,0.1506,0.3018,,49,MRO_diff
+Full,finbert_QA_MP_mean:lag1,finbert_QA_MP_mean,1,0.4109,0.0022,**,53,MRO_diff
+Full,finbert_QA_MP_mean:lag2,finbert_QA_MP_mean,2,0.2942,0.0325,*,53,MRO_diff
+Full,finbert_QA_MP_mean:lag3,finbert_QA_MP_mean,3,0.199,0.1531,,53,MRO_diff
+Full,finbert_QA_MP_mean:lag4,finbert_QA_MP_mean,4,0.446,0.0008,***,53,MRO_diff
+Full,finbert_QA_MP_mean:lag5,finbert_QA_MP_mean,5,0.1673,0.2359,,52,MRO_diff
+Full,finbert_QA_MP_mean:lag6,finbert_QA_MP_mean,6,0.161,0.2543,,52,MRO_diff
+Full,finbert_QA_MP_mean:lag7,finbert_QA_MP_mean,7,0.1861,0.1866,,52,MRO_diff
+Full,finbert_QA_MP_mean:lag8,finbert_QA_MP_mean,8,0.2594,0.0634,,52,MRO_diff
+Full,finbert_QA_MP_mean:lag9,finbert_QA_MP_mean,9,0.0896,0.5276,,52,MRO_diff
+Full,finbert_QA_MP_mean:lag10,finbert_QA_MP_mean,10,0.0854,0.5471,,52,MRO_diff
+Full,finbert_QA_MP_mean:lag11,finbert_QA_MP_mean,11,0.1707,0.231,,51,MRO_diff
+Full,finbert_QA_MP_mean:lag12,finbert_QA_MP_mean,12,0.0729,0.611,,51,MRO_diff
+Full,finbert_QA_MP_mean:lag13,finbert_QA_MP_mean,13,0.0421,0.7695,,51,MRO_diff
+Full,finbert_QA_MP_mean:lag14,finbert_QA_MP_mean,14,0.0186,0.8982,,50,MRO_diff
+Full,finbert_QA_MP_mean:lag15,finbert_QA_MP_mean,15,-0.0004,0.9977,,49,MRO_diff
+Pre-ZLB,finbert_mean,finbert_mean,0,0.3735,0.0323,*,33,MRO_diff
+Pre-ZLB,finbert_QA_mean,finbert_QA_mean,0,0.289,0.1028,,33,MRO_diff
+Pre-ZLB,finbert_MP_mean,finbert_MP_mean,0,0.4755,0.0052,**,33,MRO_diff
+Pre-ZLB,roberta_EP_mean,roberta_EP_mean,0,0.5976,0.0002,***,33,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean,finbert_IS_MP_mean,0,0.6022,0.0002,***,33,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean,finbert_QA_MP_mean,0,0.0065,0.9713,,33,MRO_diff
+Pre-ZLB,finbert_mean:lag1,finbert_mean,1,0.5722,0.0005,***,33,MRO_diff
+Pre-ZLB,finbert_mean:lag2,finbert_mean,2,0.8129,0.0,***,33,MRO_diff
+Pre-ZLB,finbert_mean:lag3,finbert_mean,3,0.6484,0.0,***,33,MRO_diff
+Pre-ZLB,finbert_mean:lag4,finbert_mean,4,0.7203,0.0,***,33,MRO_diff
+Pre-ZLB,finbert_mean:lag5,finbert_mean,5,0.808,0.0,***,32,MRO_diff
+Pre-ZLB,finbert_mean:lag6,finbert_mean,6,0.5507,0.0011,**,32,MRO_diff
+Pre-ZLB,finbert_mean:lag7,finbert_mean,7,0.5565,0.0009,***,32,MRO_diff
+Pre-ZLB,finbert_mean:lag8,finbert_mean,8,0.5345,0.0016,**,32,MRO_diff
+Pre-ZLB,finbert_mean:lag9,finbert_mean,9,0.3149,0.0792,,32,MRO_diff
+Pre-ZLB,finbert_mean:lag10,finbert_mean,10,0.1948,0.2853,,32,MRO_diff
+Pre-ZLB,finbert_mean:lag11,finbert_mean,11,0.3842,0.0329,*,31,MRO_diff
+Pre-ZLB,finbert_mean:lag12,finbert_mean,12,0.0459,0.8061,,31,MRO_diff
+Pre-ZLB,finbert_mean:lag13,finbert_mean,13,0.0195,0.9169,,31,MRO_diff
+Pre-ZLB,finbert_mean:lag14,finbert_mean,14,0.0357,0.8515,,30,MRO_diff
+Pre-ZLB,finbert_mean:lag15,finbert_mean,15,-0.0861,0.6569,,29,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag1,finbert_QA_mean,1,0.3205,0.069,,33,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag2,finbert_QA_mean,2,0.5378,0.0012,**,33,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag3,finbert_QA_mean,3,0.4568,0.0075,**,33,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag4,finbert_QA_mean,4,0.4475,0.009,**,33,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag5,finbert_QA_mean,5,0.541,0.0014,**,32,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag6,finbert_QA_mean,6,0.3167,0.0774,,32,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag7,finbert_QA_mean,7,0.3856,0.0293,*,32,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag8,finbert_QA_mean,8,0.2539,0.1608,,32,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag9,finbert_QA_mean,9,0.3203,0.0739,,32,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag10,finbert_QA_mean,10,0.0184,0.9202,,32,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag11,finbert_QA_mean,11,0.3257,0.0738,,31,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag12,finbert_QA_mean,12,0.2272,0.219,,31,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag13,finbert_QA_mean,13,0.074,0.6926,,31,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag14,finbert_QA_mean,14,0.1621,0.3922,,30,MRO_diff
+Pre-ZLB,finbert_QA_mean:lag15,finbert_QA_mean,15,0.1132,0.5586,,29,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag1,finbert_MP_mean,1,0.6722,0.0,***,33,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag2,finbert_MP_mean,2,0.6312,0.0001,***,33,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag3,finbert_MP_mean,3,0.45,0.0086,**,33,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag4,finbert_MP_mean,4,0.5496,0.0009,***,33,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag5,finbert_MP_mean,5,0.1873,0.3048,,32,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag6,finbert_MP_mean,6,0.3466,0.052,,32,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag7,finbert_MP_mean,7,0.3722,0.0359,*,32,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag8,finbert_MP_mean,8,0.3047,0.09,,32,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag9,finbert_MP_mean,9,0.1048,0.5681,,32,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag10,finbert_MP_mean,10,0.1117,0.5429,,32,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag11,finbert_MP_mean,11,0.1567,0.3997,,31,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag12,finbert_MP_mean,12,-0.0372,0.8426,,31,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag13,finbert_MP_mean,13,-0.0856,0.647,,31,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag14,finbert_MP_mean,14,-0.0024,0.9901,,30,MRO_diff
+Pre-ZLB,finbert_MP_mean:lag15,finbert_MP_mean,15,-0.025,0.8975,,29,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag1,roberta_EP_mean,1,0.6613,0.0,***,33,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag2,roberta_EP_mean,2,0.6816,0.0,***,33,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag3,roberta_EP_mean,3,0.7497,0.0,***,33,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag4,roberta_EP_mean,4,0.7977,0.0,***,33,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag5,roberta_EP_mean,5,0.746,0.0,***,32,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag6,roberta_EP_mean,6,0.5747,0.0006,***,32,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag7,roberta_EP_mean,7,0.594,0.0003,***,32,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag8,roberta_EP_mean,8,0.4506,0.0096,**,32,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag9,roberta_EP_mean,9,0.2762,0.126,,32,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag10,roberta_EP_mean,10,0.3355,0.0605,,32,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag11,roberta_EP_mean,11,0.093,0.6187,,31,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag12,roberta_EP_mean,12,0.0587,0.7539,,31,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag13,roberta_EP_mean,13,0.167,0.3692,,31,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag14,roberta_EP_mean,14,0.036,0.8502,,30,MRO_diff
+Pre-ZLB,roberta_EP_mean:lag15,roberta_EP_mean,15,0.134,0.4882,,29,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag1,finbert_IS_MP_mean,1,0.6668,0.0,***,33,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag2,finbert_IS_MP_mean,2,0.6829,0.0,***,33,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag3,finbert_IS_MP_mean,3,0.5223,0.0018,**,33,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag4,finbert_IS_MP_mean,4,0.5689,0.0006,***,33,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag5,finbert_IS_MP_mean,5,0.299,0.0964,,32,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag6,finbert_IS_MP_mean,6,0.4391,0.0119,*,32,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag7,finbert_IS_MP_mean,7,0.4326,0.0134,*,32,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag8,finbert_IS_MP_mean,8,0.2897,0.1077,,32,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag9,finbert_IS_MP_mean,9,0.2148,0.2377,,32,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag10,finbert_IS_MP_mean,10,0.2142,0.2391,,32,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag11,finbert_IS_MP_mean,11,0.1015,0.587,,31,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag12,finbert_IS_MP_mean,12,0.0096,0.9591,,31,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag13,finbert_IS_MP_mean,13,-0.0755,0.6864,,31,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag14,finbert_IS_MP_mean,14,-0.0561,0.7686,,30,MRO_diff
+Pre-ZLB,finbert_IS_MP_mean:lag15,finbert_IS_MP_mean,15,-0.1966,0.3067,,29,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag1,finbert_QA_MP_mean,1,0.4052,0.0193,*,33,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag2,finbert_QA_MP_mean,2,0.1746,0.3313,,33,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag3,finbert_QA_MP_mean,3,0.1002,0.5789,,33,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag4,finbert_QA_MP_mean,4,0.4349,0.0114,*,33,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag5,finbert_QA_MP_mean,5,-0.0213,0.908,,32,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag6,finbert_QA_MP_mean,6,0.0262,0.8867,,32,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag7,finbert_QA_MP_mean,7,0.0284,0.8772,,32,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag8,finbert_QA_MP_mean,8,0.1904,0.2965,,32,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag9,finbert_QA_MP_mean,9,-0.0946,0.6066,,32,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag10,finbert_QA_MP_mean,10,-0.15,0.4124,,32,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag11,finbert_QA_MP_mean,11,0.0403,0.8298,,31,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag12,finbert_QA_MP_mean,12,-0.0854,0.6477,,31,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag13,finbert_QA_MP_mean,13,-0.1464,0.4319,,31,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag14,finbert_QA_MP_mean,14,-0.1711,0.3659,,30,MRO_diff
+Pre-ZLB,finbert_QA_MP_mean:lag15,finbert_QA_MP_mean,15,-0.24,0.2098,,29,MRO_diff
+ZLB,finbert_mean,finbert_mean,0,-0.5897,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean,finbert_QA_mean,0,-0.4657,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean,finbert_MP_mean,0,-0.6591,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean,roberta_EP_mean,0,-0.3527,0.0005,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean,finbert_IS_MP_mean,0,-0.4459,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean,finbert_QA_MP_mean,0,-0.5444,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag1,finbert_mean,1,-0.5859,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag2,finbert_mean,2,-0.58,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag3,finbert_mean,3,-0.5855,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag4,finbert_mean,4,-0.5747,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag5,finbert_mean,5,-0.5472,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag6,finbert_mean,6,-0.5486,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag7,finbert_mean,7,-0.5313,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag8,finbert_mean,8,-0.5191,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag9,finbert_mean,9,-0.4947,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag10,finbert_mean,10,-0.4797,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag11,finbert_mean,11,-0.4516,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag12,finbert_mean,12,-0.4376,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag13,finbert_mean,13,-0.411,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag14,finbert_mean,14,-0.3864,0.0001,***,93,Wu-Xia shadow rate
+ZLB,finbert_mean:lag15,finbert_mean,15,-0.3886,0.0001,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag1,finbert_QA_mean,1,-0.4574,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag2,finbert_QA_mean,2,-0.427,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag3,finbert_QA_mean,3,-0.4236,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag4,finbert_QA_mean,4,-0.3926,0.0001,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag5,finbert_QA_mean,5,-0.3468,0.0007,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag6,finbert_QA_mean,6,-0.3312,0.0012,**,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag7,finbert_QA_mean,7,-0.2849,0.0056,**,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag8,finbert_QA_mean,8,-0.2396,0.0207,*,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag9,finbert_QA_mean,9,-0.1939,0.0625,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag10,finbert_QA_mean,10,-0.1725,0.0983,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag11,finbert_QA_mean,11,-0.1387,0.1848,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag12,finbert_QA_mean,12,-0.1094,0.2963,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag13,finbert_QA_mean,13,-0.0669,0.5238,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag14,finbert_QA_mean,14,-0.0197,0.8512,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_mean:lag15,finbert_QA_mean,15,-0.0083,0.9369,,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag1,finbert_MP_mean,1,-0.6511,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag2,finbert_MP_mean,2,-0.6567,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag3,finbert_MP_mean,3,-0.6543,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag4,finbert_MP_mean,4,-0.6152,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag5,finbert_MP_mean,5,-0.6226,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag6,finbert_MP_mean,6,-0.6093,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag7,finbert_MP_mean,7,-0.5971,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag8,finbert_MP_mean,8,-0.5812,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag9,finbert_MP_mean,9,-0.5499,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag10,finbert_MP_mean,10,-0.5475,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag11,finbert_MP_mean,11,-0.5222,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag12,finbert_MP_mean,12,-0.4908,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag13,finbert_MP_mean,13,-0.4874,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag14,finbert_MP_mean,14,-0.4671,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_MP_mean:lag15,finbert_MP_mean,15,-0.4524,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag1,roberta_EP_mean,1,-0.3781,0.0002,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag2,roberta_EP_mean,2,-0.4015,0.0001,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag3,roberta_EP_mean,3,-0.405,0.0001,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag4,roberta_EP_mean,4,-0.4075,0.0001,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag5,roberta_EP_mean,5,-0.4216,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag6,roberta_EP_mean,6,-0.429,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag7,roberta_EP_mean,7,-0.4302,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag8,roberta_EP_mean,8,-0.4239,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag9,roberta_EP_mean,9,-0.4153,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag10,roberta_EP_mean,10,-0.4074,0.0001,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag11,roberta_EP_mean,11,-0.4354,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag12,roberta_EP_mean,12,-0.4223,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag13,roberta_EP_mean,13,-0.4213,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag14,roberta_EP_mean,14,-0.4238,0.0,***,93,Wu-Xia shadow rate
+ZLB,roberta_EP_mean:lag15,roberta_EP_mean,15,-0.3944,0.0001,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag1,finbert_IS_MP_mean,1,-0.4854,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag2,finbert_IS_MP_mean,2,-0.4973,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag3,finbert_IS_MP_mean,3,-0.5244,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag4,finbert_IS_MP_mean,4,-0.5371,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag5,finbert_IS_MP_mean,5,-0.5662,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag6,finbert_IS_MP_mean,6,-0.5862,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag7,finbert_IS_MP_mean,7,-0.5938,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag8,finbert_IS_MP_mean,8,-0.6018,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag9,finbert_IS_MP_mean,9,-0.5875,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag10,finbert_IS_MP_mean,10,-0.5879,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag11,finbert_IS_MP_mean,11,-0.5955,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag12,finbert_IS_MP_mean,12,-0.5987,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag13,finbert_IS_MP_mean,13,-0.6145,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag14,finbert_IS_MP_mean,14,-0.6159,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_IS_MP_mean:lag15,finbert_IS_MP_mean,15,-0.6125,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag1,finbert_QA_MP_mean,1,-0.5185,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag2,finbert_QA_MP_mean,2,-0.5331,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag3,finbert_QA_MP_mean,3,-0.5137,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag4,finbert_QA_MP_mean,4,-0.4675,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag5,finbert_QA_MP_mean,5,-0.4622,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag6,finbert_QA_MP_mean,6,-0.419,0.0,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag7,finbert_QA_MP_mean,7,-0.3661,0.0003,***,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag8,finbert_QA_MP_mean,8,-0.3186,0.0019,**,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag9,finbert_QA_MP_mean,9,-0.2771,0.0072,**,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag10,finbert_QA_MP_mean,10,-0.2632,0.0108,*,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag11,finbert_QA_MP_mean,11,-0.2235,0.0313,*,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag12,finbert_QA_MP_mean,12,-0.1713,0.1007,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag13,finbert_QA_MP_mean,13,-0.1375,0.1886,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag14,finbert_QA_MP_mean,14,-0.124,0.2363,,93,Wu-Xia shadow rate
+ZLB,finbert_QA_MP_mean:lag15,finbert_QA_MP_mean,15,-0.1244,0.235,,93,Wu-Xia shadow rate
+Hiking,finbert_mean,finbert_mean,0,-0.0059,0.9847,,13,MRO_diff
+Hiking,finbert_QA_mean,finbert_QA_mean,0,0.3892,0.1886,,13,MRO_diff
+Hiking,finbert_MP_mean,finbert_MP_mean,0,0.6562,0.0149,*,13,MRO_diff
+Hiking,roberta_EP_mean,roberta_EP_mean,0,-0.1055,0.7317,,13,MRO_diff
+Hiking,finbert_IS_MP_mean,finbert_IS_MP_mean,0,0.735,0.0042,**,13,MRO_diff
+Hiking,finbert_QA_MP_mean,finbert_QA_MP_mean,0,0.4275,0.1451,,13,MRO_diff
+Hiking,finbert_mean:lag1,finbert_mean,1,0.0735,0.8113,,13,MRO_diff
+Hiking,finbert_mean:lag2,finbert_mean,2,0.286,0.3435,,13,MRO_diff
+Hiking,finbert_mean:lag3,finbert_mean,3,0.3216,0.2839,,13,MRO_diff
+Hiking,finbert_mean:lag4,finbert_mean,4,0.1971,0.5187,,13,MRO_diff
+Hiking,finbert_mean:lag5,finbert_mean,5,0.5671,0.0433,*,13,MRO_diff
+Hiking,finbert_mean:lag6,finbert_mean,6,0.6507,0.016,*,13,MRO_diff
+Hiking,finbert_mean:lag7,finbert_mean,7,0.7779,0.0017,**,13,MRO_diff
+Hiking,finbert_mean:lag8,finbert_mean,8,0.8089,0.0008,***,13,MRO_diff
+Hiking,finbert_mean:lag9,finbert_mean,9,0.7271,0.0049,**,13,MRO_diff
+Hiking,finbert_mean:lag10,finbert_mean,10,0.7877,0.0014,**,13,MRO_diff
+Hiking,finbert_mean:lag11,finbert_mean,11,0.8264,0.0005,***,13,MRO_diff
+Hiking,finbert_mean:lag12,finbert_mean,12,0.7796,0.0017,**,13,MRO_diff
+Hiking,finbert_mean:lag13,finbert_mean,13,0.6777,0.0109,*,13,MRO_diff
+Hiking,finbert_mean:lag14,finbert_mean,14,0.7146,0.0061,**,13,MRO_diff
+Hiking,finbert_mean:lag15,finbert_mean,15,0.6425,0.0179,*,13,MRO_diff
+Hiking,finbert_QA_mean:lag1,finbert_QA_mean,1,0.3446,0.2489,,13,MRO_diff
+Hiking,finbert_QA_mean:lag2,finbert_QA_mean,2,0.4297,0.1429,,13,MRO_diff
+Hiking,finbert_QA_mean:lag3,finbert_QA_mean,3,0.1803,0.5555,,13,MRO_diff
+Hiking,finbert_QA_mean:lag4,finbert_QA_mean,4,0.1419,0.6438,,13,MRO_diff
+Hiking,finbert_QA_mean:lag5,finbert_QA_mean,5,0.4935,0.0866,,13,MRO_diff
+Hiking,finbert_QA_mean:lag6,finbert_QA_mean,6,0.3862,0.1924,,13,MRO_diff
+Hiking,finbert_QA_mean:lag7,finbert_QA_mean,7,0.5285,0.0633,,13,MRO_diff
+Hiking,finbert_QA_mean:lag8,finbert_QA_mean,8,0.6809,0.0104,*,13,MRO_diff
+Hiking,finbert_QA_mean:lag9,finbert_QA_mean,9,0.5205,0.0682,,13,MRO_diff
+Hiking,finbert_QA_mean:lag10,finbert_QA_mean,10,0.463,0.1111,,13,MRO_diff
+Hiking,finbert_QA_mean:lag11,finbert_QA_mean,11,0.6964,0.0082,**,13,MRO_diff
+Hiking,finbert_QA_mean:lag12,finbert_QA_mean,12,0.3103,0.3021,,13,MRO_diff
+Hiking,finbert_QA_mean:lag13,finbert_QA_mean,13,0.3914,0.1859,,13,MRO_diff
+Hiking,finbert_QA_mean:lag14,finbert_QA_mean,14,0.047,0.8787,,13,MRO_diff
+Hiking,finbert_QA_mean:lag15,finbert_QA_mean,15,0.0179,0.9536,,13,MRO_diff
+Hiking,finbert_MP_mean:lag1,finbert_MP_mean,1,0.6413,0.0182,*,13,MRO_diff
+Hiking,finbert_MP_mean:lag2,finbert_MP_mean,2,0.7928,0.0012,**,13,MRO_diff
+Hiking,finbert_MP_mean:lag3,finbert_MP_mean,3,0.613,0.0259,*,13,MRO_diff
+Hiking,finbert_MP_mean:lag4,finbert_MP_mean,4,0.823,0.0005,***,13,MRO_diff
+Hiking,finbert_MP_mean:lag5,finbert_MP_mean,5,0.7997,0.001,**,13,MRO_diff
+Hiking,finbert_MP_mean:lag6,finbert_MP_mean,6,0.7353,0.0042,**,13,MRO_diff
+Hiking,finbert_MP_mean:lag7,finbert_MP_mean,7,0.7107,0.0065,**,13,MRO_diff
+Hiking,finbert_MP_mean:lag8,finbert_MP_mean,8,0.5468,0.0531,,13,MRO_diff
+Hiking,finbert_MP_mean:lag9,finbert_MP_mean,9,0.4964,0.0844,,13,MRO_diff
+Hiking,finbert_MP_mean:lag10,finbert_MP_mean,10,0.5752,0.0397,*,13,MRO_diff
+Hiking,finbert_MP_mean:lag11,finbert_MP_mean,11,0.6437,0.0176,*,13,MRO_diff
+Hiking,finbert_MP_mean:lag12,finbert_MP_mean,12,0.5569,0.0481,*,13,MRO_diff
+Hiking,finbert_MP_mean:lag13,finbert_MP_mean,13,0.5628,0.0452,*,13,MRO_diff
+Hiking,finbert_MP_mean:lag14,finbert_MP_mean,14,0.4527,0.1204,,13,MRO_diff
+Hiking,finbert_MP_mean:lag15,finbert_MP_mean,15,0.5625,0.0454,*,13,MRO_diff
+Hiking,roberta_EP_mean:lag1,roberta_EP_mean,1,-0.304,0.3125,,13,MRO_diff
+Hiking,roberta_EP_mean:lag2,roberta_EP_mean,2,-0.5376,0.0581,,13,MRO_diff
+Hiking,roberta_EP_mean:lag3,roberta_EP_mean,3,-0.1684,0.5824,,13,MRO_diff
+Hiking,roberta_EP_mean:lag4,roberta_EP_mean,4,-0.4911,0.0884,,13,MRO_diff
+Hiking,roberta_EP_mean:lag5,roberta_EP_mean,5,-0.319,0.2881,,13,MRO_diff
+Hiking,roberta_EP_mean:lag6,roberta_EP_mean,6,0.5178,0.0699,,13,MRO_diff
+Hiking,roberta_EP_mean:lag7,roberta_EP_mean,7,0.1788,0.5589,,13,MRO_diff
+Hiking,roberta_EP_mean:lag8,roberta_EP_mean,8,0.4226,0.1503,,13,MRO_diff
+Hiking,roberta_EP_mean:lag9,roberta_EP_mean,9,0.588,0.0346,*,13,MRO_diff
+Hiking,roberta_EP_mean:lag10,roberta_EP_mean,10,0.7602,0.0026,**,13,MRO_diff
+Hiking,roberta_EP_mean:lag11,roberta_EP_mean,11,0.5175,0.0701,,13,MRO_diff
+Hiking,roberta_EP_mean:lag12,roberta_EP_mean,12,0.5755,0.0396,*,13,MRO_diff
+Hiking,roberta_EP_mean:lag13,roberta_EP_mean,13,0.5458,0.0537,,13,MRO_diff
+Hiking,roberta_EP_mean:lag14,roberta_EP_mean,14,0.7168,0.0058,**,13,MRO_diff
+Hiking,roberta_EP_mean:lag15,roberta_EP_mean,15,0.5993,0.0304,*,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag1,finbert_IS_MP_mean,1,0.6933,0.0086,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag2,finbert_IS_MP_mean,2,0.7265,0.0049,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag3,finbert_IS_MP_mean,3,0.7026,0.0074,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag4,finbert_IS_MP_mean,4,0.8182,0.0006,***,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag5,finbert_IS_MP_mean,5,0.8486,0.0002,***,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag6,finbert_IS_MP_mean,6,0.8014,0.001,***,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag7,finbert_IS_MP_mean,7,0.757,0.0027,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag8,finbert_IS_MP_mean,8,0.7863,0.0014,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag9,finbert_IS_MP_mean,9,0.7054,0.0071,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag10,finbert_IS_MP_mean,10,0.5932,0.0326,*,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag11,finbert_IS_MP_mean,11,0.7185,0.0057,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag12,finbert_IS_MP_mean,12,0.7484,0.0033,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag13,finbert_IS_MP_mean,13,0.729,0.0047,**,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag14,finbert_IS_MP_mean,14,0.5611,0.046,*,13,MRO_diff
+Hiking,finbert_IS_MP_mean:lag15,finbert_IS_MP_mean,15,0.7774,0.0018,**,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag1,finbert_QA_MP_mean,1,0.1835,0.5485,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag2,finbert_QA_MP_mean,2,0.4631,0.111,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag3,finbert_QA_MP_mean,3,0.1536,0.6165,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag4,finbert_QA_MP_mean,4,0.2971,0.3242,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag5,finbert_QA_MP_mean,5,0.3569,0.2313,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag6,finbert_QA_MP_mean,6,0.225,0.4599,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag7,finbert_QA_MP_mean,7,0.4858,0.0924,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag8,finbert_QA_MP_mean,8,0.3373,0.2597,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag9,finbert_QA_MP_mean,9,0.338,0.2587,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag10,finbert_QA_MP_mean,10,0.5167,0.0706,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag11,finbert_QA_MP_mean,11,0.3791,0.2014,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag12,finbert_QA_MP_mean,12,0.2389,0.4319,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag13,finbert_QA_MP_mean,13,0.0376,0.903,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag14,finbert_QA_MP_mean,14,-0.0601,0.8452,,13,MRO_diff
+Hiking,finbert_QA_MP_mean:lag15,finbert_QA_MP_mean,15,-0.0688,0.8233,,13,MRO_diff

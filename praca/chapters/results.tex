@@ -1,11 +1,307 @@
 \chapter{Results}
+\label{ch:results}
+\section{Aggregate Sentiment and Model Comparison}
+\label{sec:aggregate}
 
-\section{Evolution of ECB Sentiment}
+Before diving into the~complex details of \gls{ecb} communication, we need to answer a basic question: do our two artificial intelligence models (FinBERT and CentralBankRoBERTa) actually understand the~\gls{ecb}'s tone?
+
+Figure~\ref{fig:aggregate} shows the~average sentiment score from both models over 25 years of press conferences.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/base/fig_aggregate_sentiment.pdf}
+    \caption[Aggregate \gls{ecb} press conference sentiment (1999--2024)]{Aggregate \gls{ecb} press conference sentiment (1999--2024). Solid lines show the~six-month average sentiment, while shaded bands show how much the~tone varied during the~conferences. Blue: FinBERT; dark red: CentralBankRoBERTa.}
+    \label{fig:aggregate}
+\end{figure}
+
+The~first thing you will notice is a clear gap between the~two lines. FinBERT stays slightly above zero (positive), while CentralBankRoBERTa is always in the~negative zone. This is not a mistake; it happens because they ``learned'' from different texts. FinBERT learned from general financial news, where words like ``growth'' or ``profit'' are common, giving it a naturally positive bias. CentralBankRoBERTa, however, was trained specifically on central bank texts. Since the~\gls{ecb} usually speaks very cautiously and constantly talks about ``risks,'' this model reads almost everything as slightly negative (or ``dovish'').
+
+What really matters is not their overall level, but how they move over time. When the~\gls{ecb} gets worried, both lines drop. When the~economy is strong, both lines go up. Both models successfully capture the~changing tone of the~central bank.
+
+\subsection*{Distributional Characteristics}
+\label{sec:comparison}
+
+Table~\ref{tab:descriptives} breaks down the~scores for the~Introductory Statement (IS) and the~Question and Answer (QA) sessions. FinBERT's scores are tightly packed together (lower standard deviation), meaning it reacts slowly. CentralBankRoBERTa has a much wider range, meaning it is far more sensitive to specific policy words and reacts sharply to changes in tone.
+
+\begin{table}[ht]
+    \centering
+    \caption{Descriptive statistics of the~net sentiment score (1999--2024).}
+    \label{tab:descriptives}
+    \begin{tabular}{llrrrrr}
+        \hline
+        \textbf{Model} & \textbf{Section} & \textbf{Mean} & \textbf{Std. Dev.} & \textbf{Min} & \textbf{Max} & \textbf{IQR} \\
+        \hline
+        FinBERT        & \gls{is}         & 0.215         & 0.214              & $-0.378$     & 0.720        & 0.292        \\
+        FinBERT        & QA               & 0.056         & 0.075              & $-0.147$     & 0.291        & 0.103        \\
+        RoBERTa        & \gls{is}         & $-0.134$      & 0.174              & $-0.597$     & 0.302        & 0.247        \\
+        RoBERTa        & QA               & $-0.333$      & 0.123              & $-0.633$     & 0.029        & 0.162        \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Despite their different ranges, the~models tell the~same story. Table~\ref{tab:correlation} shows a strong, statistically significant positive correlation between the~two models.
+
+\begin{table}[ht]
+    \centering
+    \caption{Pearson correlation between FinBERT and CentralBankRoBERTa.}
+    \label{tab:correlation}
+    \begin{tabular}{lrr}
+        \hline
+        \textbf{Model} & \textbf{IS-QA Correlation} & \textbf{p-value} \\
+        \hline
+        FinBERT        & 0.246                      & $< 0.001$        \\
+        RoBERTa        & 0.275                      & $< 0.001$        \\
+        \hline
+    \end{tabular}
+\end{table}
+
+%─────────────────────────────────────────────────────────────────────────────
+
+\section{Sanity Check: Validation against Historical Events}
+\label{sec:sanity}
+
+An AI model doesn't know what is happening in the~real world—it only reads text. To trust our results, we must do a ``sanity check'': do the~sentiment scores drop during major economic crises and rise during good times? Figure~\ref{fig:events} places our sentiment lines over seven major historical events.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/base/fig_sentiment_events.pdf}
+    \caption[\gls{ecb} sentiment and key historical events (1999--2024)]{\gls{ecb} sentiment and key historical events (1999--2024). The~models accurately reflect major policy shifts, from the~2008 crash to the~2022 rate hikes.}
+    \label{fig:events}
+\end{figure}
+
+The~chart closely matches the~actual history of the~European economy. Let's look at the~key periods:
+
+\textbf{Pre-crisis period (1999--2007).} During the~early years of the~euro, the~economy was relatively stable. Both models show stable sentiment, with FinBERT hovering slightly above zero.
+
+\textbf{Global Financial Crisis (2008--2009).} This is the~most dramatic drop in the~timeline. As the~financial world collapsed, the~\gls{ecb} rapidly cut interest rates. Both models instantly pick up the~panic and heavy concern in the~language, falling to their lowest points.
+
+\textbf{Sovereign debt crisis (2010--2012).} CentralBankRoBERTa stays very negative during the~European debt crisis. The~tone only started to slowly recover after Mario Draghi's famous promise to do ``whatever it takes'' to save the~euro in July 2012.
+
+\textbf{Quantitative easing era (2014--2019).} When the~\gls{ecb} pushed interest rates to zero and started buying huge amounts of bonds to support the~economy, CentralBankRoBERTa correctly reads this unusual, supportive language as highly dovish (negative sentiment). FinBERT, lacking this specific vocabulary, barely reacts.
+
+\textbf{COVID-19 emergency (2020).} Both models immediately detect the~sudden, massive shock of the~pandemic. The~fast drop and quick recovery in tone perfectly match the~\gls{ecb}'s massive emergency rescue programs.
+
+\textbf{The recent hiking cycle (2022--2023).} To fight skyrocketing inflation, the~\gls{ecb} raised interest rates at record speed. In response, both models shoot up to their highest levels in years. Words like ``restrictive'' or ``determined'' are correctly understood by the~AI as hawkish (strict) policy.
+
+\textbf{Comparing our results.} Earlier studies, like Tobback et al. (2017) \cite{tobback2017hawks}, measured \gls{ecb} tone by reading newspaper articles. Our results match their findings for older crises. However, because we analyze the~\gls{ecb}'s transcripts directly, our measure is faster, avoids journalistic bias, and successfully covers modern events like the~COVID-19 crash and the~recent inflation spikes.
+
+Ultimately, this sanity check proves neither model is just guessing. They both capture 25 years of European monetary policy just by reading the~words the~central bankers used.
+
+%─────────────────────────────────────────────────────────────────────────────
+%  §3.3  Sectional Analysis: Prepared Speech versus Live Q&A
+%        (integrates §3.5 Thematic Variation and §3.8 Intra-Conference Arc
+%         as compact subsections)
+%─────────────────────────────────────────────────────────────────────────────
+
+\section{Sectional Analysis: Prepared Speech versus Live Q\&A}
+\label{sec:IS_QA}
+
+As established in Section~\ref{sec:press_structure}, every \gls{ecb} press conference is strictly divided into two phases: the prepared \gls{is} and the spontaneous \gls{qa} session. From a machine learning perspective, \textbf{treating these two completely different communication phases as a single block of text is a massive statistical trap}, which has been a common mistake in older research.
+
+The main argument of this section is that the difference in sentiment between the \gls{is} and the \gls{qa} is not just statistical noise or a methodological nuisance---it is an economically meaningful signal. The prepared statement tells us what the Governing Council \emph{wants} to project (confidence, clarity, stability), while the live \gls{qa} reveals the \emph{actual} underlying tensions when the President is forced to answer unscripted questions. By separating these two text corpora, our \gls{nlp} pipeline allows us to measure this exact tension. Moreover, once we are inside the \gls{is}, not all paragraphs are equal: different thematic sections carry different sentiment signatures, and the conference follows a recognisable rhetorical arc from opening remarks to closing policy conclusions.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{Confidence vs.\ Caution: The Level Gap}
+\label{sec:IS_QA_level}
+
+To see this difference in action, Figure~\ref{fig:IS_vs_QA_ts} plots the sentiment scores of the \gls{is} and the \gls{qa} separately for every conference over the 25-year sample.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_IS_vs_QA.pdf}
+    \caption[Prepared vs.\ spontaneous communication (1999--2024)]{Prepared vs.\
+        spontaneous communication (1999--2024). The solid blue line (\gls{is})
+        remains systematically higher and smoother than the dashed red line
+        (\gls{qa}). Left: FinBERT; right: CentralBankRoBERTa.}
+    \label{fig:IS_vs_QA_ts}
+\end{figure}
+
+Two patterns immediately stand out in the timelines. First, \textbf{the scripted text is systematically more optimistic than the spontaneous Q\&A session} that immediately follows it. Under both FinBERT and CentralBankRoBERTa, the blue line representing the prepared speech hovers consistently above the red line. Table~\ref{tab:descriptives} puts numbers to this: FinBERT returns a mean \gls{is} score of $0.215$ against a \gls{qa} mean of $0.056$; CentralBankRoBERTa records $-0.134$ for the \gls{is} and $-0.333$ for the \gls{qa}.
+
+Second, the \gls{is} line is far smoother. It drifts slowly and gracefully as long-term macroeconomic regimes change. The \gls{qa} line, by contrast, is highly volatile, swinging aggressively up and down from one conference to the next. This reflects the fundamental difference in their communicative purpose. The \gls{is} is drafted by a committee to anchor market expectations over a medium-term horizon. The \gls{qa}, on the other hand, is entirely at the mercy of human interaction---driven by whatever immediate pressures journalists choose to amplify on that specific day, such as banking failures or internal \gls{ecb} disagreements, which naturally drags its sentiment downward.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_Scatter_IS_vs_QA.pdf}
+    \caption[Conference-level correlation between \gls{is} and \gls{qa} sentiment]{%
+        Conference-level correlation between \gls{is} and \gls{qa} sentiment. Almost
+        all observations fall below the diagonal, confirming the \gls{qa} is
+        structurally more pessimistic than the \gls{is}.
+        Left: FinBERT ($r = 0.246$, $p < 0.001$);
+        right: CentralBankRoBERTa ($r = 0.275$, $p < 0.001$).}
+    \label{fig:scatter_IS_QA}
+\end{figure}
+
+If we strip away the timeline and simply plot the two sections against each other conference by conference (Figure~\ref{fig:scatter_IS_QA}), a positive but surprisingly weak correlation emerges ($r \approx 0.25$--$0.28$). This tells a revealing story: while a highly hawkish speech tends to produce a slightly more hawkish \gls{qa}, the two sections share less than 10\% of their variance. A massive chunk of the \gls{qa}'s mood is entirely independent of the main speech. Furthermore, virtually all dots fall below the 45-degree diagonal, cementing the rule that the live dialogue is almost always more negative than the prepared text.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Internal Story Arc and Thematic Variation}
+\label{sec:IS_QA_arc}
+
+Because we segment our data into small, manageable chunks, our models do not just give us a single number for the whole event. They can literally track how the mood evolves word by word \emph{within} each section. Figure~\ref{fig:global_profile} maps this sentiment against its relative position in the text---from the first chunk to the last---averaged across all 272 conferences in the sample.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_global_profile_both.pdf}
+    \caption[Sentiment profile as a function of relative position in text]{%
+        Sentiment profile as a function of relative position. The \gls{is}
+        (positions 0--0.5) follows a clear narrative arc; the \gls{qa}
+        (0.5--1.0) is entirely flat. Solid lines: FinBERT; dashed:
+        CentralBankRoBERTa.}
+    \label{fig:global_profile}
+\end{figure}
+
+The \gls{is} behaves remarkably like a carefully crafted movie script with a classic three-act structure. It starts at a moderate level, establishing the macroeconomic context. Around the one-fifth to two-fifths mark, sentiment dips visibly---this is where the \gls{ecb} traditionally catalogues ``downside risks'' and uncertainties to prove they are paying attention to potential threats. Then, in the final passages, the story reaches its climax and sentiment spikes sharply upward. These concluding paragraphs contain the actual policy decisions and forward guidance, using strong, decisive language that the classifier correctly reads as confident and hawkish.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_intra_section_both.pdf}
+    \caption[Intra-section sentiment trajectory]{%
+        Intra-section sentiment trajectory. Left: the \gls{is} dips as economic
+        risks are catalogued, then spikes as policy decisions are announced.
+        Right: the \gls{qa} shows no trajectory; \gls{ecb} answers (red/dark
+        red) score consistently higher than journalist questions (orange).
+        Shaded bands: $\pm 1$ standard error.}
+    \label{fig:intra_section}
+\end{figure}
+
+This thematic structure is not accidental. As we can see, \textbf{not all parts of the prepared speech carry equal informational weight}. Monetary policy (\gls{mp}) chunks---those classified as directly discussing interest rate decisions---score markedly differently from Economic Performance (EP) chunks that just discuss growth. Table~\ref{tab:summary} illustrates this hierarchy: lagged \gls{mp} sentiment features consistently rank among the top predictors of MRO rate movements. The policy-specific passages at the end of the statement are where the true market signal is concentrated.
+
+The \gls{qa} profile, shown in the right panel of Figure~\ref{fig:intra_section}, stands in complete contrast. Sentiment within the \gls{qa} session is essentially a flat line from the first question to the last. There is no rhetorical arc and no climactic conclusion because there cannot be one. A harsh question about an impending recession is just as likely to appear in the first minute as in the final minute. Treating the \gls{qa} as a single narrative is therefore mathematically questionable, since its mean is averaging over a random sequence of topics rather than a coherent story.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Journalist--ECB Sentiment Gap}
+\label{sec:QA_gap}
+
+When we separate the Q\&A data by who is actually speaking, a fascinating psychological dynamic emerges. Figure~\ref{fig:QA_timeseries} traces the sentiment of journalists versus central bankers over time, documenting what we call the \emph{journalist--ECB tug-of-war}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_QA_timeseries.pdf}
+    \caption[Journalist questions vs.\ \gls{ecb} answers over time]{%
+        Journalist questions (red) versus \gls{ecb} official answers (blue),
+        CentralBankRoBERTa, 1999--2024 (6-month centred moving average).
+        Journalists systematically introduce more negative, dovish vocabulary.}
+    \label{fig:QA_timeseries}
+\end{figure}
+
+Looking at the timeline above, we can clearly see that the red line (journalists) is constantly dragging the mood down, while the blue line (the \gls{ecb}) stays consistently higher. Why does this happen? It simply comes down to their totally different jobs. \textbf{Financial journalists are professionally incentivised to find the weak spots in the economy.} They ask questions loaded with negative vocabulary---``Are you behind the curve?'', ``Will the banking sector collapse?'', ``Is this a policy mistake?''---which our artificial intelligence accurately scores as highly negative (dovish).
+
+The \gls{ecb} President, however, operates like an engineer reassuring the public that the dam is safe. They answer within an institutional framework strictly designed to project stability. Even in response to catastrophic scenarios, official language defaults to balancing expressions like ``vigilant'', ``resilient'', or ``monitoring closely.'' This inherent clash of roles creates a permanent gap in sentiment.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_QA_distribution.pdf}
+    \caption[Distribution of the journalist--ECB sentiment gap]{%
+        Left: distribution of the signed Q$-$A gap (mean $= -0.293$; median
+        $= -0.248$). In 78\% of all pairs the journalist's question is more
+        dovish than the \gls{ecb}'s answer. Right: absolute gap by monetary
+        policy era; the spread narrows considerably from the pre-ZLB to the
+        hiking period.}
+    \label{fig:QA_distribution}
+\end{figure}
+
+To prove this isn't just an optical illusion on the timeline, we calculated the exact size of this gap for every single question, as shown in Figure~\ref{fig:QA_distribution}. \textbf{The sheer statistical consistency of this gap is staggering.} In 78\% of the 4,043 question-answer pairs in our dataset, the journalist's question is mathematically more negative than the \gls{ecb}'s answer. This gap has an average size of $-0.293$ and remains remarkably steady across completely different economic eras.
+
+Ultimately, this finding proves exactly why our specific data engineering matters. \textbf{If we hadn't built a custom pipeline to carefully separate the journalists from the central bankers, this structural pessimism would have poisoned our dataset.} The algorithm would have read the room as far more negative than the \gls{ecb} actually intended, permanently ruining the true monetary policy signal.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{Does the IS--QA Divergence Move Markets?}
+\label{sec:divergence}
+
+Given this clear tonal split, we can test an exciting hypothesis: what happens to financial markets when the prepared speech says one thing, but the \gls{qa} reveals something completely different? A large ``sentiment gap'' between the two sections might intuitively be expected to cause market confusion and trigger massive interest rate or equity reactions.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_divergence.pdf}
+    \caption[\gls{is}--\gls{qa} divergence versus market variables]{%
+    \gls{is}--\gls{qa} communication divergence versus market variables
+    (CentralBankRoBERTa). Counter-intuitively, a larger disagreement between
+    the speech and the \gls{qa} is associated with slightly \emph{smaller}
+    OIS reactions ($r = -0.145^{*}$, left). Equity returns and PC1
+    monetary surprise show no significant relationship. $n = 272$.}
+    \label{fig:divergence}
+\end{figure}
+
+Our data returns a largely null result---but with one extremely counter-intuitive exception. Figure~\ref{fig:divergence} shows that neither the STOXX\,50 return nor the PC1 monetary surprise correlates with \gls{is}--\gls{qa} divergence. However, there is a \emph{negative} correlation with absolute OIS changes ($r = -0.145$, $p < 0.05$). This means that conferences where the two sections diverge the most are actually associated with \emph{smaller} OIS market reactions, not larger ones.
+
+The explanation for this lies in trader psychology: when the \gls{is} is sharply hawkish but the \gls{qa} turns dovish, the market receives conflicting signals within the exact same hour. Unable to cleanly update their rate expectations in either direction, traders simply hesitate. We term this \textbf{communicative cancellation---where high internal tension results in a completely muted external impact} on the markets.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_gap.pdf}
+    \caption[Internal \gls{qa} gap versus market surprises]{%
+        The internal \gls{qa} gap (journalist question minus \gls{ecb} answer)
+        plotted against OIS changes ($r = -0.048$, n.s.) and PC1 monetary
+        surprise ($r = -0.003$, n.s.). The structural journalist--ECB gap is
+        entirely orthogonal to market surprises. $n = 272$.}
+    \label{fig:gap}
+\end{figure}
+
+The within-\gls{qa} gap between journalist questions and \gls{ecb} answers (Figure~\ref{fig:gap}) tells an equally clean story: the correlations are essentially zero. Markets correctly treat this as expected institutional theatre---they know journalists will always probe for downside risks, and central bankers will always push back with measured confidence. Because it is expected, it is immediately discounted by the trading algorithms.
+
+\medskip\noindent In summary, this sectional analysis fully validates our granular \gls{nlp} approach. The \gls{is} is a structured narrative with a recognisable arc, and it is precisely the policy-specific chunks at the end that carry the strongest market signal. The \gls{qa} is a reactive tug-of-war, divided between a journalist framing of risk and an institutional official response. Treating them as a single document not only conflates fundamentally different communicative acts, but destroys the hidden informational value that each section uniquely provides.
 
 
-\section{Sentiment Differences: Statement vs. Q\&A}
-\section{Regression Analysis Results}
 
-% čo viem skúmať:
-% - rozvoj sentimentu v rokoch - klasický graf s ukázaním období, kedy boli nejaké krízy
-% 
+%─────────────────────────────────────────────────────────────────────────────
+%  §3.6  Sentiment and the Monetary Policy Cycle
+%─────────────────────────────────────────────────────────────────────────────
+
+\section{Sentiment and the Monetary Policy Cycle}
+\label{sec:sentiment_cycle}
+
+The previous sections established that our sentiment indices are internally coherent and correctly reflect major historical turning points. A more demanding test is whether they bear a systematic, quantifiable relationship to the actual \emph{price of money}: the \gls{ecb}'s policy interest rates. If the words in an \gls{ecb} press conference genuinely encode monetary policy intentions, then hawkish language should accompany high or rising rates, and dovish language should precede or coincide with rate cuts. This section examines that relationship in two steps: first by overlaying sentiment directly on the rate cycle, and then by asking whether sentiment \emph{leads} rates---which would confirm that language is doing real communicative work, not merely echoing decisions already taken.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{Co-movement with Policy Rates}
+\label{sec:comovement}
+
+Figure~\ref{fig:sentiment_rates} plots the CentralBankRoBERTa sentiment series alongside two measures of the \gls{ecb}'s policy stance: the headline \gls{mro} rate (panel A) and the Wu--Xia shadow rate (panel B).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/mro/fig_sentiment_vs_rates.pdf}
+    \caption[Sentiment and the monetary policy cycle (RoBERTa)]{%
+        Sentiment and the monetary policy cycle. Panel A: CentralBankRoBERTa
+        (red, left axis) vs.\ the \gls{mro} rate (blue, right axis). Panel B:
+        the same sentiment series vs.\ the Wu--Xia shadow rate (green, right
+        axis). Six-month centred moving average; shaded band: $\pm 1$ standard
+        deviation.}
+    \label{fig:sentiment_rates}
+\end{figure}
+
+Panel A tells an encouraging story for the pre-\gls{zlb} and post-\gls{zlb} eras. In the pre-\gls{gfc} cycle (1999--2008), sentiment and the \gls{mro} rate move broadly together: as the \gls{ecb} raised rates from roughly 2\% to 4.25\% between 2005 and 2008, sentiment climbed into positive territory; as the \gls{gfc} forced aggressive cuts back towards 1\%, sentiment fell. The positive co-movement is equally visible at the right end of the chart: the rapid hiking cycle of 2022--2023, which drove the \gls{mro} from 0\% to 4.50\%, is accompanied by a sharp recovery in sentiment from its post-COVID trough towards the most positive readings of the decade. When the \gls{ecb} subsequently pivoted to cuts in late 2023, sentiment began declining in tandem.
+
+The \gls{zlb} period of 2012--2021 is the more challenging stretch. The \gls{mro} rate flatlines at or near zero for the better part of a decade, providing almost no variation against which to correlate sentiment. Yet the \gls{ecb}'s true policy accommodation during this era---delivered through forward guidance, asset purchases, and targeted lending operations---continued to intensify far beyond what the \gls{mro} rate alone captures. Panel B makes this plain through the lens of the Wu--Xia shadow rate: while the \gls{mro} was stuck at zero, the shadow rate continued declining to nearly $-8$\% by 2020, reflecting the cumulative effect of unconventional stimulus.
+
+\footnote{The Wu--Xia shadow rate \cite{wu2016measuring} recovers a notional policy rate that would have produced the same long-rate dynamics as the observed combination of forward guidance and quantitative easing, allowing comparison of policy stances across ZLB and non-ZLB episodes.}
+
+Crucially, sentiment \emph{does not} track the shadow rate's deep descent into negative territory. The RoBERTa series remains close to zero throughout the 2014--2020 period, rather than falling towards $-0.5$ or below as one might expect from a classifier that treats increasingly accommodative language as increasingly dovish. This is a known limitation of hawk-dove classifiers trained on conventional monetary policy vocabulary: the language of quantitative easing---``purchase programme'', ``reinvestment'', ``favourable financing conditions''---is not the same language as an orthodox rate cut, and a model fine-tuned on the latter will not fully capture the former. The shadow rate's divergence from sentiment in the \gls{zlb} era is therefore not a failure of our NLP pipeline; it is a coherent reflection of the genuine mismatch between the \gls{ecb}'s rhetorical toolkit and the hawk-dove vocabulary on which the classifier was trained.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Anatomy of Tightening versus Easing: An Event Study}
+\label{sec:event_study}
+
+We already know that sentiment and interest rates move together over time. But this raises a much sharper, more exciting question: does the \gls{ecb} telegraph its moves \emph{before} it actually pulls the trigger? And do they communicate differently when they are preparing to hit the brakes (tightening/hiking rates) versus when they are forced to step on the gas (easing/cutting rates)?
+
+To answer this, we use a standard event-study design. We align all historical rate decisions so that the exact day of the rate change is our ``Day Zero'' (lag $= 0$). Then, we look at the sentiment trajectory for the six meetings before and the six meetings after. We analyze this in two distinct eras: the conventional pre-\gls{zlb} period (1999--2013) and the recent post-\gls{zlb} period (2021--2025). We exclude the \gls{zlb} era itself simply because rates were stuck at zero and essentially did not move.
+
+When we look at the older pre-ZLB era in the left panel of Figure~\ref{fig:event_study}, we immediately see a story of extreme asymmetry—a stark contrast between \textbf{a long warning before a hike and a sudden panic before a cut}. Look at the red line representing rate hikes. In the old days, when the \gls{ecb} wanted to cool down the economy, they didn't just announce it suddenly. The hawkish tone is fully established six meetings \emph{before} the actual hike, forming a high, flat plateau. The \gls{ecb} essentially adopts a strict, confident tone and maintains it for months before finally raising the rate.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/mro/fig_event_study.pdf}
+    \caption[Event study: sentiment around \gls{ecb} rate decisions]{%
+        Event study: Sentiment trajectory in a $\pm 6$-meeting window
+        around \gls{ecb} rate decisions. Red lines represent rate hikes; blue lines represent rate cuts. Lag $= 0$ is the exact meeting when the rate was changed. Left panel: the pre-\gls{zlb} era. Right panel: the post-\gls{zlb} era. Shaded bands show $\pm 1$ standard error.}
+    \label{fig:event_study}
+\end{figure}
+
+The blue line for rate cuts shows the exact opposite behavior. Sentiment remains neutral around zero for months, and only takes a sudden, sharp dive into negative (dovish) territory one or two meetings before the cut. This happens because, historically, rate cuts were often emergency reactions to sudden crises—most notably the 2008 Global Financial Crisis. The central bank didn't have the luxury of planning a cut six months in advance; they had to react to a crashing market. Interestingly, right after the cut, the sentiment rapidly recovers back to zero, as they framed the cut as a successful stabilizing rescue and quickly returned to a calm tone.
+
+If we move to the modern era in the right panel, we can see that the communication strategy has evolved completely, creating \textbf{a fascinating ``scissors'' pattern}. The two trajectories now form a near-perfect ``X'' shape, crossing almost exactly at the moment of the decision. What does this mean in plain language? In this new era, \emph{both} hikes and cuts are heavily telegraphed months in advance, but they are communicated through entirely different emotional journeys. When preparing for the massive 2022--2023 rate hikes, the \gls{ecb} started with highly positive, hawkish language (lag $= -6$) that gradually cooled down as the hike approached. Conversely, when preparing for the recent rate cuts, they started with deeply negative, concerned language that slowly improved. The point where they cross (lag $= 0$) proves that at the exact moment of pulling the trigger—whether up or down—the absolute level of sentiment is identical (around $-0.02$). The \gls{ecb} is perfectly balanced at the moment of action.
+
+After the decision, the scissors open in reverse. Once the \gls{ecb} started hiking rates, they immediately started sounding more dovish, expressing worry about over-tightening and hurting growth. Once they started cutting rates, they immediately sounded more hawkish, confident that inflation was finally beaten.
+
+Ultimately, \textbf{the core takeaway is that sentiment leads the action}. This event study proves something vital for financial analysts: \gls{ecb} sentiment is not just a mirror reflecting what happened today, it is a leading indicator. The tone shifts systematically \emph{before} the policy rate changes. In the older era, they only telegraphed the hikes. Today, they telegraph everything, providing a massive informational advantage to anyone who can read between the lines. This specific leading behavior is exactly what motivates the next part of our research. Since we have mathematically proven that the language changes before the interest rates do, we can now use these sentiment scores to actually predict the future, which brings us directly to the predictive modelling in Section~\ref{sec:predictive}.
