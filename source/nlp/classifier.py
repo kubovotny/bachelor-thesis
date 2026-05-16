@@ -110,7 +110,7 @@ def label_paragraph(
     if model not in _topic_classifier_cache:
         _topic_classifier_cache[model] = pipeline(
             "zero-shot-classification",
-            model=SENTIMENT_MODELS[model],  # KEEP — theory.tex still valid
+            model=TOPIC_MODELS[model],  # KEEP — theory.tex still valid
             token=HF_TOKEN,
             device=0 if torch.cuda.is_available() else -1,
             torch_dtype=torch.float16,

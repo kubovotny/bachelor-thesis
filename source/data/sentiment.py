@@ -57,7 +57,9 @@ def return_sentiment_agg(
     if with_label:
         grouping_columns.append("topic")
     else:
-        data = data.drop(columns=["topic", "topic_prob"]).drop_duplicates()
+        data = data.drop(columns=["topic", "topic_prob"]).drop_duplicates(
+            subset=["date", "part", "is_question", "chunk", "sentiment_model", "score"]
+        )
     if qa_division:
         grouping_columns.append("is_question")
 

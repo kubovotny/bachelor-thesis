@@ -2,6 +2,7 @@ import sqlite3
 from .. import PASSWORD
 from .schema import DATABASE, TABLE_SCHEME
 
+
 def connect_to_db():
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
@@ -9,6 +10,9 @@ def connect_to_db():
 
 
 def drop_and_make_tables():
+    conn, cur = connect_to_db()
+    if input() != PASSWORD:
+         return
     for table in reversed(TABLE_SCHEME.keys()):
         cur.execute(f"DROP TABLE IF EXISTS {table}")
     for name, schema in TABLE_SCHEME.items():
@@ -19,12 +23,9 @@ def drop_and_make_tables():
     conn.commit()
 
 
-
 if __name__ == "__main__":
-    conn, cur = connect_to_db()
     # return_database_scheme()
-    if input() == PASSWORD:
-        drop_and_make_tables()
+    drop_and_make_tables()
     # intro = pd.read_csv(f"{DATA_DIR}/statements/intro.psv", sep="|")
     # qa = pd.read_csv(f"{DATA_DIR}/statements/qa.psv", sep="|")
     # insert_chunks(intro, qa)

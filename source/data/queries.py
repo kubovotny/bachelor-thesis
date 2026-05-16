@@ -178,7 +178,7 @@ def insert_topics(
         prob,
         model_id,
     ) in df.iterrows():
-        print(
+        cur.execute(
             """INSERT INTO topics 
                     VALUES(
                     (SELECT rowid FROM chunks WHERE statement_id = ? AND part = ? AND chunk_id = ? AND is_question = ?),

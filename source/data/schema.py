@@ -36,7 +36,7 @@ TABLE_SCHEME = {
               label_rowid           INT,
               prob                  REAL,
               model_id              INT,
-              PRIMARY KEY (chunk_rowid, label_rowid),
+              PRIMARY KEY (chunk_rowid, model_id, label_rowid),
               FOREIGN KEY (chunk_rowid) REFERENCES chunks(rowid)
               FOREIGN KEY (label_rowid) REFERENCES topic_labels(rowid),
               FOREIGN KEY (model_id) REFERENCES topic_models(rowid)""",
