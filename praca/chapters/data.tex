@@ -1,4 +1,5 @@
 \chapter{Data and Methodology}
+\label{ch:data}
 This chapter outlines the~data collection framework and the~implementation of \gls{nlp} and machine learning model. The~data pipeline begins with the~automated scraping and text processing of the~\gls{ecb}'s monetary policy statement transcripts. The~extracted and processed text is loaded into a~custom \textit{SQLite} database. In this database we include sentiment and topic metadata, which are formed by \textit{BERT} -family models and zero-shot topic classifier. This architecture ensures data integrity and provides a~robust foundation for subsequent macroeconomic and market variables interaction modeling.
 
 \section{Data Scraping and Preprocessing}
