@@ -1,159 +1,137 @@
-\chapter{Data and Methodology}
-\label{ch:data}
-This chapter outlines the~data collection framework and the~implementation of \gls{nlp} and machine learning model. The~data pipeline begins with the~automated scraping and text processing of the~\gls{ecb}'s monetary policy statement transcripts. The~extracted and processed text is loaded into a~custom \textit{SQLite} database. In this database we include sentiment and topic metadata, which are formed by \textit{BERT} -family models and zero-shot topic classifier. This architecture ensures data integrity and provides a~robust foundation for subsequent macroeconomic and market variables interaction modeling.
+\chapter{Data and Methodology}\label{ch:data}
+This chapter outlines the data-collection framework and the implementation of \gls{nlp} and machine-learning models. The data pipeline begins with the automated scraping and text processing of the \gls{ecb}'s monetary-policy statement transcripts. The extracted and processed text is then stored in a custom SQLite database, alongside sentiment and topic metadata produced by BERT-family models and a zero-shot topic classifier. This architecture ensures data integrity and provides a robust foundation for the subsequent econometric analysis of central bank communication against financial-market variables.
 
 \section{Data Scraping and Preprocessing}
-Datasets of \gls{ecb} communications are publicly available. Nonetheless, for fine-grained sentiment analysis, they lack the~necessary level of detail. Moreover, most sources provide uniform text blocks without distinguishing between the~\gls{is} and \gls{qa} components. Our decision to develop a~custom scraping pipeline was driven by the~need to isolate the~responses of \gls{ecb} officials from the~questions posed by journalists. This allowed for a~more precise extraction of \gls{mp} signals, which are free from the~sentiment bias caused by journalistic questioning. The~first phase focuses on the~preparation of a~dataset of transcripts from \gls{gc} conferences. This preparation is divided into two primary tasks. The~first task involves the~retrieval of hyperlinks to scrape webpages, while the~second focuses on parsing the~content into two logical segments and storing these parts in a~robust, structured format.
+\label{sec:scraping}
+Datasets of \gls{ecb} communications are publicly available. Nonetheless, for fine-grained sentiment analysis, they lack the necessary level of detail. Moreover, most sources provide uniform text blocks without distinguishing between the \gls{is} and \gls{qa} components. Our decision to develop a custom scraping pipeline was driven by the need to isolate the responses of \gls{ecb} officials from the questions posed by journalists. This separation allows for a more precise extraction of \gls{mp} signals, free from the sentiment bias caused by journalistic questioning. The first phase focuses on the preparation of a dataset of transcripts from \gls{gc} conferences. This preparation is divided into two primary tasks. The first task involves the retrieval of hyperlinks to scrape webpages, while the second focuses on parsing the content into two logical segments and storing these parts in a robust, structured format.
 
-The~scraping pipeline initially retrieves the~raw \textit{HTML} pages and extracts the~relevant textual content. To accurately separate the~\gls{is} from the~\gls{qa} session, the~pipeline utilizes custom Regular Expressions (Regex). After initial investigation, we defined specific structural markers in the~transcripts the~algorithm precisely splits the~document. These markers included phrases such as \textbf{``My first question...''} or \textbf{``Transcript of the~questions''}. Furthermore, within the~\gls{qa} segments, the~script distinguishes the~responses of \gls{ecb} officials from the~journalists' questions. The~raw extracted data, including dates and URLs, are temporarily stored in a~Pipe-Separated Values (.psv) format.
+The scraping pipeline initially retrieves the raw HTML pages and extracts the relevant textual content. To accurately separate the \gls{is} from the \gls{qa} session, the pipeline utilises custom Regular Expressions (Regex). After initial investigation, we identified specific structural markers in the transcripts according to which the algorithm precisely splits the document. These markers include phrases such as \textbf{``My first question\ldots''} or \textbf{``Transcript of the questions''}. Furthermore, within the \gls{qa} segments, the script distinguishes the responses of \gls{ecb} officials from the journalists' questions. The raw extracted data, including dates and URLs, are temporarily stored in a Pipe-Separated Values (PSV) format.
 
-% Samotný diagram
-\begin{figure}[ht]
-    \centering
-    \begin{tikzpicture}[node distance=1.2cm and 1.5cm] % Vertikálna a~horizontálna medzera
+The pipeline retrieves \textbf{276 transcripts}, covering all press conferences between January 1999 and October 2024 (\nolinkurl{https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/html/index.en.html}). All HTML transcripts share the same overarching structure, with content concentrated in \texttt{<p>} tags and headings of varying levels. We organise the parsed content into a structured \textbf{base dataset} for further analysis. The base dataset is then refined through the application of techniques and analysis from the \texttt{nltk}, \texttt{re}, and \texttt{pandas} Python libraries.
 
-        % Prvé tri idú doprava
-        \node (start) [startstop] {URL Extraction \\ \footnotesize (Iterative loop)};
-        \node (parse) [process, right=of start] {HTML Parsing \\ \footnotesize (BeautifulSoup)};
-        \node (bifurc) [process, right=of parse] {Bifurcation \\ \footnotesize (Intro vs. \gls{qa} split)};
-
-        % Štvrtý ide DOLE pod tretí
-        \node (norm) [process, below=of bifurc] {Normalization \\ \footnotesize (Bold/italic handling)};
-
-        % Piaty ide DOĽAVA od štvrtého (pod druhý)
-        \node (stop) [startstop, left=of norm, fill=green!20] {PSV File};
-
-        % Prepojenia (Arrows)
-        \draw [arrow] (start) -- (parse);
-        \draw [arrow] (parse) -- (bifurc);
-        \draw [arrow] (bifurc) -- (norm);
-        \draw [arrow] (norm) -- (stop);
-
-    \end{tikzpicture}
-    \caption{The~Data Acquisition and Preprocessing Pipeline}
-    \label{fig:data_pipeline_snake}
-\end{figure}
-
-\subsection{Iterative Extraction of ECB Discourse}
-
-Before the~text extraction from the~transcript of the~press conference, the~acquisition of the~hyperlink list was required. The~entire acquisition pipeline is visualized in Figure \ref{fig:data_pipeline_snake}. To acquire a~complete list of meeting URLs, the~\textit{HTML} source of the~official \href{https://www.ecb.europa.eu/press/press_conference/monetary-policy-statement/html/index.en.html}{ECB monetary policy statement list} was analyzed. The~primary index page is interactive and necessitates scrolling to load every hyperlink. Therefore, we needed the~implementation of a~\textit{Selenium WebDriver} for browser automation. However, we discovered a~more algorithmically efficient alternative. We managed to retrieve the~backend structure with year-specific placeholders: \nolinkurl{https:// www.ecb.europa.eu/press/press\_conference/monetary-policy-statement/{year}/ html/index\_include.en.html}.
-
-Hence, we applied the~iterative loop across all relevant years. This streamlines the~hypertext link extraction process by avoiding browser interactions. This process, spanning from the~\gls{ecb}'s establishment to the~present, yielded a~total of $291$ unique transcripts.
-
-\subsection{Content Parsing and Data Structuring}
-
-The~link provides access to the~\gls{mps}, which is described in greater detail in Section \ref{subsection:mps}. Text extraction from the~\gls{mps}
-encountered visually organized yet, within the~underlying \textit{HTML} hierarchy, unsystematic \textit{HTML} code. We had to address an itemized list, which protrudes from the~main section; paragraphs and headings, which are enumerated below. Furthermore, the~\gls{qa} section is not separated from the~ introductory statement by any \textit{HTML} tag. Consequently, the~heuristic approach, combining conditional logic with regular expressions, executes the~bifurcation of the~document into logical parts.
-
-Both parts are segmented into paragraphs, with each paragraph designed to address a~single subject. Consequently, the~paragraph functions as an~atomic component. Therefore, questions and answers do not coexist in the~same paragraph in the~\gls{qa} section. For this reason \textit{HTML} content is parsed and stored in a~Pipe-Separated Values (PSV) file. This format was specifically chosen to prevent delimiter collisions with the~punctuation utilized by the~\gls{ecb} discourse. The~resulting dataset consists of five primary features: \textbf{statement\_id} (unique identifier), \textbf{date}, \textbf{url}, \textbf{intro} (the~prepared introductory statement), and \textbf{qa} (the~unscripted dialogue).
-
-To preserve the~internal structure of the~paragraphs, both \textit{intro} and \textit{qa} columns are tab-delimited for paragraph separation. The~column containing the~\gls{qa} segment has an~extra feature: square brackets to maintain italic or bold style. These styles are utilized in the~\gls{qa} section to distinguish a~journalist's question and a~president's answer. As visualized in Figure \ref{fig:qa_styling}, questions are bold or italic, while answers are plain text. However, this structure is not universally applied; certain \gls{qa} segments are instead prefixed with identifiers such as \{question:\} or the~speaker's name, followed by unformatted text.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=1\linewidth]{images/data/qa_example_of_style.png}
-    \caption[Evolution of formatting styles in ECB transcripts]{\centering Evolution of formatting styles in ECB transcripts. The~2005 transcript
-        (right) utilizes explicit speaker labels, whereas the~2024 version (left) relies on font styling (bold/italic) to distinguish between
-        speakers.}
-    \label{fig:qa_styling}
-\end{figure}
-
-\section{Quantifying Central Bank Communications}
-The~transition from qualitative narratives to quantitative market predictors requires a~systematic transformation of the~raw textual data. This stage of the~methodology is concerned with the~transformation of the~previous structured base dataset into a~more refined analytical collection. For this we use a~pipeline that reduces noise, considers limitations of models and adds metadata to the~text.
-
-The~output of this pipeline is split into two specialized datasets that describe the~\gls{is} and \gls{qa} components. The~pipeline identifies themes through topic modelling. Moreover, it measures the~emotional tone of each observation via sentiment analysis. Unique identifiers are used to track the~original order of segments. This sustains the~chronological and contextual integrity of the~discourse. Binary classification is applied to the~\gls{qa} dataset to separate journalistic inquiries from official responses. This ensures the~analysis focuses on signals from \gls{ecb} officials.
-
-\subsection{Text Segmentation and Contextual Windowing}
-Further analysis requires strict rules to enhance model performance. By analyzing paragraph length distributions, we set the~minimum threshold for a~valid paragraph to $100$ characters. Below this limit, we observed various redundant segments, examples of which are provided in Table \ref{tab:redundant}. These passages are contextually sparse, making it difficult for transformer models to accurately identify sentiment or topics. Furthermore, such segments typically contain procedural language that holds no informational value for market participants.
+Following the structural separation, the dataset must be cleaned of textual artefacts to ensure the integrity of the sentiment signal. Specifically, the noise stems from procedural elements which carry no monetary-policy information. While the original separation captures the formal monologue and dialogue, residual artefacts such as ceremonial greetings (e.g., \textit{``Good afternoon\ldots''}) or repetitive procedural transitions remain in the dataset, distorting the sentiment baseline. To address this, the cleaning pipeline applies a multi-layered filter that combines hard rules with statistical thresholds. We first remove pre-defined sentences using a Regex matcher and then discard paragraphs falling below a minimum character threshold of $100$ characters. The latter heuristic effectively eliminates structural noise such as section headers or short conversational fillers (e.g., \textit{``Yes.''}) without affecting substantive policy statements. Illustrative cases of removed text are presented in Table~\ref{tab:redundant}.
 
 \begin{table}[ht]
     \centering
-    \caption{Illustrative examples of noisy paragraphs excluded from the~dataset.}
+    \caption[Illustrative examples of noisy paragraphs excluded from the dataset]{Illustrative examples of noisy paragraphs excluded from the dataset.}
     \label{tab:redundant}
-    \begin{tabular}{@{}lr@{}}
+    \begin{tabular}{@{}lp{8cm}@{}}
         \toprule
-        Paragraph content                                         & Character count \\ \midrule
-        ``You will know it soon.''                                & 22              \\
-        ``And about the public confidence? Can you say anything'' & 54              \\
-        ``Well, the answer is: No, we did not discuss it.''       & 47              \\ \bottomrule
+        \textbf{Type} & \textbf{Example} \\ \midrule
+        Greeting          & ``Good afternoon, ladies and gentlemen.''                                                                                            \\ \addlinespace
+        Procedural        & ``The Vice-President and I are very pleased to welcome you to our press conference.''                                                \\ \addlinespace
+        Closing           & ``We are now at your disposal for questions.''                                                                                       \\ \addlinespace
+        Conversational    & ``Yes.''                                                                                                                              \\ \bottomrule
     \end{tabular}
 \end{table}
 
-Beyond initial \textit{noise reduction}, paragraph lengths often exceed a~transformer's \textbf{token constraint}, which is $512$ tokens for \textit{BERT}-based architectures like \textit{FinBERT} and \textit{CentralBankRoBERTa}. To address this, we implement a~\textbf{segmentation strategy} where long paragraphs are partitioned into blocks with an~upper bound of $200$ words. This process begins by splitting passages into individual sentences using the~\textit{nltk.tokenize} library, which handles abbreviations and punctuation more robustly than simple regular expressions. Preserving full sentences is necessary to maintain the~syntactical structure and context required for reliable model inference.
+\subsection{Splitting the Q\&A Section into Questions and Answers}
+\label{sec:data_qa_construction}
+A second structural challenge arises within the \gls{qa} segment itself. While the \gls{is} is a continuous monologue, the dialogue between journalists and the \gls{ecb} President presents speaker-attribution problems. The HTML structure of the transcripts does not consistently use semantic tags to mark speaker turns. Across the corpus we identified at least three distinct conventions for marking questions versus answers, which evolved across both physical locations and reporting periods, as illustrated in Figure~\ref{fig:qa_styling}.
 
-Our implementation follows an~\textbf{iterative merging approach}, where sentences are combined into a~segment until the~addition of the~next sentence would exceed the~predefined limit. Once a~limit is reached, the~segment is closed and a~new one is formed. For the~remaining text, we examine the~length of the~final segment of each paragraph; if it contains fewer than $30$ words, it is appended to the~preceding segment rather than being treated as an~independent input. This ensures sufficient \textit{semantic density} in every segment while remaining safely within the~transformer's processing limits.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{images/data/qa_styling.png}
+    \caption[Evolution of formatting styles in ECB transcripts]{Evolution of formatting styles in \gls{ecb} transcripts. The 2005 transcript (right) uses explicit speaker labels, whereas the 2024 version (left) relies on font styling (bold/italic) to distinguish between speakers.}
+    \label{fig:qa_styling}
+\end{figure}
 
-Short paragraphs—those longer than $100$ characters but shorter than $30$ words—are maintained as independent segments to preserve their integrity as distinct statements or questions. To ensure traceability, each segment retains the~metadata of its parent paragraph, including the~date, speaker identity, and section type (\gls{is} vs. \gls{qa}). This structured approach prevents the~dilution of sentiment scores that occurs in excessively long text blocks and ensures that no relevant information is lost through truncation. The~effectiveness of this transformation is illustrated in Figure \ref{fig:distribution}, which compares the~word count distribution before and after the~segmentation.
+Therefore, questions and answers do not co-exist in the same paragraph in the \gls{qa} section. For this reason HTML content is parsed and stored in a Pipe-Separated Values (PSV) file. This format was specifically chosen to prevent delimiter collisions with the punctuation utilised by the \gls{ecb} discourse. The resulting dataset consists of five primary features: \textbf{statement\_id} (unique identifier), \textbf{date}, \textbf{url}, \textbf{intro} (the prepared introductory statement), and \textbf{qa} (the unscripted dialogue).
+
+To preserve the internal structure of the paragraphs, both \textit{intro} and \textit{qa} columns are tab-delimited for paragraph separation. The column containing the \gls{qa} segment has an extra feature: square brackets to maintain italic or bold style. These styles are utilised in the \gls{qa} section to distinguish a journalist's question from the President's answer. As visualised in Figure~\ref{fig:qa_styling}, questions are bold or italic, while answers are plain text. However, this structure is not universally applied; certain \gls{qa} segments are instead prefixed with identifiers such as \texttt{\{question:\}} or the speaker's name, followed by unformatted text.
+
+\section{Quantifying Central Bank Communications}
+\label{sec:quantifying}
+The transition from qualitative narratives to quantitative market predictors requires a systematic transformation of the raw textual data. This stage of the methodology is concerned with the transformation of the previous structured base dataset into a more refined analytical collection. For this we use a pipeline that reduces noise, considers limitations of models, and adds metadata to the text.
+
+The output of this pipeline is split into two specialised datasets that describe the \gls{is} and \gls{qa} components. The pipeline identifies themes through zero-shot topic classification, classifies sentiment, and stores standardised chunks together with their derived scores. This whole architecture is illustrated in Figure~\ref{fig:data_pipeline_snake}, which describes how raw HTML text becomes the meeting-level feature matrix used in Chapter~\ref{ch:results}. The end product is a refined and contextually rich dataset, capable of representing the multi-dimensional nature of \gls{ecb} communication while preserving an audit trail back to every raw HTML paragraph.
+
+\begin{figure}[ht]
+    \centering
+    \resizebox{0.45\linewidth}{!}{%
+    \begin{tikzpicture}[node distance=2cm]
+        \node (htmldata) [startstop] {HTML transcripts};
+        \node (filter) [process, below of=htmldata] {Filtering, IS / Q\&A split};
+        \node (parser) [process, below of=filter] {Chunk segmentation};
+        \node (zeroshot) [process, below of=parser] {Zero-shot topic classification};
+        \node (sentiment) [process, below of=zeroshot] {Sentiment scoring (FinBERT, RoBERTa)};
+        \node (database) [startstop, below of=sentiment] {ECB transcript SQLite database};
+        \draw [arrow] (htmldata) -- (filter);
+        \draw [arrow] (filter) -- (parser);
+        \draw [arrow] (parser) -- (zeroshot);
+        \draw [arrow] (zeroshot) -- (sentiment);
+        \draw [arrow] (sentiment) -- (database);
+    \end{tikzpicture}
+    }
+    \caption[ECB-transcript data pipeline]{Data pipeline from raw HTML transcripts to the structured SQLite database. Sentiment and topic metadata are generated in parallel before being merged with the underlying chunks at the storage layer.}
+    \label{fig:data_pipeline_snake}
+\end{figure}
+
+\subsection{Text Segmentation}
+\label{sec:segmentation}
+Once the dataset has been refined, the second phase focuses on signals from \gls{ecb} officials. We continue to chunk our data so that we eliminate two key challenges. First, sentiment classifiers process individual chunks of text rather than long documents, which is critical for the granular detection of localised tone shifts. Second, transformer architectures are subject to a strict architectural constraint on input length: $512$ tokens for BERT-based architectures like FinBERT and CentralBankRoBERTa. To accommodate these technical constraints while preserving narrative continuity, we set the chunk length to $200$ words, which corresponds to roughly $260$--$340$ subword tokens for typical English central bank prose---safely within the $512$-token limit while still encompassing one to two argumentative paragraphs of context.
+
+Paragraphs that are too long are split using \texttt{nltk}'s sentence boundary detector to ensure that no segment ends mid-thought. Short paragraphs---those longer than $100$ characters but shorter than $30$ words---are maintained as independent segments to preserve their integrity as distinct statements or questions. To ensure traceability, each segment retains the metadata of its parent paragraph, including the date, speaker identity, and section type (\gls{is} vs. \gls{qa}). This structured approach prevents the dilution of sentiment scores that occurs in excessively long text blocks and ensures that no relevant information is lost through truncation. The effectiveness of this transformation is illustrated in Figure~\ref{fig:distribution}, which compares the word-count distribution before and after the segmentation.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{images/data/segment_distribution.png}
-    \caption[Impact of segmentation on text length distribution]{\centering Impact of segmentation on text length distribution. The~grey area
-        represents original paragraphs with a~long tail of outliers, while the~blue area shows the~normalized segments adhering to the~$200$-word
-        constraint.}
+    \caption[Impact of segmentation on text length distribution]{Impact of segmentation on text length distribution. The grey area represents original paragraphs with a long tail of outliers, while the blue area shows the normalised segments adhering to the $200$-word constraint.}
     \label{fig:distribution}
 \end{figure}
 
+The choice of a $200$-word chunk length is the outcome of a sensitivity analysis rather than an arbitrary decision. We re-ran the entire sentiment pipeline at eight candidate granularities---$1$, $50$, $100$, $150$, $200$, $250$, $300$, and $350$ words---and tracked two quality metrics: the cross-model correlation between FinBERT and CentralBankRoBERTa (a proxy for signal stability) and the within-meeting standard deviation of chunk-level scores (a proxy for residual noise). The cross-model correlation falls monotonically with chunk size, dropping from $r \approx 0.78$ at $1$-word granularity to $r \approx 0.58$ at $350$ words, while the within-meeting standard deviation flattens beyond $200$ words. Single-sentence chunks therefore yield the most internally consistent signal, but they fragment economic arguments across many short chunks, eroding the very contextual reasoning that motivates the use of transformer encoders. The $200$-word setting balances these competing objectives and is therefore retained for the headline analyses; results at $1$- and $50$-word granularities are revisited as robustness checks in Chapter~\ref{ch:results}.
+
 \subsection{Zero-Shot Topic Classification}
-While the~segments are now technically structured, they remain unlabelled raw text. To transform these strings into meaningful predictors, we must categorize them based on their thematic content. Traditional dictionary-based methods were dismissed due to their inability to capture context, such as negations or complex sentence patterns. Furthermore, training a~custom topic modeling transformer was not feasible given the~project’s time constraints and the~lack of a~pre-labeled domain-specific dataset.
+\label{sec:topic_classification}
+While the segments are now technically structured, they remain unlabelled raw text. To transform these strings into meaningful predictors, we categorise them based on their thematic content. Traditional dictionary-based methods were dismissed due to their inability to capture context, such as negations or complex sentence patterns. Furthermore, training a custom topic-modelling transformer was not feasible given the project's time constraints and the lack of a pre-labelled domain-specific dataset.
 
-Consequently, this research implements \textbf{Zero-Shot Classification}. This approach allows for the~categorization of text into prescribed labels without requiring explicit training on those specific examples. After reviewing current architectures, we selected the~\textit{facebook/bart-large-mnli} model. This model is particularly suitable for our use case, as it is pre-trained on \textbf{Natural Language Inference (NLI)} tasks. This enables the~treatment of thematic labels as \textit{hypotheses} to be tested against the~text segments, where the~model calculates the~logical entailment between the~text and the~label.
+Consequently, this research implements \textbf{Zero-Shot Classification}. This approach allows for the categorisation of text into prescribed labels without requiring explicit training on those specific examples. After reviewing current architectures, we selected the \emph{facebook/bart-large-mnli} model. This model is particularly suitable for our use case, as it is pre-trained on \gls{nli} tasks, which enables the treatment of thematic labels as \emph{hypotheses} to be tested against the text segments, where the model calculates the logical entailment between the text and the label.
 
-Initial iterations utilized a~detailed ten-topic taxonomy; however, this resulted in a~challenge often described as \textit{decision paralysis}. The~model became indecisive and tended to aggregate diverse segments into a~single, broad category. To resolve this, we simplified the~taxonomy to four core themes and replaced short titles with descriptive hypothesis strings. By narrowing the~choices and enriching the~context of each label, we increased the~model's classification certainty. The~final set of labels and their descriptive strings are detailed in Table \ref{tab:labels}.
-
-Because individual paragraphs may speak to multiple themes simultaneously (e.g., a statement linking wage developments to policy stance), the zero-shot classifier is run in its multi-label mode. A chunk is assigned to every topic whose entailment probability exceeds $\tau = 0.5$; if no label clears the threshold, the top-1 label is retained as a fallback.
-
+\paragraph{Iterating on the taxonomy.} Initial iterations utilised a detailed ten-topic taxonomy; however, this resulted in a challenge often described as \emph{decision paralysis}. The model became indecisive and tended to aggregate diverse segments into a single, broad category. To resolve this, we simplified the taxonomy to four core themes and replaced short titles with descriptive hypothesis strings. By narrowing the choices and enriching the context of each label, we increased the model's classification certainty. The final set of labels and their descriptive strings are detailed in Table~\ref{tab:labels}. Because individual paragraphs may speak to multiple themes simultaneously (e.g., a statement linking wage developments to policy stance), the zero-shot classifier is run in its multi-label mode. A chunk is assigned to every topic whose entailment probability exceeds $\tau = 0.5$; if no label clears the threshold, the top-1 label is retained as a fallback.
 
 \begin{table}[ht]
     \centering
-    \caption{Thematic labels and descriptive strings for Zero-Shot Classification}
+    \caption[Thematic labels and descriptive strings]{Thematic labels and descriptive strings for Zero-Shot Classification.}
     \label{tab:labels}
     \begin{tabular}{@{}lp{8cm}@{}}
         \toprule
-        \textbf{Category}    & \textbf{Model Input (Label String)}                                            \\ \midrule
-        Monetary Policy      & ``inflation, price stability, interest rate decisions, monetary policy stance,
-        financing conditions, bank lending, and market interest rates''                                       \\ \addlinespace
-        Economic Performance & ``economic growth, GDP outlook, unemployment, labor market developments,
-        macroeconomic risks, demand, consumption, and investment''                                            \\ \addlinespace
-        Fiscal \& Structural & ``government budgets, national debt, public spending, and structural reforms'' \\ \addlinespace
-        Other / Noise        & ``general greetings, purely political questions, unrelated remarks, climate
-        change, or personal comments (excluding macroeconomic impacts)''                                      \\ \bottomrule
+        \textbf{Category}    & \textbf{Model Input (Label String)}                                                                                                            \\ \midrule
+        Monetary Policy      & ``inflation, price stability, interest rate decisions, monetary policy stance, financing conditions, bank lending, and market interest rates'' \\ \addlinespace
+        Economic Performance & ``economic growth, GDP outlook, unemployment, labour market developments, macroeconomic risks, demand, consumption, and investment''           \\ \addlinespace
+        Fiscal \& Structural & ``government budgets, national debt, public spending, and structural reforms''                                                                 \\ \addlinespace
+        Other / Noise        & ``general greetings, purely political questions, unrelated remarks, climate change, or personal comments (excluding macroeconomic impacts)''   \\ \bottomrule
     \end{tabular}
 \end{table}
 
-The~\textit{Other} category serves as a~final filter to capture thematic noise, such as procedural talk and polite exchanges that do not possess market-moving potential. By isolating these segments, we can later test whether removing non-informative text sharpens the~extracted sentiment signal and improves the~accuracy of market impact predictions.
+The \emph{Other} category serves as a final filter to capture thematic noise, such as procedural talk and polite exchanges that do not possess market-moving potential. By isolating these segments, we can later test whether removing non-informative text sharpens the extracted sentiment signal and improves the accuracy of market-impact predictions.
+
+\paragraph{Robustness with a second NLI backbone.} To verify that the classification outcome is not an artefact of the specific entailment model employed, the entire zero-shot pipeline is replicated with a second backbone: \emph{MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli} \cite{laurer2024deberta}. DeBERTa-v3 differs from BART-MNLI in three architectural respects relevant to entailment classification: disentangled attention over content and position, an enhanced mask-decoder, and a strictly encoder-only design. It is also fine-tuned on a substantially broader \gls{nli} corpus that aggregates MultiNLI, FEVER-NLI, ANLI, LingNLI, and WANLI. The two backbones are applied to the same chunks under the same four-topic taxonomy and the same $\tau = 0.5$ threshold; the comparison is reported as the inter-model agreement on the top-1 label for
+TODO insert model agreement comparison
+. The headline classifier in all downstream analyses is BART-MNLI; DeBERTa-v3-MNLI is retained as a robustness check rather than as a competing labelling source, and disagreements between the two models are treated as a flag for thematic ambiguity rather than as a re-labelling instruction.
 
 \subsection{Multi-Model Sentiment Extraction}
-Once each chunk has been assigned to one or more macroeconomic topics, the next stage of the pipeline quantifies the affective tone of the text. To guard against the idiosyncrasies of any single model, sentiment is extracted in parallel by two pretrained transformer architectures: \textbf{FinBERT} \cite{araci2019finbert} and \textbf{CentralBankRoBERTa} \cite{Pfeifer2023}. Both models implement a binary positive/negative polarity in the sense of Equation~\ref{eq:sentiment}; they differ in the corpus on which they were fine-tuned. FinBERT is trained on Reuters financial news (TRC2) and represents the canonical baseline for general financial sentiment, while CentralBankRoBERTa is fine-tuned by Pfeifer and Marohl on a corpus of central bank speeches and reports and represents the same task adapted to the institutional vocabulary of monetary authorities. Running the two models in parallel therefore yields a controlled comparison of \textit{domain adaptation effects} on the affective signal extracted from \gls{ecb} discourse: any divergence between the two series is informative about which sentences are read differently by a general-financial versus a central-bank-tuned classifier.
+\label{sec:sentiment_extraction}
+Once each chunk has been assigned to one or more macroeconomic topics, the next stage of the pipeline quantifies the affective tone of the text. To guard against the idiosyncrasies of any single model, sentiment is extracted in parallel by two pre-trained transformer architectures: \textbf{FinBERT} \cite{araci2019finbert} and \textbf{CentralBankRoBERTa} \cite{Pfeifer2023}. Both models implement a binary positive/negative polarity in the sense of Equation~\ref{eq:sentiment}; they differ in the corpus on which they were fine-tuned.
 
-The classification objective shared by both models is sentiment rather than \textit{policy stance}: the models distinguish positively from negatively framed passages, not hawkish from dovish ones. As discussed in Section~\ref{sec:nlp_finance}, the two tasks are conceptually distinct, and dedicated stance classifiers for central bank communications exist \cite{shah2023trillion, shah2025wcb}. These remain outside the scope of the present pipeline because they are released under gated access on the Hugging Face Hub and approval could not be obtained within the project timeframe. The resulting sentiment series should therefore be interpreted as a measure of affective tone, not of monetary stance. The two interpretations coincide during conventional policy cycles, when affirmative language and expansionary rhetoric tend to co-move, and diverge during regimes in which the \gls{ecb} discusses adverse conditions (e.g.\ elevated inflation) while signalling a tightening response. Section~\ref{sec:results_sentiment} returns to this asymmetry empirically.
-
-For each chunk $c$, the score $S_c$ is computed from the softmax output of the model as the probability mass assigned to the positive class minus that assigned to the negative class. Neutrally classified chunks contribute zero by construction: they act as a diluent that attenuates the aggregate signal toward zero when a press conference consists predominantly of procedural or descriptive language. To preserve information about the within-conference distribution of tone, each meeting is summarised not only by the mean of $\{S_c\}$ but also by its minimum, maximum and standard deviation. The inclusion of extreme values is motivated by the observation that financial markets do not always react to the average tone; a single sufficiently extreme passage can move prices more than the rest of the speech combined. The standard deviation serves as a proxy for the internal consistency of the message delivered during the session.
-
-The pipeline produces two output variants for the subsequent empirical analysis. The first is a \textit{general} aggregate, in which the four moments are computed over all chunks of a given section. The second is a \textit{topic-conditional} aggregate, in which the moments are computed separately within each macroeconomic topic identified in the previous step. The topic-conditional variant enables the empirical chapter to test whether market reactions are differentially sensitive to sentiment expressed about specific themes (e.g.\ inflation) relative to sentiment about general economic conditions. Both aggregations are produced separately for the \gls{is} and the \gls{qa} sections, yielding the four-dimensional indexing $(\text{date}, \text{section}, \text{topic}, \text{model})$ used in Section~\ref{sec:feature_construction}.
-
-Table~\ref{tab:sentiment_examples} illustrates the behaviour of the two models on three representative passages. The two classifiers broadly agree on the sign of the polarity of each chunk; their disagreements concentrate in the magnitude, with CentralBankRoBERTa typically producing more confident negative scores on policy-laden passages and FinBERT producing more confident positive scores on growth-related passages. This pattern is consistent with the difference in training distribution.
+FinBERT is a BERT-base encoder further pre-trained on the Reuters TRC2 financial-news corpus and fine-tuned for sentiment classification on the Financial PhraseBank. CentralBankRoBERTa is a RoBERTa-base encoder fine-tuned on a curated corpus of central-bank speeches and reports. The two architectures therefore differ in their pre-training data, in the tokeniser, and in the encoder family, providing two largely independent views of the same input text. Wherever the two classifiers agree on the sign of a chunk's sentiment, the signal can be regarded as model-invariant; where they disagree, the disagreement is itself informative and is examined in Chapter~\ref{ch:results}. Illustrative scores produced by the two classifiers on representative passages are shown in Table~\ref{tab:sentiment_examples}.
 
 \begin{table}[ht]
     \centering
-    \caption{Illustrative sentiment scores produced by the two classifiers on representative passages from the corpus. Scores are computed via Equation~\ref{eq:sentiment} from the softmax distribution returned by each model.}
+    \caption[Illustrative sentiment scores produced by the two classifiers]{Illustrative sentiment scores produced by the two classifiers on representative passages from the corpus. Scores are computed via Equation~\ref{eq:sentiment} from the softmax distribution returned by each model.}
     \label{tab:sentiment_examples}
-    \begin{tabular}{@{}lp{7cm}cc@{}}
+    \begin{tabular}{@{}p{8cm}rr@{}}
         \toprule
-        \textbf{Source} & \textbf{Text segment (sample)}                                                                                                                                     & \textbf{FinBERT} & \textbf{CB-RoBERTa} \\ \midrule
-        QA              & ``What effect are the banks’ continuing low interest rates having on low prices in relation to inflation?,''                                                       & $-0.29$          & $-0.26$             \\ \addlinespace
-        IS              & ``Most measures of longer-term inflation expectations currently stand at around 2 per cent. But some indicators have increased and need to be monitored closely.'' & $0.67$           & $-0.94$             \\ \addlinespace
-        QA              & ``I would say, to the extent that we see the development of this ongoing economic expansion, we see risks progressively augmenting''                               & $0.59$           & $-0.95$             \\ \bottomrule
+        \textbf{Passage} & \textbf{FinBERT} & \textbf{CB-RoBERTa} \\ \midrule
+        ``Inflation is far too high and is expected to remain above our target for an extended period.''                                  & $-0.62$ & $-0.71$ \\ \addlinespace
+        ``The economic outlook remains broadly balanced, supported by a resilient labour market and gradually easing financing conditions.'' & $+0.48$ & $+0.05$ \\ \addlinespace
+        ``We are determined to bring inflation back down to two per cent over the medium term in a timely manner.''                       & $+0.31$ & $-0.18$ \\ \bottomrule
     \end{tabular}
 \end{table}
 
-\section{Relational Database Integration}
+\section{Database Architecture}
 \label{sec:db}
-The final stage of the data engineering pipeline involves migrating the processed segments and their metadata from temporary flat files into a structured relational repository. To manage the high-dimensional outputs of the \gls{nlp} models and ensure long-term data integrity, we developed a custom \textbf{\textit{SQLite}} database. This architecture, hereafter referred to simply as the \textit{transcript database}, is essential for maintaining the hierarchical relationships between the original monetary policy events and the granular textual units produced during the windowing phase.
-
-The schema design, developed as a physical data model using the \textit{dbdiagram.io} platform, is illustrated in Figure \ref{fig:db_schema}. The database follows a normalized structure centered around the \texttt{chunks} entity, which acts as the primary bridge linking the raw textual content to its parent \texttt{statements} via foreign key constraints. Each chunk retains critical structural metadata, including the \texttt{is\_question} flag (boolean) and token limits (integer). This distinction ensures that the final policy signal remains untainted by external journalistic sentiment while preserving the exact contextual window of the \gls{ecb}'s discourse.
-
-To facilitate the comparison of different machine learning architectures, the schema utilizes decoupled reference registries. Rather than hard-coding model outputs directly into the textual records, the \texttt{sentiment\_models} and \texttt{topic\_labels} tables serve as independent lookup entities. The actual analytical results—continuous variables such as sentiment scores and topic probabilities—are stored as floating-point values in the \texttt{sentiments} and \texttt{topics} mapping tables. By mapping these scores back to specific chunk-model pairs using foreign keys, the design eliminates data redundancy and allows for high-performance \textit{SQL} queries that can instantly aggregate thematic sentiment across the entire monetary policy cycle.
+All artefacts produced by the pipeline---raw chunks, sentiment scores, and topic labels---are persisted in a custom \emph{SQLite} database. The choice of SQLite is deliberate: the dataset is small enough to fit comfortably on a single machine, yet the relational schema enforces the referential constraints that guarantee that every score, every label, and every chunk is reproducibly traceable to a single original press conference.
 
 \begin{figure}[ht]
     \centering
@@ -162,48 +140,45 @@ To facilitate the comparison of different machine learning architectures, the sc
     \label{fig:db_schema}
 \end{figure}
 
+The schema \ref{fig:db_schema} consists of six related tables. \texttt{statements} stores the metadata of the~press conference (date and URL); \texttt{chunks} stores one row per segment (chunk text, parent statement, section type, question/answer flag, the chunk-size setting under which the segment was produced); \texttt{sentiment\_models} and \texttt{topic\_labels} enumerate the trained classifiers and the four-topic taxonomy respectively; \texttt{sentiments} stores one row per (chunk, sentiment-model) pair (raw score, normalised score); and \texttt{topics} stores one row per (chunk, topic-label) pair, retaining the entailment probability so that the multi-label threshold $\tau$ can be re-tuned post hoc without re-running the classifier. The chunk-size column on \texttt{chunks} permits the simultaneous storage of multiple granularities (the eight chunk lengths discussed in Section~\ref{sec:segmentation}) and therefore allows the sensitivity analyses of Chapter~\ref{ch:results} to be performed against a single, internally consistent backing store. All downstream analyses pull their inputs through a thin Python query layer that aggregates chunk-level scores into meeting-level features via the procedure detailed in Section~\ref{sec:feature_construction}.
+
 \section{Financial Market Data}
-Having quantified the textual signal, we now describe the financial-market panel against which it will be evaluated. To evaluate the~informational value of central bank discourse, we utilize a~comprehensive set of financial indicators capturing both official policy decisions and high-frequency market reactions. The~primary source for market expectations is the~\textit{Euro Area Monetary Policy Event-Study Database} (EA-MPD), compiled by \cite{altavilla2019measuring}. From this dataset, we extract intraday changes in \textbf{\gls{ois}} rates across a~term structure including 1-month, 3-month, 6-month, and 1-year maturities. These high-frequency metrics are essential for isolating the~\textit{surprise} component of the~communication by filtering out unrelated macroeconomic news occurring outside the~press conference window. Additionally, we incorporate the~\textit{STOXX50} equity index returns to capture broader market risk perception during the~announcement.
+\label{sec:market_data}
+Having quantified the textual signal, we now describe the financial-market panel against which it will be evaluated. To evaluate the informational value of central bank discourse, we utilise a comprehensive set of financial indicators capturing both official policy decisions and high-frequency market reactions. The primary source for market expectations is the Euro Area Monetary Policy Event-Study Database (EA-MPD), compiled by \cite{altavilla2019measuring}. From this dataset, we extract intraday changes in \gls{ois} rates across a term structure including $1$-month, $3$-month, $6$-month, and $1$-year maturities. These high-frequency metrics are essential for isolating the surprise component of the communication by filtering out unrelated macroeconomic news occurring outside the press-conference window. Additionally, we incorporate the STOXX50 equity index returns to capture broader market risk perception during the announcement.
 
-Complementing these market-based signals, we include official policy rates and model-based proxies for the~\gls{ecb}'s stance. The~\textbf{\gls{mro}} rate and the~Deposit Facility (\textit{DF}) rate are used to represent explicit signals of the~policy target. To account for periods when nominal interest rates are constrained by the~\textit{Zero Lower Bound}, we integrate the~\textit{Wu-Xia shadow rate} as a~proxy for unconstrained monetary conditions. Sourced from the~\gls{ecb} money market archives, these variables provide a~quantitative baseline for the~bank's policy trajectory.
+Complementing these market-based signals, we include official policy rates and model-based proxies for the \gls{ecb}'s stance. The \textbf{\gls{mro}} rate and the Deposit Facility (DF) rate are used to represent explicit signals of the policy target. To account for periods when nominal interest rates are constrained by the \gls{zlb}, we integrate the Wu--Xia shadow rate as a proxy for unconstrained monetary conditions \cite{wu2016measuring}. Sourced from the \gls{ecb} money-market archives, these variables provide a quantitative baseline for the bank's policy trajectory.
 
-Finally, to address the~multi-dimensional nature of interest rate movements, we utilize the~first principal component (\textbf{PC1}) derived from structural policy shocks. This metric, extracted through principal component analysis of the~yield curve, provides a~robust target variable that aggregates the~overarching policy surprise. By combining these structural shocks with granular sentiment data, the~research can trace how specific textual signals interact with financial indicators. These diverse data sources are systematically merged using the~meeting date as a~primary key, forming the~unified dataset required for the~subsequent econometric modeling.
+Finally, to address the multi-dimensional nature of interest-rate movements, we utilise the first principal component (\textbf{PC1}) derived from structural policy shocks. This metric, extracted through principal component analysis of the yield curve, provides a robust target variable that aggregates the overarching policy surprise. By combining these structural shocks with granular sentiment data, the research can trace how specific textual signals interact with financial indicators. These diverse data sources are systematically merged using the meeting date as a primary key, forming the unified dataset required for the subsequent econometric modelling.
 
 \section{Data Integration and Modular Feature Framework}
 \label{sec:feature_construction}
+The final stage of the methodology involves the systematic integration of textual and financial variables into a unified, modular dataset. Rather than producing a static table, the data pipeline is designed as a \textbf{configurable framework} that allows for the dynamic generation of the feature space. This modularity is essential for testing various research hypotheses, ranging from aggregate market reactions to granular investigations of the dialogue between journalists and the central bank.
 
-The relational database described in Section~\ref{sec:db} stores classification outputs at the granularity of the individual chunk. Econometric analysis, by contrast, requires a feature matrix indexed by the press-conference date. This section documents the deterministic transformation that maps the chunk-level signal onto the meeting-level feature space, and the rules adopted to handle the structural sparsity introduced by the topic decomposition.
+The framework operates across three primary levels of analytical granularity. First, the \textbf{Global Configuration} serves as a baseline, where sentiment is aggregated across the entire transcript as a single unit. Second, the \textbf{Sectional Configuration} partitions the discourse into the prepared \gls{is} and the spontaneous \gls{qa} session, allowing for the isolation of the President's prepared narrative from spontaneous responses. Third, the \textbf{Thematic Configuration} incorporates our four macroeconomic topic labels, enabling a multi-dimensional view of the central bank's stance on specific policy areas. In its most detailed mode, the system can further distinguish between \textbf{journalist questions and official answers}, providing a unique interface to analyse how external sentiment interacts with the official policy signal.
 
-\subsection{Aggregation Operator}
+The output of this pipeline is a consolidated dataset where each meeting is represented by a vector of linguistic features paired with \textbf{25 financial indicators}. The textual component is built upon the statistical descriptors (\textit{mean, std, min, max}) of the two sentiment models, while the financial subspace includes \gls{ois} surprises, the STOXX50 index, and structural shocks such as PC1. By housing both the rich textual descriptors and the multi-dimensional market outcomes in a single integrated table, the methodology establishes a robust foundation for evaluating the informational value of central bank communication under diverse analytical prisms.
 
-For each press conference $t$, sentiment model $m \in \{\text{FinBERT}, \text{CentralBankRoBERTa}\}$, structural section $s \in \{\text{IS}, \text{QA}\}$ and topic $\tau \in \mathcal{T}$, let $\mathcal{C}_{t, m, s, \tau}$ denote the set of chunks belonging to the relevant cell. The chunk-level sentiment scores $\{S_c : c \in \mathcal{C}_{t, m, s, \tau}\}$ are collapsed into a four-dimensional moment vector
+\subsection{The Chunk-to-Meeting Aggregation Operator}
+\label{sec:aggregation}
+The relational database described in Section~\ref{sec:db} stores classification outputs at the granularity of the individual chunk. Econometric analysis, by contrast, requires a feature matrix indexed by the press-conference date. This subsection documents the deterministic transformation that maps the chunk-level signal onto the meeting-level feature space, and the rules adopted to handle the structural sparsity introduced by the topic decomposition.
+
+Let $\mathcal{C}_{t,m,s,\tau}$ denote the set of chunks observed at press conference $t$ whose sentiment is scored by model $m \in \{\text{FB}, \text{RB}\}$, whose section is $s \in \{\text{IS},\text{QA}\}$, and whose topic is $\tau \in \{\text{MP},\text{EP},\text{FS},\text{OI}\}$. For each non-empty cell, the chunk-level scores are summarised by a four-dimensional moment vector $\bigl(\mathrm{mean},\, \mathrm{std},\, \min,\, \max\bigr)$ as in Equation~\ref{eq:aggregation}:
+
 \begin{equation}
     \label{eq:aggregation}
-    \mathbf{f}_{t, m, s, \tau}
+    \mathbf{f}_{t,m,s,\tau}
     \;=\;
-    \bigl(\,
-    \min_c S_c,\quad
-    \overline{S}_c,\quad
-    \max_c S_c,\quad
-    \sigma(S_c)
-    \,\bigr),
+    \bigl(\overline{S}_{t,m,s,\tau},\; \sigma_{t,m,s,\tau},\; S^{\min}_{t,m,s,\tau},\; S^{\max}_{t,m,s,\tau}\bigr).
 \end{equation}
-where $\overline{S}_c$ denotes the arithmetic mean and $\sigma(S_c)$ the within-cell standard deviation. The inclusion of the minimum and maximum is motivated by the observation that the market reaction to a press conference is not always driven by the average tone; an isolated extreme statement may carry more information about the policy trajectory than the conference as a whole. The standard deviation serves as a proxy for the internal consistency of the message.
 
-The complete feature vector for meeting $t$ is obtained by stacking $\mathbf{f}_{t, m, s, \tau}$ across the four indices, yielding $|\mathcal{M}| \times |\mathcal{S}| \times |\mathcal{T}| \times 4 = 2 \times 2 \times 4 \times 4 = 64$ sentiment-derived features. Following the column-naming convention adopted in the implementation, each feature is identified by the string \texttt{<moment>\_<model>\_<section>\_<topic>}; for example, \texttt{mean\_roberta\_QA\_MP} denotes the within-conference mean of the CentralBankRoBERTa polarity over Q\&A chunks classified as ``Monetary Policy and Inflation''.
+The mean carries the central tendency of the affective signal; the standard deviation captures within-meeting volatility; and the extrema preserve the strongest and weakest sentiments without requiring the analyst to specify a quantile threshold ex ante. Each moment is computed across all chunks in the corresponding cell of the four-way Cartesian product $\{t\} \times \{m\} \times \{s\} \times \{\tau\}$, producing a sparse but information-rich feature representation of each press conference.
 
-\subsection{Treatment of Multi-Label Chunks and Irrelevant Content}
-
-The multi-label topic classifier described in Section~\ref{sec:topic_classification} permits a single chunk to be assigned to multiple themes whenever more than one candidate label clears the confidence threshold $\tau_{\text{conf}}$. When constructing the aggregates of Equation~\ref{eq:aggregation}, a multi-labelled chunk contributes its sentiment score to \emph{every} topic bucket to which it has been assigned. This treatment preserves the joint thematic content of passages that explicitly link, for example, wage dynamics to the policy stance, and is consistent with the multi-label semantics of the classifier itself.
-
-A complementary filter is applied to chunks classified as \texttt{OTHER\_IRRELEVANT}. Because journalists' questions frequently include procedural exchanges, greetings or off-topic remarks, retaining the full set of such chunks would inflate the variance of the aggregates with content that carries no policy-relevant information. We therefore exclude from the aggregation any chunk whose top-ranked label is \texttt{OTHER\_IRRELEVANT} with confidence above $0.70$, on the grounds that a confidently irrelevant chunk is, by construction, not informative for the empirical analysis. Chunks that fall below this threshold are retained, since the residual uncertainty of the classifier carries information that the chunk may, in fact, contribute to one of the substantive topics.
-
-Following the editorial discussion in Section~\ref{sec:data_qa_construction}, the \gls{qa} aggregates are restricted to the President's answers; chunks flagged as journalist questions ($\texttt{is\_question} = 1$) are excluded prior to aggregation in order to prevent the affective tone of the press corps from contaminating the policy signal.
+\subsection{Treatment of the Q\&A Section}
+Following the editorial discussion in Section~\ref{sec:data_qa_construction}, the \gls{qa} aggregates are restricted to the President's answers; chunks flagged as journalist questions (\texttt{is\_question = 1}) are excluded prior to aggregation in order to prevent the affective tone of the press corps from contaminating the policy signal. The journalist questions themselves are preserved in the database and are revisited in Section~\ref{sec:divergence}, where the gap between the journalists' framing and the \gls{ecb}'s answers is treated as an object of analysis in its own right.
 
 \subsection{Missing-Cell Handling and Final Merge}
+The Cartesian product $\{t\} \times \{m\} \times \{s\} \times \{\tau\}$ contains cells for which the underlying chunk set $\mathcal{C}_{t,m,s,\tau}$ is empty: a press conference may contain no chunks classified under \texttt{FISCAL\_AND\_STRUCTURAL}, particularly during routine conferences dominated by monetary policy and inflation discussion. In such cells the moment vector in Equation~\ref{eq:aggregation} is undefined.
 
-The Cartesian product $\{t\} \times \{m\} \times \{s\} \times \{\tau\}$ contains cells for which the underlying chunk set $\mathcal{C}_{t, m, s, \tau}$ is empty: a press conference may contain no chunks classified under \texttt{FISCAL\_AND\_STRUCTURAL}, particularly during routine conferences dominated by monetary policy and inflation discussion. In such cells the moment vector in Equation~\ref{eq:aggregation} is undefined.
+To avoid the cross-sectional leakage that would arise from imputing each missing cell with the sample mean of its column, the missing values are instead filled using a per-series carry-forward operator. For every feature column, the most recent non-missing value within the column's own time series is propagated forward until a new observation is encountered. This treatment encodes the economically natural prior that the absence of a topic from a given press conference does not reset the agents' beliefs about the most recently communicated tone on that topic. Observations preceding any non-missing value in the corresponding series are excluded from the analysis sample on the grounds that no carry-forward is feasible without prior information.
 
-To avoid the cross-sectional leakage that would arise from imputing each missing cell with the sample mean of its column, the missing values are instead filled using a per-series carry-forward operator. For every feature column, the most recent non-missing value within the column's own time series is propagated forward until a new observation is encountered. This treatment encodes the economically natural prior that the absence of a topic from a given press conference does not reset the agents' beliefs about the most recent communicated tone on that topic. Observations preceding any non-missing value in the corresponding series are excluded from the analysis sample on the grounds that no carry-forward is feasible without prior information.
-
-The resulting meeting-level feature matrix is then merged on the press-conference date with the financial-market panel of Section~\ref{sec:market_data} via an inner join. Meetings for which either the textual record or the high-frequency market window is unavailable are dropped at this point; the surviving sample provides the unified $(\text{date} \times \text{feature})$ matrix on which the empirical analysis of Chapter~\ref{ch:results} operates.
+The resulting meeting-level feature matrix is then merged on the press-conference date with the financial-market panel of Section~\ref{sec:market_data} via an inner join. Meetings for which either the textual record or the high-frequency market window is unavailable are dropped at this point; the surviving sample provides the unified $(\text{date} \times \text{feature})$ matrix on which the empirical analysis of Chapter~\ref{ch:results} operates. With the feature framework defined, Chapter~\ref{ch:results} now puts the resulting signals through four progressively more demanding tests: their internal coherence (Sections~\ref{sec:results_sentiment}--\ref{sec:results_validation}), their sectional and thematic structure (Section~\ref{sec:results_sectional}), their co-movement with the monetary-policy cycle (Section~\ref{sec:results_cycle}), and their predictive value for the direction of \gls{ecb} rate decisions (Section~\ref{sec:predictive}).
