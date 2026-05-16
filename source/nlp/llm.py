@@ -2,7 +2,7 @@ import json
 import time
 import pandas as pd
 from groq import Groq
-from ..data.connection import return_chunks
+from ..data.queries import return_chunks
 from .. import DATA_DIR, GROQ_KEY, FILENAME
 
 # Inicializácia

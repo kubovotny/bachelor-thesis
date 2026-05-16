@@ -1,4 +1,4 @@
-from ..data.connection import return_chunks
+from ..data.queries import return_chunks
 from ..data import partition_indices
 
 data = return_chunks(200)

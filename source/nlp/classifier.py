@@ -3,57 +3,56 @@ from transformers import (
     TextClassificationPipeline,
     ZeroShotClassificationPipeline,
 )
-from typing import List, Dict, Any, Literal
+from typing import List, Dict, Literal
 from huggingface_hub import login
 import os
-from ..data.connection import return_topic_labels
+from ..data.queries import return_topic_labels
 import torch
 import pandas as pd
-
-HF_TOKEN = os.environ["HF_TOKEN"]
-login(token=HF_TOKEN)
-
-
-classifier: TextClassificationPipeline | None = None
+from .. import DATA_DIR
+import pandas as pd
+import time
 
 MODELS: Dict[Literal["finbert", "roberta"], str] = {
     "roberta": "Moritz-Pfeifer/CentralBankRoBERTa-sentiment-classifier",
-    "finbert": "ProsusAI/finbert",
+    "finbert": "ProsusAI/finbert"
 }
+BATCH_SIZE = 256
+
+_classifier_cache: dict[str, TextClassificationPipeline] = {}
+try:
+    HF_TOKEN = os.environ["HF_TOKEN"]
+    login(token=HF_TOKEN)
+except:
+    HF_TOKEN = None
 
 
-def get_sentiment(
-    text: List[str] | str, model: Literal["finbert", "roberta"] = "finbert"
-) -> List[Dict[str, str | float]] | List[List[Dict[str, str | float]]]:
-    global classifier
-    if model in MODELS:
-        model_name = MODELS[model]
-    else:
-        raise NameError(f"{model} model is not in menu.")
-    classifier = pipeline(
-        "text-classification",
-        model=model_name,
-        token=HF_TOKEN,
-        device=0,
-    )
-    return classifier(text, top_k=3, batch_size=256)
+def get_sentiment(text, model="finbert"):
+    if model not in _classifier_cache:
+        _classifier_cache[model] = pipeline(
+            "text-classification",
+            model=MODELS[model],
+            token=HF_TOKEN,
+            device=0 if torch.cuda.is_available() else -1,
+            top_k=None,  # full distribution, no truncation
+        )
+    return _classifier_cache[model](text, batch_size=BATCH_SIZE)
 
 
-def calculate_sentiment(
-    list_of_sentiments: List[Dict[str, str | float]], apply_divisor=False
-) -> float:
-    score: float = 0
-    divisor: float = 0
+# classifier.py lines 47–53 — drop the hawkish/dovish branches; they never trigger now
+def calculate_sentiment(list_of_sentiments, apply_divisor=False) -> float:
+    score, divisor = 0.0, 0.0
     for sentiment in list_of_sentiments:
-        if any(str(sentiment["label"]).lower() == x for x in ["positive", "hawkish"]):
-            score += float(sentiment["score"])
+        lbl = str(sentiment["label"]).lower()
+        if lbl == "positive":
+            score   += float(sentiment["score"])
             divisor += float(sentiment["score"])
-        elif any(str(sentiment["label"]).lower() == x for x in ["negative", "dovish"]):
-            score -= float(sentiment["score"])
+        elif lbl == "negative":
+            score   -= float(sentiment["score"])
             divisor += float(sentiment["score"])
     if divisor < 1e-2:
-        return 0
-    return score / (divisor if apply_divisor else 1)
+        return 0.0
+    return score / (divisor if apply_divisor else 1.0)
 
 
 ZERO_SHOT_LABELS: Dict[
@@ -97,31 +96,40 @@ ZERO_SHOT_DESC2LABEL: Dict[
 topic_classifier: ZeroShotClassificationPipeline | None = None
 
 
-def label_paragraph(text: str | List[str]) -> List[Dict[str, List[str | float] | str]]:
+def label_paragraph(text, multi_label: bool = True):
     global topic_classifier
-    # Zabezpečíme, aby text bol list, kvôli tqdm a batchingu
     if isinstance(text, str):
         text = [text]
-
     if topic_classifier is None:
         topic_classifier = pipeline(
             "zero-shot-classification",
-            model="facebook/bart-large-mnli",
+            model="facebook/bart-large-mnli",  # KEEP — theory.tex still valid
             token=HF_TOKEN,
-            device=0,
+            device=0 if torch.cuda.is_available() else -1,
             torch_dtype=torch.float16,
         )
-
     results = []
-    # Znížený batch_size na 32 pre stabilitu na 12GB VRAM
     for out in topic_classifier(
-        text.to_list() if not isinstance(text, list) else text,
+        text if isinstance(text, list) else text.to_list(),
         candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()),
         batch_size=128,
+        multi_label=multi_label,  # ← key change
+        hypothesis_template="This passage discusses {}.",  # ← domain-tuned template
     ):
         results.append(out)
-
     return results
+
+
+def label_choose_multi(out: dict, threshold: float = 0.45):
+    """Return list of (label_rowid, prob) tuples above threshold; fall back to top-1 if none."""
+    pairs = [
+        (ZERO_SHOT_DESC2LABEL[lbl][1], s)
+        for lbl, s in zip(out["labels"], out["scores"])
+        if s >= threshold
+    ]
+    if not pairs:
+        pairs = [(ZERO_SHOT_DESC2LABEL[out["labels"][0]][1], out["scores"][0])]
+    return pairs
 
 
 def label_choose(
@@ -131,10 +139,6 @@ def label_choose(
 
 
 if __name__ == "__main__":
-    from .. import DATA_DIR
-    import pandas as pd
-    import time
-
     start = time.time()
     data = pd.read_csv(f"{DATA_DIR}/scraped_v2.psv").sample(500, random_state=42)
     data["result"] = pd.Series(label_paragraph(data["chunk"].to_list())).to_list()

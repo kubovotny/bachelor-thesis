@@ -5,7 +5,6 @@ import pandas as pd
 from ..data.connection import (
     insert_sentiments,
     return_chunks,
-    return_sentiment,
     return_limits,
     CHUNK_LIMIT_TYPE,
 )

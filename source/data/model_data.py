@@ -1,7 +1,7 @@
 import pandas as pd
 from .sentiment import return_sentiment_agg_pivot, QA_OPTIONS, CHUNK_LIMIT_TYPE
 from .market import return_market_data, LIST_OF_MARKET_DATA
-from typing import Literal, List
+from typing import List
 
 
 def return_data(
