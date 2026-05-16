@@ -28,7 +28,7 @@ def label_maker(
     long_df["model_id"] = 1 if model == "facebook" else 2
     start_store = time.time()
     if save_to_db:
-        clear_topics_for_limit(limit)
+        clear_topics_for_limit(limit, model=model)
         insert_topics(df=long_df)
     print(
         f"LIMIT {limit} - LABEL TIME: {start_store - start_label}, STORE TIME: {time.time() - start_store}"
@@ -37,6 +37,5 @@ def label_maker(
 
 
 if __name__ == "__main__":
-    for limit in 350, 200, 50, 1:
-        for model in MODEL_SELECTION:
-            label_maker(model, limit, save_to_db=True)
+    for limit in 200, 50, 1:
+        label_maker(MODEL_SELECTION[0], limit, save_to_db=True)

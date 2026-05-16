@@ -50,14 +50,16 @@ def return_sentiment_agg(
     topic_model: Literal["moritz", "facebook"] = "facebook",
     drop_irrelevant: bool = False,
 ):
-    data = return_sentiment_chunk_data(word_limit, topic_model, drop_irrelevant)
+    data = return_sentiment_chunk_data(
+        word_limit, topic_model, with_label, drop_irrelevant
+    )
     grouping_columns: List["str"] = ["date"]
     if IS_QA_division:
         grouping_columns.append("part")
     if with_label:
         grouping_columns.append("topic")
     else:
-        data = data.drop(columns=["topic", "topic_prob"]).drop_duplicates(
+        data = data.drop_duplicates(
             subset=["date", "part", "is_question", "chunk", "sentiment_model", "score"]
         )
     if qa_division:
@@ -90,7 +92,6 @@ def return_sentiment_agg_pivot(
         topic_model=topic_model,
         drop_irrelevant=drop_irrelevant,
     )
-    print(agg_data)
     agg_data["label"] = agg_data.apply(
         (lambda row: label_formatter(row, qa_options == "both_divided")),
         axis=1,
@@ -124,14 +125,18 @@ def return_sentiment_agg_pivot(
 def return_sentiment_chunk_data(
     limit_version: CHUNK_LIMIT_TYPE = 200,
     topic_model: Literal["facebook", "moritz"] = "facebook",
+    with_label: bool = True,
     drop_irrelevant: bool = False,
 ) -> pd.DataFrame:
-    data = return_sentiment(limit_version, with_label=True)
-    if drop_irrelevant:
-        data = data[
-            ~((data["topic"] == "OTHER_IRRELEVANT") & (data["topic_prob"] > 0.7))
-        ]
-    return data[data["topic_model"] == topic_model].drop(columns="topic_model")
+    data = return_sentiment(limit_version, with_label=with_label)
+
+    if with_label:
+        data = data[data["topic_model"] == topic_model].drop(columns="topic_model")
+        if drop_irrelevant:
+            data = data[
+                ~((data["topic"] == "OTHER_IRRELEVANT") & (data["topic_prob"] > 0.7))
+            ]
+    return data
 
 
 if __name__ == "__main__":

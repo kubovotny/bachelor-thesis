@@ -18,7 +18,8 @@ SENTIMENT_MODELS: Dict[SENTIMENT_MODEL_NAME, str] = {
     "roberta": "Moritz-Pfeifer/CentralBankRoBERTa-sentiment-classifier",
     "finbert": "ProsusAI/finbert",
 }
-BATCH_SIZE = 256
+BATCH_SIZE_SENTIMENT = 256
+BATCH_SIZE_TOPIC = 64
 
 _classifier_cache: dict[str, TextClassificationPipeline] = {}
 try:
@@ -37,7 +38,7 @@ def get_sentiment(text, model: SENTIMENT_MODEL_NAME = "finbert"):
             device=0 if torch.cuda.is_available() else -1,
             top_k=None,  # full distribution, no truncation
         )
-    return _classifier_cache[model](text, batch_size=BATCH_SIZE)
+    return _classifier_cache[model](text, batch_size=BATCH_SIZE_SENTIMENT)
 
 
 # classifier.py lines 47–53 — drop the hawkish/dovish branches; they never trigger now
@@ -119,7 +120,7 @@ def label_paragraph(
     for out in _topic_classifier_cache[model](
         text if isinstance(text, list) else text.to_list(),
         candidate_labels=list(ZERO_SHOT_DESC2LABEL.keys()),
-        batch_size=128,
+        batch_size=BATCH_SIZE_TOPIC,
         multi_label=multi_label,  # ← key change
         hypothesis_template="This passage discusses {}.",  # ← domain-tuned template
     ):

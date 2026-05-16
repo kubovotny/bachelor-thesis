@@ -191,14 +191,15 @@ def insert_topics(
     conn.commit()
 
 
-def clear_topics_for_limit(chunk_limit: int):
+def clear_topics_for_limit(chunk_limit: int, model:Literal["facebook","moritz"]):
+    model_id = 1 if model == "facebook" else 2
     conn, cur = connect_to_db()
     cur.execute(
         """
         DELETE FROM topics
-        WHERE chunk_rowid IN (SELECT rowid FROM chunks WHERE chunk_limit = ?)
+        WHERE chunk_rowid IN (SELECT rowid FROM chunks WHERE chunk_limit = ?) AND model_id = ?
     """,
-        (chunk_limit,),
+        (chunk_limit, model_id),
     )
     conn.commit()
 
