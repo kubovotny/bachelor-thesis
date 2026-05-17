@@ -67,7 +67,7 @@ def return_sentiment_agg(
 
     grouping_columns += ["sentiment_model"]
     data_agg = data.groupby(grouping_columns).agg(
-        {"score": ["min", "mean", "max", "std"]}
+        {"score": ["min", "mean", "max", "std", "count"]}
     )
     data_agg.columns = data_agg.columns.droplevel(0)
     data_agg = data_agg.reset_index()
@@ -101,7 +101,7 @@ def return_sentiment_agg_pivot(
         agg_data.drop(columns=["is_question"], inplace=True)
     # Pivot the long table into wide format
     df_pivot: pd.DataFrame = agg_data.pivot(
-        index="date", columns="label", values=["max", "mean", "min", "std"]
+        index="date", columns="label", values=["max", "mean", "min", "std", "count"]
     )
     # Flatten the MultiIndex columns into single-level names (e.g. 'mean_QA_MP')
     df_pivot.columns = [f"{col[1]}_{col[0]}" for col in df_pivot.columns]
@@ -123,12 +123,12 @@ def return_sentiment_agg_pivot(
 
 
 def return_sentiment_chunk_data(
-    limit_version: CHUNK_LIMIT_TYPE = 200,
+    word_limit: CHUNK_LIMIT_TYPE = 200,
     topic_model: Literal["facebook", "moritz"] = "facebook",
     with_label: bool = True,
     drop_irrelevant: bool = False,
 ) -> pd.DataFrame:
-    data = return_sentiment(limit_version, with_label=with_label)
+    data = return_sentiment(word_limit, with_label=with_label)
 
     if with_label:
         data = data[data["topic_model"] == topic_model].drop(columns="topic_model")
@@ -143,7 +143,7 @@ if __name__ == "__main__":
     print(
         return_sentiment_agg_pivot(
             word_limit=200,
-            with_label=True,
+            with_label=False,
             qa_options="both_together",
             IS_QA_division=False,
             topic_model="facebook"

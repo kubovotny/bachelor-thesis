@@ -99,8 +99,10 @@ def chunk_intro(filename: str, limit: CHUNK_LIMIT_TYPE | None = None) -> pd.Data
         df_w_chunked = df.explode("chunk").drop(columns=["text"])
         df_w_chunked = make_percentile(df_w_chunked)
         df_w_chunked["chunk_limit"] = limit
+        df_w_chunked = df_w_chunked.reset_index()
+        df_w_chunked["statement_id"] += 1
         if DATABASE_SAVING:
-            insert_chunks(df_w_chunked.reset_index())
+            insert_chunks(df_w_chunked)
     return df_w_chunked
 
 
@@ -140,16 +142,16 @@ def paragraphs_qa(filename: str) -> pd.DataFrame:
 
     data["QA_processed"] = data["qa_paragraphs"].apply(qa_multiple_proccesser)
     data = data.drop(columns=["intro", "qa", "qa_paragraphs"]).dropna()
-        # THIS was manually checked, if it divide correctly - 100% correct
-        # check_edge = 280
-        # for i,row in data.iterrows():
-        #     if i < check_edge:
-        #         continue
-        #     print(row["date"])
-        #     for QA_p in row["QA_processed"]:
-        #         print(10 * "\t" if not QA_p["is_question"] else "", QA_p["text"][:50])
-        #     if i >= check_edge + 10:
-        #         break
+    # THIS was manually checked, if it divide correctly - 100% correct
+    # check_edge = 280
+    # for i,row in data.iterrows():
+    #     if i < check_edge:
+    #         continue
+    #     print(row["date"])
+    #     for QA_p in row["QA_processed"]:
+    #         print(10 * "\t" if not QA_p["is_question"] else "", QA_p["text"][:50])
+    #     if i >= check_edge + 10:
+    #         break
 
     df_with_qa = data.explode("QA_processed")
     df_with_qa["is_question"] = df_with_qa["QA_processed"].apply(
@@ -183,8 +185,10 @@ def chunk_qa(filename: str, limit: CHUNK_LIMIT_TYPE | None = None) -> pd.DataFra
             df_with_qa.explode("chunk").drop(columns=["text"])
         )
         df_qa_chunked["chunk_limit"] = limit
+        df_qa_chunked = df_qa_chunked.reset_index()
+        df_qa_chunked["statement_id"] += 1
         if DATABASE_SAVING:
-            insert_chunks(df_qa=df_qa_chunked.reset_index())
+            insert_chunks(df_qa=df_qa_chunked)
     return df_qa_chunked
 
 

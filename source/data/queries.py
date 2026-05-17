@@ -41,7 +41,7 @@ def return_chunks(
 
 
 def return_sentiment(
-    limit_version: CHUNK_LIMIT_TYPE | None = 200,
+    word_limit: CHUNK_LIMIT_TYPE | None = 200,
     with_label: bool = False,
 ):
     conn, cur = connect_to_db()
@@ -53,11 +53,11 @@ JOIN sentiment_models sm ON sm.rowid = se.model_id
 {("JOIN topics t ON t.chunk_rowid = se.chunk_rowid\n" + 
  "JOIN topic_labels tl ON tl.rowid = t.label_rowid\n" + 
 "JOIN topic_models tm ON tm.rowid = t.model_id " )if with_label else ""}\
-{"WHERE ch.chunk_limit = ?" if limit_version is not None else ""}
+{"WHERE ch.chunk_limit = ?" if word_limit is not None else ""}
 ORDER BY st.date, ch.part, ch.chunk_id;
 """
-    if limit_version is not None:
-        return pd.read_sql(sql, conn, parse_dates=["date"], params=(limit_version,))
+    if word_limit is not None:
+        return pd.read_sql(sql, conn, parse_dates=["date"], params=(word_limit,))
     else:
         return pd.read_sql(sql, conn, parse_dates=["date"])
 
