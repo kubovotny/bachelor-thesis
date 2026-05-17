@@ -16,3 +16,4 @@ __pycache__/
 .vscode/
 *.db
 source/check_code
+source/models/big_10

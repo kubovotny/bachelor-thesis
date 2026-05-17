@@ -6,7 +6,7 @@ Before examining the granular structure of \gls{ecb} communication, we must conf
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/base/fig_aggregate_sentiment.pdf}
-    \caption[Aggregate ECB press-conference sentiment, 1999--2025]{Aggregate \gls{ecb} press-conference sentiment, 1999--2025. Solid lines: six-month centred moving average; shaded bands: within-meeting $\pm 1$ standard deviation. Blue: FinBERT; dark red: CentralBankRoBERTa.}
+    \caption[Aggregate ECB sentiment, 1998--2025]{Aggregate \gls{ecb} sentiment, 1998--2025.}
     \label{fig:aggregate_sentiment}
 \end{figure}
 
@@ -14,7 +14,7 @@ A persistent vertical gap separates the two series: FinBERT is mildly positive (
 
 \begin{table}[ht]
     \centering
-    \caption[Descriptive statistics of the net sentiment score by model and section]{ Descriptive statistics of the net sentiment score, 1999--2025. \textsc{is}: Introductory Statement ($n = 289$); \textsc{qa}: Q\&A session ($n = 281$); \textsc{iqr}: interquartile range.}
+    \caption[Descriptive statistics of the net sentiment score by model and section]{ Descriptive statistics of the net sentiment score, 1998--2025. \textsc{is}: Introductory Statement ($n = 289$); \textsc{qa}: Q\&A session ($n = 281$); \textsc{iqr}: interquartile range.}
     \label{tab:descriptives}
     \begin{tabular}{@{}llrrrrr@{}}
         \toprule
@@ -27,7 +27,7 @@ A persistent vertical gap separates the two series: FinBERT is mildly positive (
     \end{tabular}
 \end{table}
 
-Three patterns stand out. First, the IS is substantially more volatile than the QA for both models: the IQR is three times wider in FinBERT ($0.290$ vs.\ $0.094$) and $50\%$ wider in CentralBankRoBERTa ($0.258$ vs.\ $0.170$). Second, the CentralBankRoBERTa QA distribution barely breaches zero at its maximum ($+0.010$), indicating that spontaneous communication never produces unambiguously positive sentiment on the central-bank scale. Third, the calibration offset is not uniform across sections: $0.155$ in the IS against $0.393$ in the QA, showing that the gap between classifiers depends on communicative register.
+Three patterns stand out. First, the IS is substantially more volatile than the QA for both models: the IQR is three times wider in FinBERT ($0.290$ vs.\ $0.094$) and $50\%$ wider in CentralBankRoBERTa ($0.258$ vs.\ $0.170$). Second, the CentralBankRoBERTa QA distribution barely breaches zero at its maximum ($+0.010$), indicating that spontaneous communication never produces unambiguously positive sentiment on the central-bank scale. Third, the calibration offset is not uniform across sections: $0.35$ in the IS against $0.39$ in the QA, showing that the small gap between classifiers depends on communicative register.
 
 The IS--QA Pearson correlations within each model (Table~\ref{tab:is_qa_corr})
 are positive, moderate, and significant at the $0.1\%$ level, confirming that both sections encode the same underlying policy stance at different intensities.
@@ -51,8 +51,8 @@ A coherent pair of series can still be jointly wrong. To verify alignment with t
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/base/fig_sentiment_events.pdf}
-    \caption[ECB sentiment and key historical policy events, 1999--2025]{Aggregate \gls{ecb} sentiment overlaid with seven anchor events. Dotted vertical lines mark the event date.}
+    \caption[ECB sentiment and key historical policy events, 1998--2025]{Aggregate \gls{ecb} sentiment overlaid with seven anchor events. Dotted vertical lines mark the event date.}
     \label{fig:sentiment_events}
 \end{figure}
 
-Both series fall sharply at the October 2008 \gls{gfc} rate cut, partially recover at Draghi's ``Whatever it takes'' speech of July 2012, and drift further downward through the \gls{qe} launch (January 2015) and the move to negative rates (September 2019). The March 2020 pandemic emergency produces a second trough, followed by an unambiguous upswing ahead of the July 2022 liftoff; sentiment peaks around the September 2023 meeting at which the rate reached $4.50\%$ and softens thereafter. The alignment across all seven events certifies that the signal is not artefactual; the more demanding co-movement tests with market variables are deferred to Section~\ref{sec:results_cycle}.
+Both series fall sharply at the October 2008 \gls{gfc} rate cut, partially recover at Draghi's ``Whatever it takes'' speech of July 2012, and drift further downward through the \gls{qe} launch (January 2015) and deepening into negative territory (September 2019). The March 2020 pandemic emergency produces a second trough, followed by an unambiguous upswing ahead of the July 2022 liftoff; sentiment peaks around the September 2023 meeting at which the rate reached $4.50\%$ and softens thereafter. The alignment across all seven events certifies that the signal is not artefactual; the more demanding co-movement tests with market variables are deferred to Section~\ref{sec:results_cycle}.

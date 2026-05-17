@@ -1,0 +1,69 @@
+Introductory Statement
+Sentiment Profile
+0.6
+
+Q&A Session
+Sentiment Profile
+
+0.4
+
+FinBERT ( =0.197)
+CentralBankRoBERTa ( =-0.147)
+
+FinBERT [Answers] ( =0.057)
+FinBERT [Questions] ( =-0.086)
+CentralBankRoBERTa [Answers] ( =-0.340)
+CentralBankRoBERTa [Questions] ( =-0.625)
+
+0.2
+
+0.4
+
+0.0
+
+0.2
+
+Sentiment
+
+Sentiment
+
+Intra-Section Sentiment Dynamics
+FinBERT (solid) vs. CentralBankRoBERTa (dashed) | ±SE shaded
+
+0.0
+
+0.2
+0.4
+
+0.2
+0.6
+0.4
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+Relative position within IS (0 = start, 1 = end)
+
+1.0
+
+0.0
+
+0.2
+
+0.4
+
+0.6
+
+0.8
+
+1.0
+
+Relative position within Q&A (0 = start, 1 = end)
+
+
