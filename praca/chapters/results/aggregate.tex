@@ -1,0 +1,58 @@
+\section{Aggregate Sentiment: Classifier Properties and Historical Coherence}
+\label{sec:results_sentiment}
+
+Before examining the granular structure of \gls{ecb} communication, we must confirm that the two sentiment classifiers produce internally coherent signals. Figure~\ref{fig:aggregate_sentiment} plots the six-month centred moving average of both models together with $\pm 1$ standard-deviation bands.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/base/fig_aggregate_sentiment.pdf}
+    \caption[Aggregate ECB press-conference sentiment, 1999--2025]{Aggregate \gls{ecb} press-conference sentiment, 1999--2025. Solid lines: six-month centred moving average; shaded bands: within-meeting $\pm 1$ standard deviation. Blue: FinBERT; dark red: CentralBankRoBERTa.}
+    \label{fig:aggregate_sentiment}
+\end{figure}
+
+A persistent vertical gap separates the two series: FinBERT is mildly positive ($\bar{x}_{\textsc{is}} = +0.208$) while CentralBankRoBERTa is anchored below zero ($\bar{x}_{\textsc{is}} = -0.140$). The gap reflects neither a pipeline error nor a directional disagreement---it is a calibration offset inherited from the respective fine-tuning corpora (Section~\ref{sec:sentiment_concept}; Table~\ref{tab:model_comparison}). Table~\ref{tab:descriptives} quantifies the distributional properties of both classifiers.
+
+\begin{table}[ht]
+    \centering
+    \caption[Descriptive statistics of the net sentiment score by model and section]{ Descriptive statistics of the net sentiment score, 1999--2025. \textsc{is}: Introductory Statement ($n = 289$); \textsc{qa}: Q\&A session ($n = 281$); \textsc{iqr}: interquartile range.}
+    \label{tab:descriptives}
+    \begin{tabular}{@{}llrrrrr@{}}
+        \toprule
+        \textbf{Model} & \textbf{Section} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} & \textbf{IQR} \\ \midrule
+        FinBERT        & IS               & $+0.21$       & $0.22$       & $-0.35$      & $+0.71$      & $0.29$       \\
+        FinBERT        & QA               & $+0.05$       & $0.07$       & $-0.15$      & $+0.27$      & $0.09$       \\
+        CB-RoBERTa     & IS               & $-0.14$       & $0.19$       & $-0.62$      & $+0.65$      & $0.26$       \\
+        CB-RoBERTa     & QA               & $-0.34$       & $0.12$       & $-0.56$      & $+0.01$      & $0.17$       \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Three patterns stand out. First, the IS is substantially more volatile than the QA for both models: the IQR is three times wider in FinBERT ($0.290$ vs.\ $0.094$) and $50\%$ wider in CentralBankRoBERTa ($0.258$ vs.\ $0.170$). Second, the CentralBankRoBERTa QA distribution barely breaches zero at its maximum ($+0.010$), indicating that spontaneous communication never produces unambiguously positive sentiment on the central-bank scale. Third, the calibration offset is not uniform across sections: $0.155$ in the IS against $0.393$ in the QA, showing that the gap between classifiers depends on communicative register.
+
+The IS--QA Pearson correlations within each model (Table~\ref{tab:is_qa_corr})
+are positive, moderate, and significant at the $0.1\%$ level, confirming that both sections encode the same underlying policy stance at different intensities.
+
+\begin{table}[ht]
+    \centering
+    \caption[Pearson correlation between IS and Q\&A sentiment by model]{Pearson correlation between IS and Q\&A meeting-level mean sentiment ($n = 281$ matched meetings).}
+    \label{tab:is_qa_corr}
+    \begin{tabular}{@{}lrr@{}}
+        \toprule
+        \textbf{Model} & \textbf{Pearson $r$} & \textbf{$p$-value} \\ \midrule
+        FinBERT        & $0.243$              & $< 0.001$          \\
+        CB-RoBERTa     & $0.256$              & $< 0.001$          \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+A coherent pair of series can still be jointly wrong. To verify alignment with the policy record, Figure~\ref{fig:sentiment_events} overlays the aggregate trajectory with seven historical anchor events.
+%─────────────────────────────────────────────────────────────────────────────
+\phantomsection\label{sec:results_validation}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/base/fig_sentiment_events.pdf}
+    \caption[ECB sentiment and key historical policy events, 1999--2025]{Aggregate \gls{ecb} sentiment overlaid with seven anchor events. Dotted vertical lines mark the event date.}
+    \label{fig:sentiment_events}
+\end{figure}
+
+Both series fall sharply at the October 2008 \gls{gfc} rate cut, partially recover at Draghi's ``Whatever it takes'' speech of July 2012, and drift further downward through the \gls{qe} launch (January 2015) and the move to negative rates (September 2019). The March 2020 pandemic emergency produces a second trough, followed by an unambiguous upswing ahead of the July 2022 liftoff; sentiment peaks around the September 2023 meeting at which the rate reached $4.50\%$ and softens thereafter. The alignment across all seven events certifies that the signal is not artefactual; the more demanding co-movement tests with market variables are deferred to Section~\ref{sec:results_cycle}.

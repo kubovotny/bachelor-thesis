@@ -1,0 +1,77 @@
+\section{The Sectional Anatomy of Policy Communication}
+\label{sec:results_sectional}
+
+The headline series collapses the rich internal structure of a press conference into a single number. We now exploit the sectional split documented in Section~\ref{sec:data_qa_construction} to ask whether the prepared and spontaneous components communicate different information and whether any structural gap between them carries market-moving content.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{IS versus Q\&A: Two Different Documents}
+\label{sec:results_is_vs_qa}
+
+Figure~\ref{fig:IS_vs_QA} plots the two sections separately across the full sample. Three regularities are immediately visible. First, IS sentiment dominates QA sentiment at almost every date for both models. Second, the IS series is markedly more volatile---the IQR ratio documented in Table~\ref{tab:descriptives} is approximately three to one. Third, the two series move broadly in the same direction at low frequency but diverge at higher frequencies, a pattern already quantified in Table~\ref{tab:is_qa_corr}: both classifiers explain less than $7\%$ of the other section's variance (FinBERT: $R^{2} = 0.059$; CB-RoBERTa: $R^{2} = 0.066$). The bulk of the Q\&A's tone is therefore information that is simply not present in the prepared statement.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_IS_vs_QA.pdf}
+    \caption[Prepared versus spontaneous communication]{Introductory Statement versus Q\&A sentiment over time. Left: FinBERT; right: CentralBankRoBERTa.}
+    \label{fig:IS_vs_QA}
+\end{figure}
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{Internal Structure of the Press Conference}
+\label{sec:results_arc}
+
+Because the data are segmented into short chunks, we can track how sentiment evolves
+\emph{within} each section. Figure~\ref{fig:intra_section} bins the chunks by their relative position and averages across all meetings ($n_{\textsc{is}} = 289$; $n_{\textsc{qa}} = 281$).
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_intra_section_both.pdf}
+    \caption[Intra-section sentiment trajectory]{Intra-section sentiment dynamics. Left: the IS traces a three-act arc. Right: the Q\&A is flat; \gls{ecb} answers sit consistently above journalist questions for both models. Shaded bands: $\pm 1$ standard error.}
+    \label{fig:intra_section}
+\end{figure}
+
+The IS profile traces a coherent three-act structure: it opens at a moderate level, dips between the one-fifth and two-fifths marks where the \gls{ecb} catalogues downside risks, then rises sharply through the final passages where the policy decision and forward guidance are stated---a swing of approximately $0.4$ sentiment units in FinBERT from trough to close. The Q\&A profile, by contrast, is essentially flat: a sharp question lands as easily in the first exchange as in the last, and treating the Q\&A as a single narrative document averages over a random sequence of topics rather than a coherent arc. This is the empirical justification for the chunk-level aggregation operator of Section~\ref{sec:aggregation}.
+
+The right panel also reveals a stable two-tier structure within the Q\&A. \gls{ecb} answers score consistently above journalist questions for both models, with mean gaps of $0.14$ (FinBERT) and $0.29$ (CentralBankRoBERTa). Figure~\ref{fig:QA_distribution} quantifies this asymmetry over the full sample.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_QA_distribution.pdf}
+    \caption[Distribution of the Q--A sentiment gap]{Distribution of the journalist-minus-\gls{ecb} sentiment gap (CentralBankRoBERTa). Left: full-sample histogram; mean $= -0.286$, median $= -0.238$. Right: absolute gap by monetary regime; diamonds denote the era mean.}
+    \label{fig:QA_distribution}
+\end{figure}
+
+The signed gap $S_Q - S_A$ has a mean of $-0.286$ and a median of $-0.238$; journalists are more dovish than the \gls{ecb} in $77\%$ of question--answer pairs. The right panel shows that the absolute gap is stable across eras, with mean values near $0.30$ in both the Pre-\gls{zlb} and \gls{zlb} periods and $0.27$ in the hiking cycle. This regularity reflects divergent communicative incentives: journalists are professionally rewarded for surfacing downside risks, while \gls{ecb} officials are constitutionally bound to project measured stability. The gap is a structural feature of the discourse, not a measurement error; had the pipeline not separated the two voices, the press corps' affective tone would have contaminated the policy signal by approximately $0.3$ on the unit scale.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{Does the Sectional Divergence Move Markets?}
+\label{sec:divergence}
+
+The two preceding subsections established that the IS and Q\&A carry structurally different information and that the journalist--\gls{ecb} gap is a stable institutional feature. A natural follow-up is whether either source of divergence carries market-moving content.
+
+Figure~\ref{fig:divergence} regresses the absolute IS--Q\&A divergence against three market outcomes: the cross-maturity mean of $|\Delta\text{OIS}|$, the STOXX50 return, and the PC1 monetary surprise.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_divergence.pdf}
+    \caption[IS--Q\&A divergence versus market variables]{IS--Q\&A communication divergence versus market variables (CentralBankRoBERTa). A larger IS--Q\&A disagreement is associated with slightly \emph{smaller} OIS reactions ($r = -0.146^{*}$, left). Equity returns and PC1 monetary surprise show no significant relationship. $n = 272$.}
+    \label{fig:divergence}
+\end{figure}
+
+The result is largely null, with one counter-intuitive exception. Neither the STOXX50 return ($r = 0.047$, n.s.) nor the PC1 monetary surprise ($r = -0.040$, n.s.)
+correlates significantly with the divergence. A small but statistically significant
+\emph{negative} correlation appears with $|\Delta\text{OIS}|$ ($r = -0.146$, $p < 0.05$): conferences where IS and Q\&A diverge the most produce the
+\emph{smallest} OIS reactions. We refer to this as \emph{communicative cancellation}: conflicting signals within the same press conference prevent the market from cleanly updating its rate expectations in either direction.
+
+Figure~\ref{fig:gap} tests whether the journalist--\gls{ecb} gap within the Q\&A carries the same kind of market content.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/is_qa/fig_gap.pdf}
+    \caption[Internal Q--A gap versus market surprises]{The journalist--\gls{ecb} sentiment gap plotted against OIS market uncertainty ($r = -0.048$, n.s.) and PC1 monetary surprise ($r = -0.003$, n.s.). The structural gap is orthogonal to market surprises. $n = 272$.}
+    \label{fig:gap}
+\end{figure}
+
+Both correlations are statistically indistinguishable from zero, and the near-flat regression lines in Figure~\ref{fig:gap} confirm the visual message. Markets correctly anticipate the structural pessimism of the press corps and the measured caution of the \gls{ecb}; these expected components are immediately discounted. It is the \emph{deviation} from the institutionally expected baseline---not the level of the gap---that carries market-moving information.
+
+In summary, the IS is a structured narrative whose policy signal concentrates in the closing passages; the Q\&A is a flat, reactive dialogue divided between a journalistic framing of risk and an institutional response. Neither the IS--Q\&A divergence nor the journalist--\gls{ecb} gap moves markets in the expected direction, but the former produces a detectable communicative-cancellation effect on rate expectations.

@@ -1,0 +1,55 @@
+\section{Sentiment and the Monetary Policy Cycle}
+\label{sec:results_cycle}
+
+The previous sections established that the sentiment indices are internally coherent and structurally differentiated. A more demanding test is whether they bear a systematic relationship to the actual \emph{price of money}. If the words in an \gls{ecb} press conference genuinely encode monetary-policy intentions, hawkish language should accompany rising rates and dovish language should precede cuts.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{Co-Movement with Policy Rates}
+\label{sec:results_comovement}
+
+Figure~\ref{fig:sentiment_vs_rates} plots the smoothed sentiment series against the \gls{mro} rate and, in the \gls{zlb} window, against the Wu--Xia shadow rate \cite{wu2016measuring} as an alternative monetary-conditions proxy.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/mro/fig_sentiment_vs_rates.pdf}
+    \caption[Sentiment versus policy rates, 1999--2025]{%
+        Sentiment (six-month centred moving average) versus the \gls{mro} rate
+        (right axis, blue) and the Wu--Xia shadow rate (right axis, green dotted).
+        The shaded region marks the \gls{zlb} era. Olive: FinBERT; dark red:
+        CentralBankRoBERTa.}
+    \label{fig:sentiment_vs_rates}
+\end{figure}
+
+Three regimes are visible. In the pre-\gls{zlb} window (1999--2011), sentiment and the \gls{mro} rate move broadly in tandem, with sentiment leading rate adjustments by a small number of meetings. In the \gls{zlb} window (2012--2021), the \gls{mro} flatlines near zero while the shadow rate declines to approximately $-7.5\%$ by 2020, reflecting the cumulative effect of forward guidance and asset purchases. The sentiment series does \emph{not} track this descent, remaining broadly flat throughout the accommodation---a consequence of the structural mismatch between hawk--dove vocabulary and the language of quantitative easing discussed in Chapter~\ref{ch:discussion}.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{Sentiment by Rate-Decision Type}
+\label{sec:results_asymmetry}
+
+Before examining the dynamic trajectory around individual decisions, it is useful to ask a simpler question: does the \emph{average} sentiment level differ across meeting types? Figure~\ref{fig:mro_distribution} plots the distribution of meeting-level IS sentiment separately for hiking, hold, and cutting meetings.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/mro/fig_distribution.pdf}
+    \caption[Sentiment distribution by rate-decision type]{IS sentiment distribution by rate-decision type ($n_{\text{hike}} = 28$; $n_{\text{hold}} = 223$; $n_{\text{cut}} = 30$). Diamonds denote the group mean. Solid boxes: FinBERT; hatched boxes: CentralBankRoBERTa IS.}
+    \label{fig:mro_distribution}
+\end{figure}
+
+Cutting meetings are the most negative for both models: FinBERT $\bar{x} = -0.009$ versus $+0.066$ at hold meetings, and CentralBankRoBERTa $\bar{x} = -0.223$ versus $-0.104$. The easing signal is therefore detectable. The tightening signal is weaker: hiking meetings are \emph{less} positive than hold meetings for both classifiers ($+0.048$ vs.\ $+0.066$ for FinBERT; $-0.196$ vs.\ $-0.104$ for CentralBankRoBERTa), yielding an ordering of Hold $>$ Hiking $>$ Cutting rather than the theoretically expected Hiking $>$ Hold $>$ Cutting. The result is consistent with the \gls{zlb}-era contamination identified above: the large hold cohort ($n = 223$) is dominated by pre-2022 meetings during which the \gls{ecb} communicated measured stability, while the hiking cohort ($n = 28$) is drawn entirely from the 2022--2023 cycle in which alarm about inflation coexisted with hawkish policy intentions.
+
+%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Anatomy of Tightening versus Easing: An Event Study}
+\label{sec:event_study}
+
+The distributional result motivates a more dynamic question: does the \gls{ecb} telegraph its rate changes \emph{before} they happen, and does it communicate differently when preparing to tighten than when preparing to ease? We adopt a standard event-study design, aligning all historical rate decisions so that the meeting of the rate change is at lag $= 0$ and extracting the sentiment trajectory in a $\pm 6$-meeting window. The analysis covers the pre-\gls{zlb} period (1999--2013; $n_{\text{hike}} = 15$, $n_{\text{cut}} = 17$) and the post-\gls{zlb} period (2021--2025; $n_{\text{hike}} = 10$, $n_{\text{cut}} = 8$); the \gls{zlb} era is excluded because rate changes are too rare to support meaningful window averages.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{images/results/mro/fig_event_study.pdf}
+    \caption[Event study: sentiment around ECB rate decisions]{Sentiment trajectory in a $\pm 6$-meeting window around \gls{ecb} rate decisions. Red: rate hikes; blue: rate cuts. Solid lines: FinBERT; dashed lines: CentralBankRoBERTa. Lag $= 0$ is the decision meeting. Shaded bands: $\pm 1$ standard error. Left: pre-\gls{zlb} era. Right: post-\gls{zlb} era.}
+    \label{fig:event_study}
+\end{figure}
+
+The pre-\gls{zlb} panel shows a clear asymmetry. The hawkish profile (red) is fully established six meetings before the actual hike, forming a flat plateau near $+0.10$ in FinBERT---the \gls{ecb} adopts a hawkish tone and maintains it for many months before acting. The dovish profile (blue) is qualitatively different: FinBERT sentiment stays near zero through lag $= -2$, dips modestly to approximately $-0.05$ at the meeting preceding the cut, then recovers to $+0.07$ within five meetings. Rate cuts in this period were predominantly emergency reactions to negative shocks and did not afford the luxury of a gradual preparation window; the recovery afterwards reflects the \gls{ecb} reframing the action as stabilising.
+
+The post-\gls{zlb} panel reveals a structurally different communication regime. The two FinBERT trajectories form a near-symmetric X-shape crossing close to the decision meeting: the hiking profile starts mildly positive ($\approx +0.05$ at lag $= -6$) and declines to $-0.10$ by lag $= +6$, while the cutting profile starts mildly negative ($\approx -0.05$) and rises to $+0.05$. Both directions are telegraphed symmetrically, and the post-decision reversal---hikes followed by caution about over-tightening, cuts followed by confidence that inflation is under control---mirrors the asymmetric finding of the distributional analysis. The headline implication is that sentiment \emph{leads} the policy action and that the communication strategy differs fundamentally between the pre- and post-\gls{zlb} eras, motivating the formal predictive analysis of Section~\ref{sec:predictive}.
