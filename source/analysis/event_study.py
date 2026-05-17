@@ -36,33 +36,49 @@ from pathlib import Path
 try:
     from ..data.model_data import return_data
     from .. import OUTPUT
+
     OUTPUT_DIR = Path(OUTPUT) / "results/mro"
 except ImportError:
     import sys
+
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
     from source.data.model_data import return_data
+
     OUTPUT_DIR = Path("outputs/results/mro")
 
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+plt.rcParams.update(
+    {
+        "font.size": 13,
+        "axes.titlesize": 14,
+        "axes.labelsize": 13,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
 
 # ── Constants ─────────────────────────────────────────────────────────────────
-WINDOW    = 6     # meetings either side of the decision
+WINDOW = 6  # meetings either side of the decision
 
 ERA_SPLIT = {
-    "Pre-ZLB":  ("1999-01-01", "2013-06-30"),
+    "Pre-ZLB": ("1999-01-01", "2013-06-30"),
     "Post-ZLB": ("2021-07-01", "2026-12-31"),
 }
 
 # Regime colours (consistent with mro_cycle.py)
 REGIME_COLORS = {
-    "hike": "#c0392b",   # red
-    "cut":  "#2c6fad",   # blue
+    "hike": "#c0392b",  # red
+    "cut": "#2c6fad",  # blue
 }
 
 # Model styles: (column, display label, linestyle, linewidth, shading alpha)
 MODELS = [
-    ("finbert_mean",    "FinBERT",               "-",  2.2, 0.18),
-    ("roberta_mean", "CentralBankRoBERTa",  "--", 1.6, 0.10),
+    ("finbert_mean", "FinBERT", "-", 2.2, 0.18),
+    ("roberta_mean", "CentralBankRoBERTa", "--", 1.6, 0.10),
 ]
 
 
@@ -115,7 +131,7 @@ def build_windows(
         event_date | lag | sentiment
     """
     hike_idx = df.index[df["mro_change"] > 0].tolist()
-    cut_idx  = df.index[df["mro_change"] < 0].tolist()
+    cut_idx = df.index[df["mro_change"] < 0].tolist()
 
     def _extract(event_indices: list) -> pd.DataFrame:
         records = []
@@ -126,11 +142,13 @@ def build_windows(
                 if 0 <= row_idx < len(df):
                     val = df.loc[row_idx, sentiment_col]
                     if pd.notna(val):
-                        records.append({
-                            "event_date": ev_date,
-                            "lag":        lag,
-                            "sentiment":  val,
-                        })
+                        records.append(
+                            {
+                                "event_date": ev_date,
+                                "lag": lag,
+                                "sentiment": val,
+                            }
+                        )
         return pd.DataFrame(records)
 
     return _extract(hike_idx), _extract(cut_idx)
@@ -141,9 +159,9 @@ def compute_profile(
     lags: np.ndarray,
 ) -> tuple[pd.Series, pd.Series]:
     """Return (mean, sem) indexed over the full lag range."""
-    grp  = window_df.groupby("lag")["sentiment"]
+    grp = window_df.groupby("lag")["sentiment"]
     mean = grp.mean().reindex(lags)
-    sem  = grp.sem().reindex(lags)
+    sem = grp.sem().reindex(lags)
     return mean, sem
 
 
@@ -160,7 +178,8 @@ def plot_event_study(df: pd.DataFrame | None = None, save: bool = True):
     lags = np.arange(-WINDOW, WINDOW + 1)
 
     fig, axes = plt.subplots(
-        1, len(ERA_SPLIT),
+        1,
+        len(ERA_SPLIT),
         figsize=(13, 5.2),
         sharey=True,
         gridspec_kw={"wspace": 0.08},
@@ -170,7 +189,7 @@ def plot_event_study(df: pd.DataFrame | None = None, save: bool = True):
         era_df = df[(df["date"] >= t0) & (df["date"] <= t1)].reset_index(drop=True)
 
         n_hike = (era_df["mro_change"] > 0).sum()
-        n_cut  = (era_df["mro_change"] < 0).sum()
+        n_cut = (era_df["mro_change"] < 0).sum()
 
         for sent_col, model_label, ls, lw, shade in MODELS:
             if sent_col not in era_df.columns:
@@ -180,7 +199,7 @@ def plot_event_study(df: pd.DataFrame | None = None, save: bool = True):
 
             for regime, win_df, color, n_events in [
                 ("hike", hike_win, REGIME_COLORS["hike"], n_hike),
-                ("cut",  cut_win,  REGIME_COLORS["cut"],  n_cut),
+                ("cut", cut_win, REGIME_COLORS["cut"], n_cut),
             ]:
                 if win_df.empty:
                     continue
@@ -188,15 +207,22 @@ def plot_event_study(df: pd.DataFrame | None = None, save: bool = True):
                 mean, sem = compute_profile(win_df, lags)
 
                 ax.plot(
-                    lags, mean,
-                    color=color, linewidth=lw, linestyle=ls,
+                    lags,
+                    mean,
+                    color=color,
+                    linewidth=lw,
+                    linestyle=ls,
                     marker="o" if ls == "-" else None,
                     markersize=3.5,
                     zorder=4,
                 )
                 ax.fill_between(
-                    lags, mean - sem, mean + sem,
-                    color=color, alpha=shade, zorder=2,
+                    lags,
+                    mean - sem,
+                    mean + sem,
+                    color=color,
+                    alpha=shade,
+                    zorder=2,
                 )
 
         # Reference lines
@@ -206,43 +232,64 @@ def plot_event_study(df: pd.DataFrame | None = None, save: bool = True):
         # ── Legend (compact two-tier proxy handles) ───────────────────────────
         legend_handles = [
             # Regime colour proxies (with n counts)
-            Line2D([0], [0], color=REGIME_COLORS["hike"], lw=2.0,
-                   label=f"Rate hike  (n={n_hike} decisions)"),
-            Line2D([0], [0], color=REGIME_COLORS["cut"], lw=2.0,
-                   label=f"Rate cut  (n={n_cut} decisions)"),
+            Line2D(
+                [0],
+                [0],
+                color=REGIME_COLORS["hike"],
+                lw=2.0,
+                label=f"Rate hike  (n={n_hike} decisions)",
+            ),
+            Line2D(
+                [0],
+                [0],
+                color=REGIME_COLORS["cut"],
+                lw=2.0,
+                label=f"Rate cut  (n={n_cut} decisions)",
+            ),
             # Model linestyle proxies
-            Line2D([0], [0], color="#666", lw=1.8, ls="-",
-                   label="FinBERT (solid)"),
-            Line2D([0], [0], color="#666", lw=1.8, ls="--",
-                   label="CentralBankRoBERTa (dashed)"),
+            Line2D([0], [0], color="#666", lw=1.8, ls="-", label="FinBERT (solid)"),
+            Line2D(
+                [0],
+                [0],
+                color="#666",
+                lw=1.8,
+                ls="--",
+                label="CentralBankRoBERTa (dashed)",
+            ),
             # Decision day
-            Line2D([0], [0], color="#555", lw=1.2, ls="--",
-                   label="Decision day (lag = 0)"),
+            Line2D(
+                [0], [0], color="#555", lw=1.2, ls="--", label="Decision day (lag = 0)"
+            ),
         ]
-        ax.legend(handles=legend_handles, fontsize=9.2,
-                  framealpha=0.93, loc="center left",
-                  handlelength=2.0)
+        ax.legend(
+            handles=legend_handles, framealpha=0.53, loc="center left", handlelength=2.0
+        )
 
-        ax.set_title(era_label, fontsize=12, pad=8, fontweight="bold")
-        ax.set_xlabel("Meetings relative to rate decision", fontsize=12)
+        ax.set_title(era_label, pad=8, fontweight="bold")
+        ax.set_xlabel(
+            "Meetings relative to rate decision",
+        )
         ax.xaxis.set_major_locator(mticker.MultipleLocator(2))
         ax.grid(alpha=0.20, linewidth=0.6)
 
     # Y-axis label — now correctly reflects both models
-    axes[0].set_ylabel("Sentiment Score (mean ± SEM)", fontsize=12)
+    axes[0].set_ylabel(
+        "Sentiment Score (mean ± SEM)",
+    )
 
     fig.suptitle(
         "Event Study: Sentiment around ECB Rate Decisions\n"
         "FinBERT (solid) vs. CentralBankRoBERTa (dashed)",
-        fontsize=12, y=1.02,
+        y=1.02,
     )
     fig.text(
-        0.5, -0.02,
+        0.5,
+        -0.02,
         "Negative lags = meetings before the rate decision  |  "
         "Positive lags = meetings after",
-        ha="center", fontsize=12, color="#555",
+        ha="center",
+        color="#555",
     )
-
 
     if save:
         path = OUTPUT_DIR / "fig_event_study.pdf"

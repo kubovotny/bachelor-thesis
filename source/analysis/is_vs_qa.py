@@ -19,7 +19,17 @@ from .. import OUTPUT
 
 OUTPUT_DIR = Path(OUTPUT) / "results/is_qa"
 OUTPUT_DIR.mkdir(exist_ok=True)
-
+plt.rcParams.update({
+    "font.size":        13,
+    "axes.titlesize":   14,
+    "axes.labelsize":   13,
+    "legend.fontsize":  11,
+    "xtick.labelsize":  11,
+    "ytick.labelsize":  11,
+    "axes.spines.top":  False,
+    "axes.spines.right":False,
+    "figure.dpi":       150,
+})
 
 # ── Load data ─────────────────────────────────────────────────────────────────
 def load_is_qa_data():
@@ -30,7 +40,7 @@ def load_is_qa_data():
         qa_options="just_answers",  # only answers, not questions
         with_label=False,
     )
-    df = df.sort_values("date").reset_index(drop=True).dropna()
+    df = df.sort_values("date").reset_index(drop=True)
     return df
 
 
@@ -41,6 +51,7 @@ def compute_descriptives(df):
     for model in ["finbert", "roberta"]:
         for section in ["IS", "QA"]:
             col = f"{model}_{section}_mean"
+            count_col = f"{model}_{section}_count"
             if col not in df.columns:
                 continue
             s = df[col]
@@ -53,7 +64,7 @@ def compute_descriptives(df):
                     "Min": s.min(),
                     "Max": s.max(),
                     "IQR": s.quantile(0.75) - s.quantile(0.25),
-                    "Count": s.count(),
+                    "Count": s.dropna().count(),
                 }
             )
 
@@ -113,11 +124,11 @@ def plot_fig_3_timeseries(save: bool = True):
         )
 
         ax.axhline(0, color="#888", linewidth=0.8, linestyle=":", zorder=1)
-        ax.set_ylabel("Net Sentiment Score", fontsize=11)
-        ax.set_title(f"{model.upper()} — IS vs. Q&A", fontsize=11, pad=6)
+        ax.set_ylabel("Net Sentiment Score")
+        ax.set_title(f"{model.upper()} — IS vs. Q&A", pad=6)
 
         # Legend umiestnenie podľa modelu
-        ax.legend(loc="upper left", fontsize=9.5, framealpha=0.9)
+        ax.legend(loc="upper left", framealpha=0.9)
         ax.grid(alpha=0.25, linewidth=0.6)
 
         # Model-specific y-limits
@@ -130,11 +141,10 @@ def plot_fig_3_timeseries(save: bool = True):
         ax.xaxis.set_major_locator(mdates.YearLocator(5))
         ax.xaxis.set_minor_locator(mdates.YearLocator(1))
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-        ax.set_xlabel("Date", fontsize=10)
+        ax.set_xlabel("Date")
 
     fig.suptitle(
         "Prepared vs. Spontaneous Communication: Sentiment Dynamics (Time Series)",
-        fontsize=11,
         y=1.02,
     )
     plt.tight_layout()
@@ -147,7 +157,7 @@ def plot_fig_3_timeseries(save: bool = True):
 
 
 def plot_fig_4_scatter(save: bool = True):
-    df = load_is_qa_data()
+    df = load_is_qa_data().dropna()
 
     # 2. Figure: Scatter Plots (FinBERT a RoBERTa vedľa seba)
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
@@ -189,32 +199,30 @@ def plot_fig_4_scatter(save: bool = True):
             0.95,
             f"r = {r:.3f}\np < 0.001" if p < 0.001 else f"r = {r:.3f}\np = {p:.3f}",
             transform=ax.transAxes,
-            fontsize=9.5,
             va="top",
             bbox=dict(
                 boxstyle="round,pad=0.4", facecolor="white", edgecolor="#ccc", alpha=0.9
             ),
         )
 
-        ax.set_xlabel("IS Sentiment", fontsize=11)
-        ax.set_ylabel("Q&A Sentiment", fontsize=11)
-        ax.set_title(f"{model.upper()} Scatter", fontsize=10.5, pad=4)
+        ax.set_xlabel("IS Sentiment")
+        ax.set_ylabel("Q&A Sentiment")
+        ax.set_title(f"{model.upper()} Scatter", pad=4)
         ax.grid(alpha=0.25, linewidth=0.6)
-        ax.legend(loc="lower right", fontsize=8.5, framealpha=0.9)
+        ax.legend(loc="lower right", framealpha=0.9)
         ax.set_aspect("equal")
 
         # Colorbar len pri druhom grafe (vpravo)
         if col_idx == 1:
             cbar = plt.colorbar(scatter, ax=ax, pad=0.02, aspect=20)
-            cbar.set_label("Date", fontsize=9)
-            cbar.ax.tick_params(labelsize=7)
+            cbar.set_label("Date")
+            cbar.ax.tick_params(labelsize=9)
             cbar_ticks = cbar.get_ticks()
             cbar.set_ticks(cbar_ticks[::2])
             cbar.set_ticklabels([mdates.num2date(t).year for t in cbar_ticks[::2]])
 
     fig.suptitle(
         "Prepared vs. Spontaneous Communication: Sentiment Dynamics (Correlation)",
-        fontsize=12,
         y=1.02,
     )
     plt.tight_layout()
@@ -231,7 +239,7 @@ def export_tables(save: bool = True):
     df = load_is_qa_data()
 
     desc = compute_descriptives(df)
-    corr = compute_correlations(df)
+    corr = compute_correlations(df.dropna())
 
     print("\n=== Descriptive Statistics: IS vs QA ===")
     print(desc.to_string(index=False, float_format="%.4f"))
@@ -249,5 +257,5 @@ def export_tables(save: bool = True):
 if __name__ == "__main__":
     plot_fig_3_timeseries()
     plot_fig_4_scatter()
-    export_tables()
+    export_tables(False)
     plt.show()

@@ -23,6 +23,21 @@ ERA_LABELS = [
     "Full\n(1999–2024)",
 ]
 
+plt.rcParams.update(
+    {
+        "font.size": 13,
+        "axes.titlesize": 14,
+        "axes.labelsize": 13,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
+
+
 
 # ── Load CSVs ─────────────────────────────────────────────────────────────────
 def load_data():
@@ -84,15 +99,16 @@ def plot_fig_3_6c(top_n: int = 18, save: bool = True):
     # Lepší nadpis (Title)
     ax1.set_title(
         "The Echo of Central Bank Words: How Sentiment Shapes Interest Rates",
-        fontsize=14,
         pad=20,
     )
 
     # Tvoja logika popisov zostáva
     ax1.set_xticks(range(len(cols)))
-    ax1.set_xticklabels([ERA_LABELS[ERA_ORDER.index(c)] for c in cols], fontsize=10)
+    ax1.set_xticklabels(
+        [ERA_LABELS[ERA_ORDER.index(c)] for c in cols],
+    )
     ax1.set_yticks(range(len(piv)))
-    ax1.set_yticklabels(piv["Label"].values, fontsize=10, fontfamily="monospace")
+    ax1.set_yticklabels(piv["Label"].values, fontfamily="monospace")
     ax1.xaxis.set_ticks_position("top")
 
     # Pridanie textu do buniek
@@ -105,7 +121,6 @@ def plot_fig_3_6c(top_n: int = 18, save: bool = True):
                 f"{val:.2f}",
                 ha="center",
                 va="center",
-                fontsize=9,
                 color="white" if abs(val) > 0.3 else "black",
             )
 
@@ -113,7 +128,7 @@ def plot_fig_3_6c(top_n: int = 18, save: bool = True):
         fig1.savefig(OUTPUT_DIR / "fig_heatmap.pdf", bbox_inches="tight")
 
     # ── GRAF 2: Lag profile (Panel B - pôvodná orientácia) ──────────────────
-    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    fig2, ax2 = plt.subplots(figsize=(8, 5))
 
     lag_features = [
         ("finbert_mean", "FinBERT overall", "#2c6fad", "Full"),
@@ -146,7 +161,6 @@ def plot_fig_3_6c(top_n: int = 18, save: bool = True):
             peak["Lag"] - 0.8,
             peak["r"] + 0.03,
             f"  lag={int(peak['Lag'])}\n  r={peak['r']:.3f}",
-            fontsize=8.5,
             color=color,
             va="center",
         )
@@ -155,11 +169,11 @@ def plot_fig_3_6c(top_n: int = 18, save: bool = True):
     ax2.axvline(0, color="#ddd", linewidth=0.6)
     ax2.set_xlabel("Lag (Number of meetings)")
     ax2.set_ylabel("Correlation Strength (r)")
-    ax2.set_title("Time Sensitivity: When does the market react?", fontsize=11, pad=6)
-    ax2.legend(fontsize=9.5, framealpha=0.92, loc="upper right")
+    ax2.set_title("Time Sensitivity: When does the market react?", pad=6)
+    ax2.legend(framealpha=0.92, loc="upper right")
     ax2.grid(alpha=0.22, linewidth=0.6)
     ax2.set_xlim(-0.5, 15.5)
-    ax2.set_ylim(-0.12, 0.65)
+    ax2.set_ylim(0, 0.65)
 
     if save:
         fig2.savefig(OUTPUT_DIR / "fig_lag_profile.pdf", bbox_inches="tight")

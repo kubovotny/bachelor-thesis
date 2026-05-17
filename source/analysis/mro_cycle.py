@@ -25,6 +25,20 @@ from scipy.stats import pearsonr
 from ..data.model_data import return_data
 from .. import OUTPUT
 
+plt.rcParams.update(
+    {
+        "font.size": 11,
+        "axes.titlesize": 12,
+        "axes.labelsize": 11,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
+
 OUTPUT_DIR = Path(OUTPUT) / "results/mro"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -113,16 +127,12 @@ def plot_fig_3_6a(df: pd.DataFrame | None = None, save: bool = True):
 
     # ── Inner right axis: MRO ─────────────────────────────────────────────────
     axr1 = ax.twinx()
-    axr1.set_ylim(-1, 6)
-    axr1.set_ylabel("MRO Rate (%)", fontsize=9, color="#2980b9")
-    axr1.tick_params(axis="y", labelcolor="#2980b9", labelsize=8)
-
-    # ── Outer right axis: shadow rate (spine pushed outward) ──────────────────
-    axr2 = ax.twinx()
-    axr2.spines["right"].set_position(("axes", 1.09))
-    axr2.set_ylim(-10, 4)
-    axr2.set_ylabel("Shadow Rate (%)", fontsize=9, color="#27ae60")
-    axr2.tick_params(axis="y", labelcolor="#27ae60", labelsize=8)
+    axr1.set_ylim(-10, 10)
+    axr1.set_ylabel("Rate (%)", color="#2980b9")
+    axr1.tick_params(
+        axis="y",
+        labelcolor="#2980b9",
+    )
 
     # ── ZLB shading + era labels (fixed transform — no ylim dependency) ───────
     ax.axvspan(ZLB_START, ZLB_END, color="#d5d5d5", alpha=0.40, zorder=0)
@@ -136,7 +146,6 @@ def plot_fig_3_6a(df: pd.DataFrame | None = None, save: bool = True):
             0.97,
             lbl,
             transform=ax.get_xaxis_transform(),
-            fontsize=8.5,
             ha="center",
             va="top",
             color="#888",
@@ -166,9 +175,13 @@ def plot_fig_3_6a(df: pd.DataFrame | None = None, save: bool = True):
     )
 
     ax.axhline(0, color="#bbb", linewidth=0.8, linestyle="--", zorder=1)
-    ax.set_ylabel("Sentiment Score", fontsize=10)
+    ax.set_ylabel(
+        "Sentiment Score",
+    )
     ax.set_ylim(-0.55, 0.40)  # wide enough for RoBERTa (−0.5) and FinBERT (+0.3)
-    ax.tick_params(axis="y", labelsize=8)
+    ax.tick_params(
+        axis="y",
+    )
 
     # ── MRO step function ─────────────────────────────────────────────────────
     axr1.step(
@@ -182,7 +195,7 @@ def plot_fig_3_6a(df: pd.DataFrame | None = None, save: bool = True):
     )
 
     # ── Shadow rate level ─────────────────────────────────────────────────────
-    axr2.step(
+    axr1.step(
         df["date"],
         df[shadow_col],
         color="#27ae60",
@@ -192,32 +205,25 @@ def plot_fig_3_6a(df: pd.DataFrame | None = None, save: bool = True):
         alpha=0.90,
         zorder=2,
     )
-    axr2.axhline(0, color="#27ae60", linewidth=0.5, linestyle=":", alpha=0.4)
+    axr1.axhline(0, color="#27ae60", linewidth=0.5, linestyle=":", alpha=0.4)
 
     # ── Combined legend ───────────────────────────────────────────────────────
-    lines = (
-        ax.get_legend_handles_labels()[0]
-        + axr1.get_legend_handles_labels()[0]
-        + axr2.get_legend_handles_labels()[0]
-    )
-    labels = (
-        ax.get_legend_handles_labels()[1]
-        + axr1.get_legend_handles_labels()[1]
-        + axr2.get_legend_handles_labels()[1]
-    )
-    ax.legend(lines, labels, loc="upper right", fontsize=8.5, framealpha=0.93, ncol=2)
+    lines = ax.get_legend_handles_labels()[0] + axr1.get_legend_handles_labels()[0]
+    labels = ax.get_legend_handles_labels()[1] + axr1.get_legend_handles_labels()[1]
+    ax.legend(lines, labels, loc="upper right", framealpha=0.93, ncol=2)
 
     # ── X-axis ────────────────────────────────────────────────────────────────
     ax.xaxis.set_major_locator(mdates.YearLocator(5))
     ax.xaxis.set_minor_locator(mdates.YearLocator(1))
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
-    ax.set_xlabel("Date", fontsize=10)
+    ax.set_xlabel(
+        "Date",
+    )
     ax.grid(alpha=0.18, linewidth=0.6)
 
     fig.suptitle(
         "Sentiment and the Monetary Policy Cycle\n"
         "FinBERT (solid) vs. CentralBankRoBERTa (dashed)  |  6M centred MA",
-        fontsize=11,
         y=1.01,
     )
     plt.tight_layout()
@@ -268,79 +274,7 @@ def plot_fig_3_6b(df: pd.DataFrame | None = None, save: bool = True):
     corrs_rb = [lag_corr(changed[rb_col], lag) for lag in lags]
 
     # ── Layout ────────────────────────────────────────────────────────────────
-    fig, axes = plt.subplots(1, 2, figsize=(13, 4.8), gridspec_kw={"wspace": 0.32})
-
-    # ── Panel A: Lead-lag ─────────────────────────────────────────────────────
-    ax1 = axes[0]
-    ax1.axvline(0, color="#888", linewidth=0.8, linestyle=":")
-    ax1.axhline(0, color="#888", linewidth=0.8, linestyle=":")
-
-    for corrs, model, color, ls, lbl in [
-        (corrs_fb, "finbert", COLORS["finbert"], "-", "FinBERT overall"),
-        (
-            corrs_rb,
-            "roberta",
-            COLORS["roberta"],
-            "--",
-            f"RoBERTa {'IS' if rb_col == 'roberta_IS_mean' else 'overall'}",
-        ),
-    ]:
-        ax1.plot(
-            lags,
-            corrs,
-            marker="o",
-            markersize=4,
-            linewidth=1.8,
-            color=color,
-            linestyle=ls,
-            label=lbl,
-        )
-        valid = [(l, c) for l, c in zip(lags, corrs) if not np.isnan(c)]
-        if valid:
-            pl, pv = max(valid, key=lambda x: abs(x[1]))
-            ax1.scatter(
-                [pl],
-                [pv],
-                color=color,
-                s=70,
-                zorder=6,
-                edgecolors="white",
-                linewidths=1.2,
-            )
-            va = "bottom" if pv > 0 else "top"
-            ax1.annotate(
-                f"lag={pl}, r={pv:.2f}",
-                xy=(pl, pv),
-                xytext=(pl + 0.8, pv + (0.05 if pv > 0 else -0.05)),
-                fontsize=7.5,
-                color=color,
-                arrowprops=dict(arrowstyle="->", color=color, lw=0.9),
-            )
-        predictive = [(l, c) for l, c in valid if l < 0]
-        if predictive:
-            pl, pv = max(predictive, key=lambda x: x[1])  # max positive r
-            ax1.annotate(
-                f"lag={pl}, r={pv:.2f}",
-                xy=(pl, pv),
-                xytext=(pl + 0.8, pv + (0.05 if pv > 0 else -0.05)),
-                fontsize=7.5,
-                color=color,
-                arrowprops=dict(arrowstyle="->", color=color, lw=0.9),
-            )
-
-    ax1.set_xlabel("Lag (meetings, negative = sentiment leads)", fontsize=10)
-    ax1.set_ylabel("Pearson Correlation", fontsize=10)
-    ax1.set_title(
-        "(A) Lead–Lag Correlation:\nSentiment vs. ΔMRO (changed meetings only)",
-        fontsize=10,
-        pad=6,
-    )
-    ax1.legend(fontsize=9, framealpha=0.92, loc="upper right")
-    ax1.grid(alpha=0.25, linewidth=0.6)
-    ax1.set_ylim(-0.70, 0.80)
-
-    # ── Panel B: Grouped boxplots ─────────────────────────────────────────────
-    ax2 = axes[1]
+    fig, ax = plt.subplots(figsize=(7, 4.8))
 
     regime_specs = [
         ("hiking", "Hiking\n(MRO ↑)"),
@@ -369,7 +303,7 @@ def plot_fig_3_6b(df: pd.DataFrame | None = None, save: bool = True):
         ),
     ]:
         data_list = [df[df["regime"] == r][feat].dropna() for r, _ in regime_specs]
-        bp = ax2.boxplot(
+        bp = ax.boxplot(
             data_list,
             positions=positions,
             widths=box_width,
@@ -391,7 +325,7 @@ def plot_fig_3_6b(df: pd.DataFrame | None = None, save: bool = True):
         # Mean diamond + value label
         for i, (pos, data) in enumerate(zip(positions, data_list)):
             mu = data.mean()
-            ax2.scatter(
+            ax.scatter(
                 [pos],
                 [mu],
                 marker="D",
@@ -401,15 +335,13 @@ def plot_fig_3_6b(df: pd.DataFrame | None = None, save: bool = True):
                 linewidths=1.3,
                 zorder=6,
             )
-            ax2.text(
-                pos, mu + 0.018, f"{mu:.3f}", ha="center", fontsize=7.5, color="#111"
-            )
+            ax.text(pos, mu + 0.018, f"{mu:.3f}", ha="center", color="#111")
 
         # Invisible proxy for legend
         # Invisible proxy for legend
         from matplotlib.patches import Rectangle
 
-        ax2.add_patch(
+        ax.add_patch(
             Rectangle(
                 (0, 0),
                 0,
@@ -421,40 +353,35 @@ def plot_fig_3_6b(df: pd.DataFrame | None = None, save: bool = True):
             )
         )
 
-    ax2.set_xticks(centers)
-    ax2.set_xticklabels([lbl for _, lbl in regime_specs], fontsize=9)
-    ax2.axhline(0, color="#888", linewidth=0.8, linestyle="--")
-    ax2.set_ylabel("Sentiment Score", fontsize=10)
-    ax2.set_title(
-        "(B) Sentiment Distribution by MRO Regime\n(◆ = mean; solid=FinBERT, hatch=RoBERTa IS)",
-        fontsize=10,
+    ax.set_xticks(centers)
+    ax.set_xticklabels(
+        [lbl for _, lbl in regime_specs],
+    )
+    ax.axhline(0, color="#888", linewidth=0.8, linestyle="--")
+    ax.set_ylabel(
+        "Sentiment Score",
+    )
+    ax.set_title(
+        "Sentiment Distribution by MRO Regime\n(◆ = mean; solid=FinBERT, hatch=RoBERTa IS)",
         pad=6,
     )
-    ax2.legend(fontsize=8.5, loc="upper right", framealpha=0.92)
-    ax2.grid(axis="y", alpha=0.25, linewidth=0.6)
+    ax.legend(loc="upper right", framealpha=0.92)
+    ax.grid(axis="y", alpha=0.25, linewidth=0.6)
 
     # n labels below each regime group
     for i, (r, _) in enumerate(regime_specs):
         n = len(df[df["regime"] == r])
-        ax2.text(
+        ax.text(
             centers[i],
-            ax2.get_ylim()[0] + 0.01,
+            ax.get_ylim()[0] + 0.01,
             f"n={n}",
             ha="center",
-            fontsize=7.5,
             color="#666",
-            transform=ax2.transData,
+            transform=ax.transData,
         )
 
-    fig.suptitle(
-        "Asymmetry of Sentiment across the Monetary Policy Cycle\n"
-        "FinBERT (solid) vs. CentralBankRoBERTa IS (hatched)",
-        fontsize=11,
-        y=1.01,
-    )
-
     if save:
-        path = OUTPUT_DIR / "fig_sentiment_asymmetry.pdf"
+        path = OUTPUT_DIR / "fig_distribution.pdf"
         fig.savefig(path, bbox_inches="tight")
         print(f"Saved → {path}")
     return fig

@@ -22,6 +22,19 @@ from .. import OUTPUT
 
 OUTPUT_DIR = Path(OUTPUT) / "results"
 OUTPUT_DIR.mkdir(exist_ok=True)
+plt.rcParams.update(
+    {
+        "font.size": 13,
+        "axes.titlesize": 14,
+        "axes.labelsize": 13,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
 
 
 # ── Load data ─────────────────────────────────────────────────────────────────
@@ -43,7 +56,9 @@ def load_divergence_data() -> pd.DataFrame:
     ois_cols = [c for c in sent.columns if c.startswith("OIS_")]
     if ois_cols:
         sent["OIS_uncertainty"] = sent[ois_cols].abs().mean(axis=1)
-        sent["OIS_1Y_abs"] = sent["OIS_1Y"].abs() if "OIS_1Y" in sent.columns else np.nan
+        sent["OIS_1Y_abs"] = (
+            sent["OIS_1Y"].abs() if "OIS_1Y" in sent.columns else np.nan
+        )
 
     return sent
 
@@ -61,15 +76,19 @@ def load_qa_gap_data() -> pd.DataFrame:
 
     # Find question and answer columns
     # With both_divided: label_formatter adds _question or _answer suffix
-    q_col = next((c for c in sent.columns
-                  if "roberta" in c and "question" in c and "mean" in c), None)
-    a_col = next((c for c in sent.columns
-                  if "roberta" in c and "answer" in c and "mean" in c), None)
+    q_col = next(
+        (c for c in sent.columns if "roberta" in c and "question" in c and "mean" in c),
+        None,
+    )
+    a_col = next(
+        (c for c in sent.columns if "roberta" in c and "answer" in c and "mean" in c),
+        None,
+    )
 
     if q_col and a_col:
         sent["Q_A_gap"] = (sent[q_col] - sent[a_col]).abs()
-        sent["Q_sent"]  = sent[q_col]
-        sent["A_sent"]  = sent[a_col]
+        sent["Q_sent"] = sent[q_col]
+        sent["A_sent"] = sent[a_col]
     else:
         print(f"Available columns: {[c for c in sent.columns if 'roberta' in c]}")
         raise ValueError("Could not find question/answer columns")
@@ -87,8 +106,14 @@ def scatter_with_reg(ax, x, y, xlabel, ylabel, title, color="#2c6fad", reg=True)
     mask = x.notna() & y.notna()
     xv, yv = x[mask].values, y[mask].values
     if len(xv) < 10:
-        ax.text(0.5, 0.5, "Insufficient data", ha="center", va="center",
-                transform=ax.transAxes)
+        ax.text(
+            0.5,
+            0.5,
+            "Insufficient data",
+            ha="center",
+            va="center",
+            transform=ax.transAxes,
+        )
         return
 
     r, p = stats.pearsonr(xv, yv)
@@ -97,18 +122,27 @@ def scatter_with_reg(ax, x, y, xlabel, ylabel, title, color="#2c6fad", reg=True)
     ax.scatter(xv, yv, alpha=0.45, s=20, color=color, edgecolors="none")
     if reg:
         xfit = np.linspace(xv.min(), xv.max(), 200)
-        ax.plot(xfit, slope * xfit + intercept,
-                color=color, linewidth=1.8, alpha=0.9)
+        ax.plot(xfit, slope * xfit + intercept, color=color, linewidth=1.8, alpha=0.9)
 
     sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "n.s."
-    ax.text(0.05, 0.95, f"r = {r:.3f} {sig}\nn = {mask.sum()}",
-            transform=ax.transAxes, fontsize=9.5, va="top",
-            bbox=dict(boxstyle="round,pad=0.4", facecolor="white",
-                      edgecolor="#ccc", alpha=0.9))
+    ax.text(
+        0.05,
+        0.95,
+        f"r = {r:.3f} {sig}\nn = {mask.sum()}",
+        transform=ax.transAxes,
+        va="top",
+        bbox=dict(
+            boxstyle="round,pad=0.4", facecolor="white", edgecolor="#ccc", alpha=0.9
+        ),
+    )
 
-    ax.set_xlabel(xlabel, fontsize=10.5)
-    ax.set_ylabel(ylabel, fontsize=10.5)
-    ax.set_title(title, fontsize=10.5, pad=5)
+    ax.set_xlabel(
+        xlabel,
+    )
+    ax.set_ylabel(
+        ylabel,
+    )
+    ax.set_title(title, pad=5)
     ax.grid(alpha=0.22, linewidth=0.6)
 
 
@@ -118,18 +152,23 @@ def plot_fig_3_7a(df=None, save: bool = True):
         df = load_divergence_data()
 
     market_targets = [
-        ("OIS_uncertainty", "|ΔOIS| mean across maturities",  "#2c6fad"),
-        ("STOXX50_x",         "STOXX50 return (%)",              "#27ae60"),
-        ("pc1",             "PC1 monetary surprise",           "#8e44ad"),
+        ("OIS_uncertainty", "|ΔOIS| mean across maturities", "#2c6fad"),
+        ("STOXX50_x", "STOXX50 return (%)", "#27ae60"),
+        ("pc1", "PC1 monetary surprise", "#8e44ad"),
     ]
 
-    fig, axes = plt.subplots(1, 3, figsize=(14, 4.2),
-                             gridspec_kw={"wspace": 0.32})
+    fig, axes = plt.subplots(1, 3, figsize=(14, 4.2), gridspec_kw={"wspace": 0.32})
 
     for ax, (col, xlabel, color) in zip(axes, market_targets):
         if col not in df.columns:
-            ax.text(0.5, 0.5, f"'{col}' not in data",
-                    ha="center", va="center", transform=ax.transAxes)
+            ax.text(
+                0.5,
+                0.5,
+                f"'{col}' not in data",
+                ha="center",
+                va="center",
+                transform=ax.transAxes,
+            )
             continue
         scatter_with_reg(
             ax=ax,
@@ -139,12 +178,12 @@ def plot_fig_3_7a(df=None, save: bool = True):
             ylabel="|IS − QA| Sentiment",
             title=f"IS–QA Divergence\nvs. {xlabel.split('(')[0].strip()}",
             color=color,
-            reg=False
+            reg=False,
         )
 
     fig.suptitle(
         "IS–QA Communication Divergence vs. Market Variables (RoBERTa)",
-        fontsize=12, y=1.01,
+        y=1.05,
     )
     if save:
         path = OUTPUT_DIR / "is_qa/fig_divergence.pdf"
@@ -158,27 +197,11 @@ def plot_fig_3_7b(df=None, save: bool = True):
     if df is None:
         df = load_qa_gap_data()
 
-    fig, axes = plt.subplots(1, 3, figsize=(14, 4.2),
-                             gridspec_kw={"wspace": 0.32})
-
-    # Panel A: Q vs A time series
-    ax1 = axes[0]
-    ax1.plot(df["date"], df["Q_sent"],
-             color="#e74c3c", linewidth=1.3, alpha=0.75, label="Questions (journalists)")
-    ax1.plot(df["date"], df["A_sent"],
-             color="#2c6fad", linewidth=1.3, alpha=0.75, label="Answers (ECB)")
-    ax1.axhline(0, color="#888", linewidth=0.8, linestyle="--")
-    ax1.set_xlabel("Date", fontsize=10.5)
-    ax1.set_ylabel("RoBERTa Sentiment", fontsize=10.5)
-    ax1.set_title("Journalist vs. ECB Sentiment\nover Time", fontsize=10.5, pad=5)
-    ax1.legend(fontsize=9, loc="lower left", framealpha=0.9)
-    ax1.grid(alpha=0.22, linewidth=0.6)
-    ax1.xaxis.set_major_locator(mdates.YearLocator(8))
-    ax1.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    fig, axes = plt.subplots(1, 2, figsize=(14, 4.2), gridspec_kw={"wspace": 0.32})
 
     # Panel B: Q-A gap vs OIS uncertainty
     scatter_with_reg(
-        ax=axes[1],
+        ax=axes[0],
         x=df["OIS_uncertainty"],
         y=df["Q_A_gap"],
         xlabel="|ΔOIS| mean across maturities",
@@ -190,7 +213,7 @@ def plot_fig_3_7b(df=None, save: bool = True):
     # Panel C: Q-A gap vs PC1
     if "pc1" in df.columns:
         scatter_with_reg(
-            ax=axes[2],
+            ax=axes[1],
             x=df["pc1"],
             y=df["Q_A_gap"],
             xlabel="PC1 monetary surprise",
@@ -199,15 +222,21 @@ def plot_fig_3_7b(df=None, save: bool = True):
             color="#8e44ad",
         )
     else:
-        axes[2].text(0.5, 0.5, "PC1 not available",
-                     ha="center", va="center", transform=axes[2].transAxes)
+        axes[2].text(
+            0.5,
+            0.5,
+            "PC1 not available",
+            ha="center",
+            va="center",
+            transform=axes[2].transAxes,
+        )
 
     fig.suptitle(
         "Question–Answer Sentiment Gap: Journalist vs. ECB (RoBERTa)",
-        fontsize=12, y=1.01,
+        y=1.05,
     )
     if save:
-        path = OUTPUT_DIR / "is_qa/gap.pdf"
+        path = OUTPUT_DIR / "is_qa/fig_gap.pdf"
         fig.savefig(path, bbox_inches="tight")
         print(f"Saved → {path}")
     return fig
@@ -217,9 +246,11 @@ def plot_fig_3_7b(df=None, save: bool = True):
 def print_correlation_summary():
     print("\n=== 3.7.1 IS–QA Divergence correlations ===")
     df = load_divergence_data()
-    for col, label in [("OIS_uncertainty", "OIS uncertainty"),
-                       ("STOXX50_x", "STOXX50"),
-                       ("pc1", "PC1")]:
+    for col, label in [
+        ("OIS_uncertainty", "OIS uncertainty"),
+        ("STOXX50_x", "STOXX50"),
+        ("pc1", "PC1"),
+    ]:
         if col not in df.columns:
             continue
         mask = df[col].notna() & df["IS_QA_div"].notna()
@@ -229,9 +260,11 @@ def print_correlation_summary():
 
     print("\n=== 3.7.2 Q–A Gap correlations ===")
     df2 = load_qa_gap_data()
-    for col, label in [("OIS_uncertainty", "OIS uncertainty"),
-                       ("STOXX50_x", "STOXX50"),
-                       ("pc1", "PC1")]:
+    for col, label in [
+        ("OIS_uncertainty", "OIS uncertainty"),
+        ("STOXX50_x", "STOXX50"),
+        ("pc1", "PC1"),
+    ]:
         if col not in df2.columns:
             continue
         mask = df2[col].notna() & df2["Q_A_gap"].notna()

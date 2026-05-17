@@ -51,8 +51,8 @@ OUTPUT_DIR = Path(OUTPUT) / "results"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 # ── Constants ─────────────────────────────────────────────────────────────────
-WORD_LIMIT = 1  # unlabeled features: single-sentence chunks
-WORD_LIMIT_LABEL = 50  # labeled features: needs context for topic classifier
+WORD_LIMIT = 200  # unlabeled features: single-sentence chunks
+WORD_LIMIT_LABEL = 200  # labeled features: needs context for topic classifier
 MAX_LAG = 15  # meetings to look back
 MIN_OBS = 8  # minimum valid observations for a correlation to count
 FIXED_LAGS = [1, 2, 5, 7, 11]  # horizons for the apples-to-apples table
@@ -305,7 +305,6 @@ def compute_corr_table(df: pd.DataFrame) -> pd.DataFrame:
             )
 
     return pd.DataFrame(rows)
-
 
 
 # ── Pivot summary (FIX 2 + FIX 3) ────────────────────────────────────────────

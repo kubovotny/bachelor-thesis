@@ -28,6 +28,19 @@ from .. import OUTPUT
 
 OUTPUT_DIR = Path(OUTPUT) / "results/is_qa"
 OUTPUT_DIR.mkdir(exist_ok=True)
+plt.rcParams.update(
+    {
+        "font.size": 13,
+        "axes.titlesize": 14,
+        "axes.labelsize": 13,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
 
 
 # ── Load chunk-level QA sentiment from DB ─────────────────────────────────────
@@ -205,9 +218,13 @@ def plot_fig_3_7b_timeseries(pairs_agg, save: bool = True):
     pairs_agg = pairs_agg.reset_index()
 
     ax.axhline(0, color="#888", linewidth=0.8, linestyle="--")
-    ax.set_xlabel("Date", fontsize=11)
-    ax.set_ylabel("RoBERTa Sentiment", fontsize=11)
-    ax.legend(fontsize=10, loc="lower left", framealpha=0.92)
+    ax.set_xlabel(
+        "Date",
+    )
+    ax.set_ylabel(
+        "RoBERTa Sentiment",
+    )
+    ax.legend(loc="upper left", framealpha=0.92)
     ax.grid(alpha=0.22, linewidth=0.6)
     ax.xaxis.set_major_locator(mdates.YearLocator(5))
     ax.xaxis.set_minor_locator(mdates.YearLocator(1))
@@ -232,8 +249,8 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
     ax1.hist(
         signed_gap,
         bins=50,
-        color="#6375b4",
-        alpha=0.65,
+        color="#2c6fad",
+        alpha=0.55,
         edgecolor="white",
         linewidth=0.5,
         density=True,
@@ -247,7 +264,7 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
     )
     ax1.axvline(
         signed_gap.median(),
-        color="#2c6fad",
+        color="#2cad3d",
         linewidth=2.0,
         linestyle=":",
         label=f"Median = {signed_gap.median():.3f}",
@@ -261,7 +278,6 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
         0.95,
         f"Q more dovish\nthan A: {pct_neg:.0f}%",
         transform=ax1.transAxes,
-        fontsize=9,
         va="top",
         color="#c0392b",
         bbox=dict(facecolor="white", alpha=0.8, edgecolor="#ddd"),
@@ -271,21 +287,23 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
         0.95,
         f"Q more hawkish\nthan A: {pct_pos:.0f}%",
         transform=ax1.transAxes,
-        fontsize=9,
         va="top",
         ha="right",
         color="#0915b6",
         bbox=dict(facecolor="white", alpha=0.8, edgecolor="#ddd"),
     )
 
-    ax1.set_xlabel("Signed Gap  (Q − A sentiment)", fontsize=11)
-    ax1.set_ylabel("Density", fontsize=11)
+    ax1.set_xlabel(
+        "Signed Gap  (Q − A sentiment)",
+    )
+    ax1.set_ylabel(
+        "Density",
+    )
     ax1.set_title(
         "Distribution of Q−A Sentiment Gap\n(negative = journalist more dovish)",
-        fontsize=11,
         pad=6,
     )
-    ax1.legend(fontsize=9.5, framealpha=0.9)
+    ax1.legend(framealpha=0.9)
     ax1.grid(alpha=0.22, linewidth=0.6)
 
     # ── Right: Box plots per era (horizontal) ─────────────────────────────────
@@ -327,8 +345,10 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
         )
 
     ax2.axvline(0, color="#888", linewidth=0.8, linestyle="--")
-    ax2.set_xlabel("|Q − A| Sentiment Gap (per pair)", fontsize=11)
-    ax2.set_title("Q–A Gap by Era\n(◆ = mean)", fontsize=11, pad=6)
+    ax2.set_xlabel(
+        "|Q − A| Sentiment Gap (per pair)",
+    )
+    ax2.set_title("Q–A Gap by Era\n(◆ = mean)", pad=6)
     ax2.grid(axis="x", alpha=0.22, linewidth=0.6)
 
     if save:
