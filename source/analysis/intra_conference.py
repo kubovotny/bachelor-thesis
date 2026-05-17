@@ -142,7 +142,6 @@ def plot_fig_3_8a(save: bool = True):
         "FinBERT (solid) vs. CentralBankRoBERTa (dashed)  |  ±SE shaded",
         fontsize=11, y=1.01,
     )
-    plt.tight_layout()
     if save:
         path = OUTPUT_DIR / "fig_intra_section_both.pdf"
         fig.savefig(path, bbox_inches="tight")

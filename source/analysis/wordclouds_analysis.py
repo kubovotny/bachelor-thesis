@@ -163,7 +163,7 @@ def _count(texts: pd.Series) -> Counter:
 
 
 def load_data(model: str = MODEL) -> pd.DataFrame:
-    df = return_sentiment_chunk_data(limit_version=150, with_label=False)
+    df = return_sentiment_chunk_data(word_limit=150, with_label=False)
     df = df[df["sentiment_model"] == model].copy()
     df["date"] = pd.to_datetime(df["date"])
     return df

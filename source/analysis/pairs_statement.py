@@ -50,7 +50,7 @@ def load_qa_chunks(model: str = "roberta") -> pd.DataFrame:
     JOIN chunks      ch ON ch.rowid      = se.chunk_rowid
     JOIN statements  st ON st.rowid      = ch.statement_id
     JOIN sentiment_models sm ON sm.rowid = se.model_id
-    WHERE ch.chunk_limit = 150
+    WHERE ch.chunk_limit = 200
       AND ch.part        = 1
       AND sm.name        = ?
     ORDER BY st.date, ch.chunk_id;
@@ -63,6 +63,7 @@ def load_qa_chunks(model: str = "roberta") -> pd.DataFrame:
     print(
         f"  Questions: {df['is_question'].sum()}, Answers: {(~df['is_question']).sum()}"
     )
+    print(df.date.nunique())
     return df
 
 
@@ -204,9 +205,9 @@ def plot_fig_3_7b_timeseries(pairs_agg, save: bool = True):
     pairs_agg = pairs_agg.reset_index()
 
     ax.axhline(0, color="#888", linewidth=0.8, linestyle="--")
-    ax.set_xlabel("Date", fontsize=10)
-    ax.set_ylabel("RoBERTa Sentiment", fontsize=10)
-    ax.legend(fontsize=9, loc="lower left", framealpha=0.92)
+    ax.set_xlabel("Date", fontsize=11)
+    ax.set_ylabel("RoBERTa Sentiment", fontsize=11)
+    ax.legend(fontsize=10, loc="lower left", framealpha=0.92)
     ax.grid(alpha=0.22, linewidth=0.6)
     ax.xaxis.set_major_locator(mdates.YearLocator(5))
     ax.xaxis.set_minor_locator(mdates.YearLocator(1))
@@ -260,7 +261,7 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
         0.95,
         f"Q more dovish\nthan A: {pct_neg:.0f}%",
         transform=ax1.transAxes,
-        fontsize=8,
+        fontsize=9,
         va="top",
         color="#c0392b",
         bbox=dict(facecolor="white", alpha=0.8, edgecolor="#ddd"),
@@ -270,21 +271,21 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
         0.95,
         f"Q more hawkish\nthan A: {pct_pos:.0f}%",
         transform=ax1.transAxes,
-        fontsize=8,
+        fontsize=9,
         va="top",
         ha="right",
         color="#0915b6",
         bbox=dict(facecolor="white", alpha=0.8, edgecolor="#ddd"),
     )
 
-    ax1.set_xlabel("Signed Gap  (Q − A sentiment)", fontsize=10)
-    ax1.set_ylabel("Density", fontsize=10)
+    ax1.set_xlabel("Signed Gap  (Q − A sentiment)", fontsize=11)
+    ax1.set_ylabel("Density", fontsize=11)
     ax1.set_title(
         "Distribution of Q−A Sentiment Gap\n(negative = journalist more dovish)",
-        fontsize=10,
+        fontsize=11,
         pad=6,
     )
-    ax1.legend(fontsize=8.5, framealpha=0.9)
+    ax1.legend(fontsize=9.5, framealpha=0.9)
     ax1.grid(alpha=0.22, linewidth=0.6)
 
     # ── Right: Box plots per era (horizontal) ─────────────────────────────────
@@ -303,7 +304,7 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
 
     bp = ax2.boxplot(
         era_data,
-        labels=era_labels,
+        tick_labels=era_labels,
         vert=False,
         patch_artist=True,
         widths=0.5,
@@ -326,11 +327,10 @@ def plot_fig_3_7b_distribution(pairs, save: bool = True):
         )
 
     ax2.axvline(0, color="#888", linewidth=0.8, linestyle="--")
-    ax2.set_xlabel("|Q − A| Sentiment Gap (per pair)", fontsize=10)
-    ax2.set_title("Q–A Gap by Era\n(◆ = mean)", fontsize=10, pad=6)
+    ax2.set_xlabel("|Q − A| Sentiment Gap (per pair)", fontsize=11)
+    ax2.set_title("Q–A Gap by Era\n(◆ = mean)", fontsize=11, pad=6)
     ax2.grid(axis="x", alpha=0.22, linewidth=0.6)
 
-    plt.tight_layout()
     if save:
         path = OUTPUT_DIR / "fig_QA_distribution.pdf"
         fig.savefig(path, bbox_inches="tight")

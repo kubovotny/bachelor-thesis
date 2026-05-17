@@ -13,7 +13,7 @@ import pandas as pd
 from pathlib import Path
 
 # ── adjust this import to match your package structure ──────────────────────
-from ..data.model_data import return_data
+from ..data.sentiment import return_sentiment_agg_pivot
 from .. import OUTPUT
 # ────────────────────────────────────────────────────────────────────────────
 
@@ -22,7 +22,6 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 
 # ── Matplotlib style ─────────────────────────────────────────────────────────
 plt.rcParams.update({
-    "font.family":      "serif",
     "font.size":        10,
     "axes.titlesize":   11,
     "axes.labelsize":   10,
@@ -59,11 +58,10 @@ EVENTS = [
 
 # ── Data loading ─────────────────────────────────────────────────────────────
 def load_data() -> pd.DataFrame:
-    df = return_data(
-        market_data="ECB Money Market.xlsx",
+    df = return_sentiment_agg_pivot(
         IS_QA_division=False,
         qa_options="just_answers",
-        word_limit=150,
+        word_limit=200,
         with_label=False,
     )
     df = df.sort_values("date").reset_index(drop=True)
@@ -136,7 +134,7 @@ def plot_fig_3_1(df: pd.DataFrame, save: bool = True):
     _draw_sentiment_panel(ax, df, show_roll=True)
 
     ax.set_title(
-        "Aggregate ECB Press Conference Sentiment (1999–2024)\n"
+        "Aggregate ECB Press Conference Sentiment (1999–2025)\n"
         "FinBERT vs. CentralBankRoBERTa — full transcript, 6-month centered average",
         pad=8,
     )
@@ -165,7 +163,7 @@ def plot_fig_3_2(df: pd.DataFrame, save: bool = True):
     _draw_sentiment_panel(ax, df, show_roll=True)
 
     ax.set_title(
-        "ECB Sentiment and Key Historical Policy Events (1999–2024)",
+        "ECB Sentiment and Key Historical Policy Events (1999–2025)",
         pad=8,
     )
 

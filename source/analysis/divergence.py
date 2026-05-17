@@ -102,13 +102,13 @@ def scatter_with_reg(ax, x, y, xlabel, ylabel, title, color="#2c6fad", reg=True)
 
     sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "n.s."
     ax.text(0.05, 0.95, f"r = {r:.3f} {sig}\nn = {mask.sum()}",
-            transform=ax.transAxes, fontsize=8.5, va="top",
+            transform=ax.transAxes, fontsize=9.5, va="top",
             bbox=dict(boxstyle="round,pad=0.4", facecolor="white",
                       edgecolor="#ccc", alpha=0.9))
 
-    ax.set_xlabel(xlabel, fontsize=9.5)
-    ax.set_ylabel(ylabel, fontsize=9.5)
-    ax.set_title(title, fontsize=9.5, pad=5)
+    ax.set_xlabel(xlabel, fontsize=10.5)
+    ax.set_ylabel(ylabel, fontsize=10.5)
+    ax.set_title(title, fontsize=10.5, pad=5)
     ax.grid(alpha=0.22, linewidth=0.6)
 
 
@@ -144,9 +144,8 @@ def plot_fig_3_7a(df=None, save: bool = True):
 
     fig.suptitle(
         "IS–QA Communication Divergence vs. Market Variables (RoBERTa)",
-        fontsize=11, y=1.01,
+        fontsize=12, y=1.01,
     )
-    plt.tight_layout()
     if save:
         path = OUTPUT_DIR / "is_qa/fig_divergence.pdf"
         fig.savefig(path, bbox_inches="tight")
@@ -169,10 +168,10 @@ def plot_fig_3_7b(df=None, save: bool = True):
     ax1.plot(df["date"], df["A_sent"],
              color="#2c6fad", linewidth=1.3, alpha=0.75, label="Answers (ECB)")
     ax1.axhline(0, color="#888", linewidth=0.8, linestyle="--")
-    ax1.set_xlabel("Date", fontsize=9.5)
-    ax1.set_ylabel("RoBERTa Sentiment", fontsize=9.5)
-    ax1.set_title("Journalist vs. ECB Sentiment\nover Time", fontsize=9.5, pad=5)
-    ax1.legend(fontsize=8, loc="lower left", framealpha=0.9)
+    ax1.set_xlabel("Date", fontsize=10.5)
+    ax1.set_ylabel("RoBERTa Sentiment", fontsize=10.5)
+    ax1.set_title("Journalist vs. ECB Sentiment\nover Time", fontsize=10.5, pad=5)
+    ax1.legend(fontsize=9, loc="lower left", framealpha=0.9)
     ax1.grid(alpha=0.22, linewidth=0.6)
     ax1.xaxis.set_major_locator(mdates.YearLocator(8))
     ax1.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
@@ -205,9 +204,8 @@ def plot_fig_3_7b(df=None, save: bool = True):
 
     fig.suptitle(
         "Question–Answer Sentiment Gap: Journalist vs. ECB (RoBERTa)",
-        fontsize=11, y=1.01,
+        fontsize=12, y=1.01,
     )
-    plt.tight_layout()
     if save:
         path = OUTPUT_DIR / "is_qa/gap.pdf"
         fig.savefig(path, bbox_inches="tight")
@@ -220,7 +218,7 @@ def print_correlation_summary():
     print("\n=== 3.7.1 IS–QA Divergence correlations ===")
     df = load_divergence_data()
     for col, label in [("OIS_uncertainty", "OIS uncertainty"),
-                       ("STOXX50", "STOXX50"),
+                       ("STOXX50_x", "STOXX50"),
                        ("pc1", "PC1")]:
         if col not in df.columns:
             continue
@@ -232,6 +230,7 @@ def print_correlation_summary():
     print("\n=== 3.7.2 Q–A Gap correlations ===")
     df2 = load_qa_gap_data()
     for col, label in [("OIS_uncertainty", "OIS uncertainty"),
+                       ("STOXX50_x", "STOXX50"),
                        ("pc1", "PC1")]:
         if col not in df2.columns:
             continue

@@ -16,7 +16,7 @@ import matplotlib.dates as mdates
 import pandas as pd
 from pathlib import Path
 
-from ..data.model_data import return_data
+from ..data.sentiment import return_sentiment_agg_pivot
 from .. import OUTPUT
 
 OUTPUT_DIR = Path(OUTPUT) / "results/topic"
@@ -40,9 +40,8 @@ TOPIC_COLORS = {
 # ── Load data ─────────────────────────────────────────────────────────────────
 def load_thematic_data():
     """Load RoBERTa sentiment split by topic."""
-    df = return_data(
-        market_data="shocks_ecb_mpd_me_d.csv",
-        word_limit=150,
+    df = return_sentiment_agg_pivot(
+        word_limit=200,
         IS_QA_division=False,  # whole conference
         qa_options="just_answers",
         with_label=True,  # ← topic labels
@@ -87,9 +86,9 @@ def plot_fig_3_5a(df=None, save: bool = True):
                 linewidth=1.6, alpha=0.85)
 
     ax.axhline(0, color="#888", linewidth=0.9, linestyle="--", zorder=1)
-    ax.set_ylabel("RoBERTa Sentiment", fontsize=10)
-    ax.set_title("Thematic Sentiment over Time — RoBERTa", fontsize=11, pad=8)
-    ax.legend(loc="upper left", fontsize=9, ncol=3, framealpha=0.92)
+    ax.set_ylabel("RoBERTa Sentiment", fontsize=11)
+    ax.set_title("Thematic Sentiment over Time — RoBERTa", fontsize=12, pad=8)
+    ax.legend(loc="upper left", fontsize=10, ncol=3, framealpha=0.92)
     ax.grid(alpha=0.25, linewidth=0.6)
     ax.set_ylim(-1, 1)
 
@@ -122,7 +121,7 @@ def plot_fig_3_5b(df=None, save: bool = True):
         labels_for_box.append(label)
         colors_for_box.append(TOPIC_COLORS[code])
 
-    bp = ax.boxplot(data_for_box, labels=labels_for_box,
+    bp = ax.boxplot(data_for_box, tick_labels=labels_for_box,
                      patch_artist=True, widths=0.55,
                      medianprops=dict(color="black", linewidth=1.5),
                      boxprops=dict(linewidth=1.2),
@@ -137,8 +136,8 @@ def plot_fig_3_5b(df=None, save: bool = True):
                     color="white", edgecolors="black", linewidths=1.5, zorder=5)
 
     ax.axhline(0, color="#888", linewidth=0.9, linestyle="--", zorder=1)
-    ax.set_ylabel("RoBERTa Sentiment", fontsize=10)
-    ax.set_title("Distribution by Topic (◆ = mean)", fontsize=10, pad=6)
+    ax.set_ylabel("RoBERTa Sentiment", fontsize=11)
+    ax.set_title("Distribution by Topic (◆ = mean)", fontsize=11, pad=6)
     ax.grid(axis="y", alpha=0.25, linewidth=0.6)
     ax.set_ylim(-1.05, 0.95)
     plt.tight_layout()
