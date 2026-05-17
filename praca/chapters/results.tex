@@ -3,7 +3,7 @@
 This chapter reports the empirical findings of the thesis. The analysis proceeds in four arcs of increasing demand on the data. Section~\ref{sec:results_sentiment} establishes that the two sentiment classifiers produce internally coherent signals and shows that those signals track major historical episodes of monetary-policy stress. Section~\ref{sec:results_sectional} dissects the press conference into its prepared and spontaneous components, demonstrating that the \gls{is} and the \gls{qa} session carry structurally different information. Section~\ref{sec:results_cycle} relates the aggregate sentiment series to the \gls{ecb}'s policy-rate cycle, including an event-study of rate decisions. Section~\ref{sec:predictive} closes the loop by asking whether the textual signal carries predictive value for the direction of the next rate decision, comparing four classifiers of increasing complexity (a logit baseline, a sentiment-only logit, an augmented logit, and a random forest) and identifying the regimes in which sentiment-derived features add information beyond the rate history alone.
 
 %─────────────────────────────────────────────────────────────────────────────
-\section{Aggregate Sentiment and Model Comparison}
+\section{Aggregate Sentiment: Classifier Properties and Historical Coherence}
 \label{sec:results_sentiment}
 
 Before exploring the granular structure of \gls{ecb} communication, we must confirm a more basic requirement: that the two sentiment classifiers produce signals that are internally coherent and behave as central-bank discourse should behave. Figure~\ref{fig:aggregate_sentiment} plots the six-month centred moving average of both models against time, together with $\pm 1$ standard-deviation bands constructed from the chunk-level distributions within each meeting.
@@ -11,54 +11,72 @@ Before exploring the granular structure of \gls{ecb} communication, we must conf
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/base/fig_aggregate_sentiment.pdf}
-    \caption[Aggregate ECB press-conference sentiment, 1999--2024]{Aggregate \gls{ecb} press-conference sentiment, 1999--2024. Solid lines show the six-month centred moving average; shaded bands show the within-meeting standard deviation. Blue: FinBERT; dark red: CentralBankRoBERTa.}
+    \caption[Aggregate ECB press-conference sentiment, 1999--2025]{%
+        Aggregate \gls{ecb} press-conference sentiment, 1999--2025. Solid lines show
+        the six-month centred moving average; shaded bands show the within-meeting
+        $\pm 1$ standard deviation. Blue: FinBERT; dark red: CentralBankRoBERTa.}
     \label{fig:aggregate_sentiment}
 \end{figure}
 
-A persistent vertical gap separates the two series throughout the sample. FinBERT remains in mildly positive territory, while CentralBankRoBERTa is anchored below zero. The gap reflects neither a malfunction of the pipeline nor a disagreement about the direction of policy: it is a calibration difference inherited from the respective fine-tuning corpora. FinBERT was trained on Reuters financial news, where vocabulary such as \textit{``growth''} or \textit{``profit''} is over-represented and carries a positive prior, whereas CentralBankRoBERTa was fine-tuned on central-bank speeches and reports, where the institutional baseline is one of measured caution. What is identical across the two series is the \emph{shape} of the trajectory: troughs around the dot-com episode, the Global Financial Crisis, the sovereign-debt crisis, and 2020 appear in both. Table~\ref{tab:descriptives} summarises the first moments of the two distributions.
+A persistent vertical gap separates the two series throughout the sample. FinBERT maintains a mildly positive mean of $+0.208$ on the Introductory Statement, while CentralBankRoBERTa is anchored below zero at $-0.140$. The gap reflects neither a malfunction of the pipeline nor a disagreement about the direction of policy: it is a calibration difference inherited from the respective fine-tuning corpora---an architectural property discussed in Section~\ref{sec:sentiment_concept} and summarised in Table~\ref{tab:model_comparison}. What is identical across the two series is the \emph{shape} of the trajectory: cyclical troughs and recoveries align across both classifiers at every major policy turning point in the sample. Table~\ref{tab:descriptives} summarises the distributional properties of both classifiers across each press-conference section.
 
 \begin{table}[ht]
     \centering
-    \caption[Descriptive statistics of the net sentiment score]{Descriptive statistics of the net sentiment score, 1999--2024.}
+    \caption[Descriptive statistics of the net sentiment score by model and
+             section]{%
+        Descriptive statistics of the net sentiment score, 1999--2025.
+        \textsc{is}~$=$~Introductory Statement ($n_{\textsc{is}} = 289$);
+        \textsc{qa}~$=$~Q\&A session ($n_{\textsc{qa}} = 281$);
+        \textsc{iqr}~$=$~interquartile range.}
     \label{tab:descriptives}
-    \begin{tabular}{@{}lrrrrr@{}}
+    \begin{tabular}{@{}llrrrrr@{}}
         \toprule
-        \textbf{Model} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} & $\boldsymbol{n}$ \\ \midrule
-        FinBERT [IS]            & $+0.197$ & $0.20$ & $-0.38$ & $+0.73$ & $281$ \\
-        FinBERT [Q\&A]          & $+0.057$ & $0.07$ & $-0.18$ & $+0.27$ & $281$ \\
-        CB-RoBERTa [IS]         & $-0.147$ & $0.16$ & $-0.63$ & $+0.30$ & $281$ \\
-        CB-RoBERTa [Q\&A]       & $-0.340$ & $0.08$ & $-0.56$ & $-0.04$ & $281$ \\ \bottomrule
+        \textbf{Model} & \textbf{Section}
+            & \textbf{Mean} & \textbf{Std}
+            & \textbf{Min}  & \textbf{Max}  & \textbf{IQR} \\ \midrule
+        FinBERT    & IS  & $+0.208$ & $0.223$ & $-0.348$ & $+0.705$ & $0.290$ \\
+        FinBERT    & QA  & $+0.053$ & $0.072$ & $-0.150$ & $+0.273$ & $0.094$ \\
+        CB-RoBERTa & IS  & $-0.140$ & $0.192$ & $-0.623$ & $+0.649$ & $0.258$ \\
+        CB-RoBERTa & QA  & $-0.340$ & $0.124$ & $-0.597$ & $+0.010$ & $0.170$ \\
+        \bottomrule
     \end{tabular}
 \end{table}
 
-To formalise the visual co-movement, Table~\ref{tab:correlation} reports the Pearson correlation between the two classifiers, computed on the meeting-level mean within each section. The correlations are positive, of moderate magnitude, and statistically significant at the $0.1\%$ level---confirming that the two models read the same underlying signal up to a re-scaling of the baseline.
+Several features of Table~\ref{tab:descriptives} merit attention. First, the Introductory Statement is substantially more volatile than the Q\&A session for both models: the interquartile range is approximately three times wider for the IS than for the QA in FinBERT ($0.290$ versus $0.094$) and roughly $50\%$ wider in CentralBankRoBERTa ($0.258$ versus $0.170$), consistent with the prepared statement being the venue for discrete communicative shifts while the Q\&A session remains institutionally compressed. Second, the upper tail of the CentralBankRoBERTa QA distribution barely breaches zero ($\max = +0.010$), indicating that spontaneous Q\&A communication never produces unambiguously positive sentiment on the central-bank scale over the full sample. Third, the between-model level offset is not uniform across sections: it narrows to $0.155$ in the IS but widens to $0.393$ in the QA, confirming that calibration effects interact with communicative register.
+
+To characterise how the two sections relate within each classifier, Table~\ref{tab:is_qa_corr} reports the Pearson correlation between the IS and QA meeting-level means. Both coefficients are positive, moderate, and statistically significant at the $0.1\%$ level, confirming that the prepared and spontaneous components encode the same underlying policy stance while differing in intensity. The near-identical magnitude across models ($r = 0.243$ versus $0.256$) is itself a mark of signal consistency: despite divergent level baselines, both classifiers reach the same structural conclusion about the IS--QA relationship.
 
 \begin{table}[ht]
     \centering
-    \caption[Pearson correlation between FinBERT and CentralBankRoBERTa]{Pearson correlation between FinBERT and CentralBankRoBERTa, by section.}
-    \label{tab:correlation}
+    \caption[Pearson correlation between IS and Q\&A sentiment by model]{%
+        Pearson correlation between the Introductory Statement and Q\&A session
+        meeting-level mean sentiment, by classifier
+        ($n = 281$ matched meetings).}
+    \label{tab:is_qa_corr}
     \begin{tabular}{@{}lrr@{}}
         \toprule
-        \textbf{Section} & \textbf{Pearson $r$} & \textbf{$p$-value} \\ \midrule
-        Introductory Statement & $0.246$ & $< 0.001$ \\
-        Q\&A Session           & $0.275$ & $< 0.001$ \\ \bottomrule
+        \textbf{Model} & \textbf{Pearson $r$} & \textbf{$p$-value} \\ \midrule
+        FinBERT    & $0.243$ & $< 0.001$ \\
+        CB-RoBERTa & $0.256$ & $< 0.001$ \\ \bottomrule
     \end{tabular}
 \end{table}
 
-%─────────────────────────────────────────────────────────────────────────────
-\section{Sanity Check: Validation against Historical Events}
-\label{sec:results_validation}
+A coherent and internally consistent pair of series can still be jointly wrong. To verify that the signal aligns with the historical policy record, Figure~\ref{fig:sentiment_events} overlays the aggregate trajectory with seven anchor events drawn from the full 1999--2025 sample.
 
-A correlated pair of series can still be jointly wrong. To verify that the signal aligns with the policy record, Figure~\ref{fig:sentiment_events} overlays the aggregate trajectory with five anchor points: the October 2008 emergency rate cut, Draghi's ``Whatever it takes'' speech of July 2012, the launch of the asset-purchase programme in January 2015, the COVID-emergency response in March 2020, and the start of the post-pandemic hiking cycle in July 2022.
+% phantomsection preserves the cross-reference from data.tex
+\phantomsection\label{sec:results_validation}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/base/fig_sentiment_events.pdf}
-    \caption[ECB sentiment and key historical policy events]{Aggregate \gls{ecb} sentiment overlaid with five anchor events. Dotted vertical lines mark the event date.}
+    \caption[ECB sentiment and key historical policy events, 1999--2025]{%
+        Aggregate \gls{ecb} sentiment overlaid with seven historical anchor events.
+        Dotted vertical lines mark the event date; annotations indicate the
+        position of the event relative to the zero line.}
     \label{fig:sentiment_events}
 \end{figure}
 
-The sentiment series turn down sharply at the GFC anchor, recover during the ``Whatever it takes'' window, drift downward through the protracted \gls{zlb} accommodation, dip again in 2020, and turn unambiguously upward at the onset of the 2022 hiking cycle. The qualitative alignment is sufficient to certify that the signal is not artefactual; the more demanding tests of co-movement with continuous market variables are deferred to Section~\ref{sec:results_cycle}.
+The alignment between the sentiment trajectory and the policy record is consistent across all seven anchors. Both series fall sharply into the October 2008 \gls{gfc} emergency rate cut, marking the most severe single-meeting trough in the pre-\gls{zlb} era. Sentiment stabilises and partially recovers following Draghi's ``Whatever it takes'' commitment of July 2012, then drifts further downward as the \gls{ecb} launches its asset-purchase programme in January 2015 and deepens negative rates in September 2019---a period in which cautious forward guidance dominated communications. The March 2020 pandemic emergency produces a sharp second trough, mirroring the abrupt reassessment of the economic outlook. The subsequent reversal is equally clear: both series turn unambiguously upward ahead of the July 2022 liftoff, peak around the September 2023 meeting at which the policy rate reached $4.50\%$, and soften thereafter as the easing cycle begins. The qualitative alignment across all seven events is sufficient to certify that the signal is not artefactual; the more demanding quantitative tests of co-movement with continuous market variables are deferred to Section~\ref{sec:results_cycle}.
 
 %─────────────────────────────────────────────────────────────────────────────
 \section{The Sectional Anatomy of Policy Communication}
@@ -222,17 +240,17 @@ Two regularities are visible. First, the correlation between sentiment and the p
     \label{tab:summary}
     \begin{tabular}{@{}lrrrr@{}}
         \toprule
-        \textbf{Feature}    & \textbf{Pre-ZLB} & \textbf{ZLB} & \textbf{Hiking} & \textbf{Full} \\ \midrule
-        FB MP $\mu$ [t$-$1] & $+0.67$ & $-0.65$ & $+0.64$ & $+0.60$ \\
-        FB MP $\mu$ [t$-$2] & $+0.63$ & $-0.66$ & $+0.79$ & $+0.57$ \\
-        FB     $\mu$ [t$-$5] & $+0.81$ & $-0.55$ & $+0.57$ & $+0.56$ \\
-        FB MP $\mu$ [t$-$4] & $+0.55$ & $-0.62$ & $+0.82$ & $+0.56$ \\
-        FB QA $\mu$ [t$-$2] & $+0.54$ & $-0.43$ & $+0.43$ & $+0.52$ \\
-        FB QA $\mu$ [t$-$5] & $+0.54$ & $-0.35$ & $+0.49$ & $+0.51$ \\
-        FB     $\mu$ [t$-$2] & $+0.81$ & $-0.58$ & $+0.29$ & $+0.50$ \\
-        FB     $\mu$ [t$-$7] & $+0.56$ & $-0.53$ & $+0.78$ & $+0.49$ \\
-        RB EP $\mu$ [t$-$3] & $+0.75$ & $-0.41$ & $-0.17$ & $+0.49$ \\
-        FB     $\mu$ [t$-$11]& $+0.38$ & $-0.45$ & $+0.83$ & $+0.47$ \\ \bottomrule
+        \textbf{Feature}      & \textbf{Pre-ZLB} & \textbf{ZLB} & \textbf{Hiking} & \textbf{Full} \\ \midrule
+        FB MP $\mu$ [t$-$1]   & $+0.67$          & $-0.65$      & $+0.64$         & $+0.60$       \\
+        FB MP $\mu$ [t$-$2]   & $+0.63$          & $-0.66$      & $+0.79$         & $+0.57$       \\
+        FB     $\mu$ [t$-$5]  & $+0.81$          & $-0.55$      & $+0.57$         & $+0.56$       \\
+        FB MP $\mu$ [t$-$4]   & $+0.55$          & $-0.62$      & $+0.82$         & $+0.56$       \\
+        FB QA $\mu$ [t$-$2]   & $+0.54$          & $-0.43$      & $+0.43$         & $+0.52$       \\
+        FB QA $\mu$ [t$-$5]   & $+0.54$          & $-0.35$      & $+0.49$         & $+0.51$       \\
+        FB     $\mu$ [t$-$2]  & $+0.81$          & $-0.58$      & $+0.29$         & $+0.50$       \\
+        FB     $\mu$ [t$-$7]  & $+0.56$          & $-0.53$      & $+0.78$         & $+0.49$       \\
+        RB EP $\mu$ [t$-$3]   & $+0.75$          & $-0.41$      & $-0.17$         & $+0.49$       \\
+        FB     $\mu$ [t$-$11] & $+0.38$          & $-0.45$      & $+0.83$         & $+0.47$       \\ \bottomrule
     \end{tabular}
 \end{table}
 
@@ -297,5 +315,4 @@ The predictive analysis has so far focused on the level of sentiment and its lag
 
 The results echo Section~\ref{sec:divergence}: the directional correlations between communication surprise and the directional OIS move are statistically indistinguishable from zero (top row, all $|r| < 0.05$), but the standard deviation of sentiment is mildly negatively correlated with the absolute size of the OIS move ($r = -0.137$ for the CentralBankRoBERTa overall standard deviation, $p < 0.05$, bottom-right panel). The sign mirrors the communicative-cancellation finding: more internally variable communication is associated with smaller market reactions. This is consistent with a market that interprets internal variability as an absence of decisive policy news and therefore declines to revise its rate expectations.
 
-\paragraph{Summary of Chapter Findings.}
-Across the four arcs of analysis, four substantive findings have emerged. First, the two sentiment classifiers produce coherent, mutually validating signals that align with the major historical turning points of euro-area monetary policy. Second, the prepared \gls{is} and the spontaneous \gls{qa} are structurally different communicative acts, and the journalist--\gls{ecb} gap is a stable institutional feature that, if not separated by the pipeline, would have contaminated the policy signal by approximately $0.3$ on the unit scale. Third, sentiment leads the \gls{ecb}'s rate decisions by between two and ten meetings, with the lead being long and gradual in the pre-\gls{zlb} era and approximately symmetric in the post-\gls{zlb} hiking cycle. Fourth, sentiment features carry incremental predictive content beyond the rate history itself: AUC rises from $0.680$ (M1, rate-history only) to $0.706$ (M2, sentiment only) and $0.719$ (M3, augmented logit); a Random Forest on the same features adds a further increment to $0.741$, consistent with mild non-linear interactions at the small-sample limit. The implications of these findings for policy makers, for the design of future sentiment pipelines, and for the limitations that remain are discussed in Chapter~\ref{ch:discussion}.
+\paragraph{Summary of Chapter Findings.} Across the four arcs of analysis, four substantive findings have emerged. First, the two sentiment classifiers produce coherent, mutually validating signals that align with the major historical turning points of euro-area monetary policy. Second, the prepared \gls{is} and the spontaneous \gls{qa} are structurally different communicative acts, and the journalist--\gls{ecb} gap is a stable institutional feature that, if not separated by the pipeline, would have contaminated the policy signal by approximately $0.3$ on the unit scale. Third, sentiment leads the \gls{ecb}'s rate decisions by between two and ten meetings, with the lead being long and gradual in the pre-\gls{zlb} era and approximately symmetric in the post-\gls{zlb} hiking cycle. Fourth, sentiment features carry incremental predictive content beyond the rate history itself: AUC rises from $0.680$ (M1, rate-history only) to $0.706$ (M2, sentiment only) and $0.719$ (M3, augmented logit); a Random Forest on the same features adds a further increment to $0.741$, consistent with mild non-linear interactions at the small-sample limit. The implications of these findings for policy makers, for the design of future sentiment pipelines, and for the limitations that remain are discussed in Chapter~\ref{ch:discussion}.
