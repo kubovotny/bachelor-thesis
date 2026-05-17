@@ -58,11 +58,12 @@ MIN_OBS = 8  # minimum valid observations for a correlation to count
 FIXED_LAGS = [1, 2, 5, 7, 11]  # horizons for the apples-to-apples table
 MIN_FEAT_STD = 1e-8  # variance guard — skip near-constant features
 
+
 ERAS = {
     "Full": ("1999-01-01", "2024-12-31"),
     "Pre-ZLB": ("1999-01-01", "2011-12-31"),
-    "ZLB": ("2012-01-01", "2021-12-31"),
-    "Hiking": ("2022-01-01", "2024-12-31"),
+    "ZLB": ("2012-01-01", "2022-06-30"),
+    "Hiking": ("2022-07-01", "2025-12-31"),
 }
 
 # FIX 1: ZLB target is now the FIRST-DIFFERENCE of the Wu-Xia shadow rate.

@@ -46,7 +46,7 @@ def load_data():
     for cfg in configs:
         d = return_data(
             market_data=["Dataset_EA-MPD.xlsx", "shocks_ecb_mpd_me_d.csv"],
-            word_limit=150,
+            word_limit=200,
             **cfg,
         )
         if df is None:
@@ -248,8 +248,8 @@ def plot_fig_3_9b(df: pd.DataFrame, save: bool = True):
         for s, e, c, lbl in [
             ("1999-01-01", "2007-12-31", "#3498db", "Pre-GFC"),
             ("2008-01-01", "2011-12-31", "#e67e22", "GFC"),
-            ("2012-01-01", "2021-12-31", "#27ae60", "ZLB"),
-            ("2022-01-01", "2024-12-31", "#e74c3c", "Hiking"),
+            ("2012-01-01", "2022-07-01", "#27ae60", "ZLB"),
+            ("2022-07-02", "2024-12-31", "#e74c3c", "Hiking"),
         ]:
             ax.axvspan(pd.Timestamp(s), pd.Timestamp(e), alpha=0.06, color=c)
             mid = pd.Timestamp(s) + (pd.Timestamp(e) - pd.Timestamp(s)) / 2

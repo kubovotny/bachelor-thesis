@@ -1,1 +1,0 @@
-# TODO neural network model or linear regression 

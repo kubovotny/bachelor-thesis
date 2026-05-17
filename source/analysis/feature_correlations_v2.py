@@ -53,15 +53,16 @@ FIXED_LAGS = [1, 2, 5, 7, 11]
 # are treated as "no policy signal" (interpolation noise in the Wu-Xia model)
 MIN_SHADOW_CHANGE = 0.10  # % — ≈ 10bp equivalent
 
+
 ZLB_START = "2012-01-01"
-ZLB_END = "2021-12-31"
+ZLB_END = "2022-06-30"
 
 ERAS = {
-    "Full_composite": ("1999-01-01", "2025-12-31"),  # composite target
-    "Full": ("1999-01-01", "2025-12-31"),  # MRO-only (original)
+    "Full_composite": ("1999-01-01", "2025-12-31"),
+    "Full": ("1999-01-01", "2025-12-31"),
     "Pre-ZLB": ("1999-01-01", "2011-12-31"),
-    "ZLB": ("2012-01-01", "2021-12-31"),
-    "Hiking": ("2022-01-01", "2025-12-31"),
+    "ZLB": ("2012-01-01", "2022-06-30"),
+    "Hiking": ("2022-07-01", "2025-12-31"),
 }
 
 ERA_TARGET = {

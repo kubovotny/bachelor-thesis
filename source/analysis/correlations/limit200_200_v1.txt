@@ -1,0 +1,208 @@
+Loading data  (word_limit_unlabeled=200, word_limit_labeled=200)...
+  281 meetings, 1800 lag features
+
+Computing correlations...
+  Features before coverage filter: 1950
+  Features after coverage filter: 1300
+
+Full: n_total=273, n_analysis=54, target=MRO_diff
+
+Pre-ZLB: n_total=156, n_analysis=34, target=MRO_diff
+
+ZLB: n_total=93, n_analysis=93, target=shadow_diff
+
+Hiking: n_total=24, n_analysis=13, target=MRO_diff
+  5200 correlation rows computed
+
+=== Label-overlap diagnostic (IS feature pairwise r) ===
+  r > 0.9 → near-identical data; topic adds no independent signal.
+         Feature A          Feature B      r   n
+   finbert_IS_mean finbert_IS_EP_mean  0.833 281
+   finbert_IS_mean finbert_IS_MP_mean  0.807 281
+   roberta_IS_mean roberta_IS_MP_mean  0.783 281
+finbert_IS_EP_mean roberta_IS_EP_mean  0.783 281
+   roberta_IS_mean roberta_IS_EP_mean  0.758 281
+   finbert_IS_mean    roberta_IS_mean  0.711 281
+   finbert_IS_mean roberta_IS_EP_mean  0.642 281
+   roberta_IS_mean finbert_IS_EP_mean  0.609 281
+finbert_IS_MP_mean roberta_IS_MP_mean  0.562 281
+   roberta_IS_mean finbert_IS_MP_mean  0.555 281
+finbert_IS_FS_mean roberta_IS_FS_mean  0.504 281
+   finbert_IS_mean roberta_IS_MP_mean  0.474 281
+finbert_IS_EP_mean finbert_IS_MP_mean  0.456 281
+finbert_IS_EP_mean finbert_IS_OI_mean -0.409 281
+roberta_IS_EP_mean roberta_IS_MP_mean  0.349 281
+
+=== TOP 10 per era (one entry per base feature, absolute r) ===
+
+--- Full ---
+                Feature  Lag      r sig  n
+    finbert_IS_max:lag2    2 0.6128 *** 53
+ roberta_IS_EP_max:lag2    2 0.5869 *** 53
+       finbert_max:lag2    2 0.5753 *** 53
+    roberta_IS_max:lag2    2 0.5653 *** 53
+finbert_QA_MP_mean:lag4    4 0.5644 *** 53
+   finbert_MP_mean:lag4    4 0.5635 *** 53
+      finbert_mean:lag4    4 0.5507 *** 53
+   finbert_QA_mean:lag4    4 0.5501 *** 53
+       roberta_max:lag5    5 0.5364 *** 52
+    roberta_EP_max:lag5    5 0.5322 *** 52
+
+--- Pre-ZLB ---
+                Feature  Lag      r sig  n
+   roberta_EP_mean:lag4    4 0.8525 *** 33
+      finbert_mean:lag4    4 0.8473 *** 33
+   finbert_EP_mean:lag3    3 0.8367 *** 33
+finbert_IS_EP_mean:lag3    3 0.7909 *** 33
+    roberta_IS_max:lag2    2 0.7779 *** 33
+      roberta_mean:lag4    4 0.7737 *** 33
+         roberta_EP_max    0 0.7715 *** 33
+roberta_QA_EP_mean:lag4    4 0.7667 *** 33
+   finbert_IS_mean:lag4    4 0.7632 *** 33
+      roberta_IS_EP_max    0 0.7580 *** 33
+
+--- ZLB ---
+                Feature  Lag       r sig  n
+roberta_QA_EP_min:lag10   10  0.3924 *** 93
+roberta_QA_MP_mean:lag9    9  0.3130  ** 93
+finbert_QA_MP_std:lag14   14 -0.3050  ** 93
+            finbert_std    0  0.2803  ** 93
+    finbert_QA_std:lag8    8 -0.2761  ** 93
+    finbert_FS_std:lag5    5  0.2723  ** 93
+       finbert_max:lag3    3 -0.2692  ** 93
+ finbert_IS_EP_max:lag3    3 -0.2667  ** 93
+    finbert_EP_min:lag7    7 -0.2651   * 93
+   roberta_EP_min:lag11   11 -0.2634   * 93
+
+--- Hiking ---
+                Feature  Lag       r sig  n
+    roberta_EP_std:lag9    9  0.9028 *** 13
+roberta_IS_EP_mean:lag9    9  0.8878 *** 13
+ roberta_IS_EP_max:lag8    8  0.8791 *** 13
+  finbert_IS_mean:lag15   15  0.8788 *** 13
+  finbert_EP_mean:lag10   10  0.8764 *** 13
+  finbert_MP_mean:lag15   15  0.8579 *** 13
+ roberta_IS_EP_std:lag9    9  0.8562 *** 13
+       finbert_MP_count    0  0.8553 *** 13
+       roberta_MP_count    0  0.8553 *** 13
+ finbert_IS_MP_std:lag7    7 -0.8543 *** 13
+
+=== Lag profile: finbert_mean (Full sample) ===
+ Lag      r sig  n
+   0 0.3062   * 53
+   1 0.4674 *** 53
+   2 0.4493 *** 53
+   3 0.5001 *** 53
+   4 0.5507 *** 53
+   5 0.4190  ** 52
+   6 0.4765 *** 52
+   7 0.4263  ** 52
+   8 0.4236  ** 52
+   9 0.2952   * 52
+  10 0.4738 *** 52
+  11 0.3409   * 51
+  12 0.2101     51
+  13 0.3904  ** 51
+  14 0.2627     50
+  15 0.2797     49
+
+=== Pivot — deduplicated, full cross-era coverage ===
+                 Feature    Full  Hiking  Pre-ZLB     ZLB
+     finbert_IS_max:lag2  0.6128  0.5781   0.6811 -0.2318
+  roberta_IS_EP_max:lag2  0.5869 -0.1251   0.7163  0.0000
+        finbert_max:lag2  0.5753  0.5781   0.6394 -0.2091
+     roberta_IS_max:lag2  0.5653 -0.1251   0.7779 -0.0680
+ finbert_QA_MP_mean:lag4  0.5644  0.6420   0.5481  0.2051
+    finbert_MP_mean:lag4  0.5635  0.7864   0.7139  0.2231
+       finbert_mean:lag4  0.5507  0.7683   0.8473  0.1861
+    finbert_QA_mean:lag4  0.5501  0.6468   0.6697  0.1695
+        roberta_max:lag5  0.5364  0.3838   0.6865 -0.0582
+     roberta_EP_max:lag5  0.5322  0.3838   0.6589 -0.1734
+       finbert_IS_MP_max  0.5232  0.4802   0.6371  0.1045
+  finbert_QA_EP_min:lag6  0.5017  0.2054   0.7063  0.1949
+  finbert_QA_EP_std:lag2 -0.4952 -0.1839  -0.6265  0.0082
+     finbert_QA_min:lag3  0.4714  0.6288   0.5078 -0.0794
+          finbert_MP_max  0.4647  0.4802   0.5657  0.0779
+ finbert_QA_EP_mean:lag2  0.4574  0.2280   0.5781 -0.1519
+    roberta_MP_std:lag15  0.4542  0.5952   0.4482 -0.0605
+finbert_IS_MP_mean:lag10  0.4393  0.7224   0.3161 -0.0836
+    finbert_FS_mean:lag4  0.4356  0.2729   0.4044  0.0945
+     roberta_EP_std:lag9  0.4316  0.9028   0.3018 -0.0787
+  roberta_QA_MP_min:lag1 -0.4290 -0.7281  -0.4490  0.0420
+     roberta_IS_std:lag2  0.4223 -0.1444   0.7197  0.0343
+  finbert_QA_MP_min:lag4  0.4161  0.6296   0.4884  0.2019
+     finbert_QA_std:lag3 -0.4159 -0.6530  -0.3974  0.0689
+    roberta_EP_mean:lag4  0.4153 -0.4458   0.8525  0.1380
+
+=== Pivot — deduplicated, sparse features included ===
+                 Feature    Full  Hiking  Pre-ZLB     ZLB
+     finbert_IS_max:lag2  0.6128  0.5781   0.6811 -0.2318
+  roberta_IS_EP_max:lag2  0.5869 -0.1251   0.7163  0.0000
+        finbert_max:lag2  0.5753  0.5781   0.6394 -0.2091
+     roberta_IS_max:lag2  0.5653 -0.1251   0.7779 -0.0680
+ finbert_QA_MP_mean:lag4  0.5644  0.6420   0.5481  0.2051
+    finbert_MP_mean:lag4  0.5635  0.7864   0.7139  0.2231
+       finbert_mean:lag4  0.5507  0.7683   0.8473  0.1861
+    finbert_QA_mean:lag4  0.5501  0.6468   0.6697  0.1695
+        roberta_max:lag5  0.5364  0.3838   0.6865 -0.0582
+     roberta_EP_max:lag5  0.5322  0.3838   0.6589 -0.1734
+       finbert_IS_MP_max  0.5232  0.4802   0.6371  0.1045
+  finbert_QA_EP_min:lag6  0.5017  0.2054   0.7063  0.1949
+  finbert_QA_EP_std:lag2 -0.4952 -0.1839  -0.6265  0.0082
+     finbert_QA_min:lag3  0.4714  0.6288   0.5078 -0.0794
+          finbert_MP_max  0.4647  0.4802   0.5657  0.0779
+ finbert_QA_EP_mean:lag2  0.4574  0.2280   0.5781 -0.1519
+    roberta_MP_std:lag15  0.4542  0.5952   0.4482 -0.0605
+finbert_IS_MP_mean:lag10  0.4393  0.7224   0.3161 -0.0836
+    finbert_FS_mean:lag4  0.4356  0.2729   0.4044  0.0945
+     roberta_EP_std:lag9  0.4316  0.9028   0.3018 -0.0787
+  roberta_QA_MP_min:lag1 -0.4290 -0.7281  -0.4490  0.0420
+     roberta_IS_std:lag2  0.4223 -0.1444   0.7197  0.0343
+  finbert_QA_MP_min:lag4  0.4161  0.6296   0.4884  0.2019
+     finbert_QA_std:lag3 -0.4159 -0.6530  -0.3974  0.0689
+    roberta_EP_mean:lag4  0.4153 -0.4458   0.8525  0.1380
+
+=== Fixed-lag table (Full sample, top 5 per lag) ===
+  All features evaluated at the SAME horizon — no personal-best lag.
+
+  --- Lag 1 ---
+                Feature      r sig  n
+   finbert_MP_mean:lag1 0.4928 *** 53
+   finbert_QA_mean:lag1 0.4764 *** 53
+      finbert_mean:lag1 0.4674 *** 53
+finbert_QA_EP_mean:lag1 0.4508 *** 53
+    finbert_IS_max:lag1 0.4392  ** 53
+
+  --- Lag 2 ---
+               Feature       r sig  n
+   finbert_IS_max:lag2  0.6128 *** 53
+roberta_IS_EP_max:lag2  0.5869 *** 53
+      finbert_max:lag2  0.5753 *** 53
+   roberta_IS_max:lag2  0.5653 *** 53
+finbert_QA_EP_std:lag2 -0.4952 *** 53
+
+  --- Lag 5 ---
+               Feature      r sig  n
+      roberta_max:lag5 0.5364 *** 52
+   roberta_IS_max:lag5 0.5344 *** 52
+   roberta_EP_max:lag5 0.5322 *** 52
+roberta_IS_EP_max:lag5 0.5019 *** 52
+   finbert_IS_max:lag5 0.4953 *** 52
+
+  --- Lag 7 ---
+                Feature      r sig  n
+   finbert_MP_mean:lag7 0.4448 *** 52
+      finbert_mean:lag7 0.4263  ** 52
+    finbert_IS_max:lag7 0.4220  ** 52
+    roberta_MP_max:lag7 0.4107  ** 52
+finbert_IS_MP_mean:lag7 0.4010  ** 52
+
+  --- Lag 11 ---
+                 Feature      r sig  n
+      finbert_mean:lag11 0.3409   * 51
+   finbert_MP_mean:lag11 0.3277   * 51
+    roberta_MP_max:lag11 0.3247   * 51
+    finbert_QA_min:lag11 0.2857   * 50
+finbert_IS_MP_mean:lag11 0.2754     51
+
+Saved all tables to praca/images/results/correlations

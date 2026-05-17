@@ -113,13 +113,24 @@ def return_sentiment_agg_pivot(
     # Carry-forward is closer to the economic reality of "no new information on this topic".
     df_pivot = df_pivot.sort_values("date").reset_index(drop=True)
     feature_cols = [c for c in df_pivot.columns if c != "date"]
+
+    no_qa_dates: set = set()
+    if IS_QA_division and "part" in agg_data.columns:
+        dates_with_qa = set(agg_data.loc[agg_data["part"] == "QA", "date"])
+        no_qa_dates = set(agg_data["date"]) - dates_with_qa
+
     df_pivot[feature_cols] = df_pivot[
         feature_cols
-    ].ffill()  # within-series carry forward
-    df_pivot = df_pivot.dropna(
-        subset=feature_cols, how="all"
-    )  # drop the first rows that have no history
-    return df_pivot  # leave NaN; document this in §2.5 and let `statsmodels` drop rows.
+    ].ffill()  # valid for topical gaps only
+
+    # Restore structural NaN for QA columns on IS-only dates
+    if no_qa_dates:
+        qa_cols = [c for c in df_pivot.columns if "_QA_" in c]
+        df_pivot.loc[df_pivot["date"].isin(no_qa_dates), qa_cols] = float("nan")
+    # --------------------------------------------------------------------------
+
+    df_pivot = df_pivot.dropna(subset=feature_cols, how="all")
+    return df_pivot
 
 
 def return_sentiment_chunk_data(

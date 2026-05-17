@@ -47,7 +47,7 @@ MAX_LAG = 8  # meetings for lead-lag profile
 MIN_CHANGED = 8  # minimum changed-meeting observations per lag
 
 ZLB_START = pd.Timestamp("2012-01-01")
-ZLB_END = pd.Timestamp("2021-12-31")
+ZLB_END = pd.Timestamp("2022-07-01")
 
 # Consistent model colors with the rest of the thesis
 COLORS = {
@@ -61,7 +61,7 @@ def load_data() -> pd.DataFrame:
     # Overall sentiment (both sections combined)
     df = return_data(
         market_data="ECB Money Market.xlsx",
-        word_limit=150,
+        word_limit=200,
         IS_QA_division=False,
         qa_options="both_together",
         with_label=False,
@@ -266,13 +266,9 @@ def plot_fig_3_6b(df: pd.DataFrame | None = None, save: bool = True):
         r, _ = pearsonr(valid.iloc[:, 0], valid.iloc[:, 1])
         return r
 
-    # FinBERT overall and RoBERTa IS (IS-restricted avoids journalist drag)
-    corrs_fb = [lag_corr(changed["finbert_mean"], lag) for lag in lags]
     rb_col = (
         "roberta_IS_mean" if "roberta_IS_mean" in changed.columns else "roberta_mean"
     )
-    corrs_rb = [lag_corr(changed[rb_col], lag) for lag in lags]
-
     # ── Layout ────────────────────────────────────────────────────────────────
     fig, ax = plt.subplots(figsize=(7, 4.8))
 
@@ -293,7 +289,7 @@ def plot_fig_3_6b(df: pd.DataFrame | None = None, save: bool = True):
     rb_pos = [c + offset for c in centers]
 
     for positions, feat, color, hatch, model_lbl in [
-        (fb_pos, "finbert_mean", COLORS["finbert"], "", "FinBERT"),
+        (fb_pos, "finbert_IS_mean", COLORS["finbert"], "", "FinBERT IS"),
         (
             rb_pos,
             rb_col,

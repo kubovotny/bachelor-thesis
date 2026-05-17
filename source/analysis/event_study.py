@@ -1,31 +1,3 @@
-"""
-Figure 3.11 – Event Study: Sentiment around ECB Rate Decisions
-
-For each meeting where the ECB hiked or cut the MRO rate, extract the
-sentiment trajectory in a ±WINDOW-meeting window, then average across
-all events of the same type. Shaded bands show ±1 SEM.
-
-Both FinBERT (solid) and CentralBankRoBERTa IS (dashed) are shown for
-each regime trajectory. The two models share identical shapes despite
-different absolute baselines — confirming the finding is model-invariant.
-
-RoBERTa IS (IS-restricted) is used instead of RoBERTa overall because
-the overall RoBERTa mean is heavily contaminated by journalist question
-sentiment (structural baseline ≈ −0.37), which suppresses the signal.
-
-Era split:
-    Pre-ZLB  : 1999-01-01 – 2013-06-30
-    Post-ZLB : 2021-07-01 – 2026-12-31
-
-The ZLB era (flat MRO) is excluded because rate changes are too rare
-to build meaningful window averages.
-
-Bug fixed:
-    Previously SENTIMENT = "finbert_mean" but the y-axis label read
-    "RoBERTa Sentiment" — mislabelled figure. Now both models are shown
-    with correct labels.
-"""
-
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from matplotlib.lines import Line2D
@@ -64,9 +36,10 @@ plt.rcParams.update(
 # ── Constants ─────────────────────────────────────────────────────────────────
 WINDOW = 6  # meetings either side of the decision
 
+
 ERA_SPLIT = {
-    "Pre-ZLB": ("1999-01-01", "2013-06-30"),
-    "Post-ZLB": ("2021-07-01", "2026-12-31"),
+    "Pre-ZLB": ("1999-01-01", "2011-12-31"),
+    "Post-ZLB": ("2022-07-01", "2026-12-31"),
 }
 
 # Regime colours (consistent with mro_cycle.py)
@@ -280,7 +253,7 @@ def plot_event_study(df: pd.DataFrame | None = None, save: bool = True):
     fig.suptitle(
         "Event Study: Sentiment around ECB Rate Decisions\n"
         "FinBERT (solid) vs. CentralBankRoBERTa (dashed)",
-        y=1.02,
+        y=1.03,
     )
     fig.text(
         0.5,

@@ -15,44 +15,49 @@ from pathlib import Path
 # ── adjust this import to match your package structure ──────────────────────
 from ..data.sentiment import return_sentiment_agg_pivot
 from .. import OUTPUT
+
 # ────────────────────────────────────────────────────────────────────────────
 
 OUTPUT_DIR = Path(OUTPUT) / "results/base"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
 # ── Matplotlib style ─────────────────────────────────────────────────────────
-plt.rcParams.update({
-    "font.size":        10,
-    "axes.titlesize":   11,
-    "axes.labelsize":   10,
-    "legend.fontsize":  9,
-    "xtick.labelsize":  9,
-    "ytick.labelsize":  9,
-    "axes.spines.top":  False,
-    "axes.spines.right":False,
-    "figure.dpi":       150,
-})
+plt.rcParams.update(
+    {
+        "font.size": 10,
+        "axes.titlesize": 11,
+        "axes.labelsize": 10,
+        "legend.fontsize": 9,
+        "xtick.labelsize": 9,
+        "ytick.labelsize": 9,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
 
 COLORS = {
-    "finbert":  "#2c6fad",   # blue
-    "roberta":  "#c0392b",   # red
+    "finbert": "#2c6fad",  # blue
+    "roberta": "#c0392b",  # red
     "finbert_roll": "#1a4a7a",
     "roberta_roll": "#8b1a10",
-    "zero":     "#888888",
-    "shade":    0.12,        # alpha for std band
+    "zero": "#888888",
+    "shade": 0.12,  # alpha for std band
 }
 
-ROLLING_WINDOW = "180D"   # 6-month time-based window — consistent across all meeting frequencies
+ROLLING_WINDOW = (
+    "180D"  # 6-month time-based window — consistent across all meeting frequencies
+)
 
 # ── Historical events for Figure 3.2 ────────────────────────────────────────
 EVENTS = [
-    ("2008-10-08", "GFC\nrate cut",       "below"),
+    ("2008-10-08", "GFC\nrate cut", "below"),
     ("2012-07-26", '"Whatever\nit takes"', "below"),
-    ("2015-01-22", "QE\nlaunched",         "below"),
-    ("2019-09-12", "Rates\nneg. again",    "above"),
-    ("2020-03-12", "COVID\nemergency",     "below"),
-    ("2022-07-21", "First\nhike (+50bp)",  "above"),
-    ("2023-09-14", "Peak rate\n(4.50%)",   "below"),
+    ("2015-01-22", "QE\nlaunched", "above"),
+    ("2019-09-12", "Rates\ndeeper again", "below"),
+    ("2020-03-12", "COVID\nemergency", "above"),
+    ("2022-07-21", "First\nhike (+50bp)", "below"),
+    ("2023-09-14", "Peak rate\n(4.50%)", "above"),
 ]
 
 
@@ -73,7 +78,11 @@ def load_data() -> pd.DataFrame:
         # forward-looking pass
         fwd = df[f"{model}_mean"].rolling(ROLLING_WINDOW, min_periods=1).mean()
         # backward-looking pass (reversed)
-        bwd = df[f"{model}_mean"][::-1].rolling(ROLLING_WINDOW, min_periods=1).mean()[::-1]
+        bwd = (
+            df[f"{model}_mean"][::-1]
+            .rolling(ROLLING_WINDOW, min_periods=1)
+            .mean()[::-1]
+        )
         # centered = average of the two
         df[f"{model}_roll"] = (fwd + bwd) / 2
     df = df.reset_index()
@@ -86,36 +95,50 @@ def _draw_sentiment_panel(ax: plt.Axes, df: pd.DataFrame, show_roll: bool = True
     ax.axhline(0, color=COLORS["zero"], linewidth=0.8, linestyle="--", zorder=1)
 
     for model, label in [("finbert", "FinBERT"), ("roberta", "CentralBankRoBERTa")]:
-        col_m  = f"{model}_mean"
-        col_s  = f"{model}_std"
-        col_r  = f"{model}_roll"
-        c      = COLORS[model]
+        col_m = f"{model}_mean"
+        col_s = f"{model}_std"
+        col_r = f"{model}_roll"
+        c = COLORS[model]
 
         # ±1 std band
         ax.fill_between(
             df["date"],
             df[col_m] - df[col_s],
             df[col_m] + df[col_s],
-            color=c, alpha=COLORS["shade"], linewidth=0, zorder=2,
+            color=c,
+            alpha=COLORS["shade"],
+            linewidth=0,
+            zorder=2,
         )
 
         # raw mean (thin, faded)
         ax.plot(
-            df["date"], df[col_m],
-            color=c, alpha=0.35, linewidth=0.8, zorder=3,
+            df["date"],
+            df[col_m],
+            color=c,
+            alpha=0.35,
+            linewidth=0.8,
+            zorder=3,
         )
 
         # rolling mean (bold)
         if show_roll:
             ax.plot(
-                df["date"], df[col_r],
-                color=COLORS[f"{model}_roll"], linewidth=1.8,
-                label=f"{label} (6-month centered MA)", zorder=4,
+                df["date"],
+                df[col_r],
+                color=COLORS[f"{model}_roll"],
+                linewidth=1.8,
+                label=f"{label} (6-month centered MA)",
+                zorder=4,
             )
         else:
             ax.plot(
-                df["date"], df[col_m],
-                color=c, linewidth=1.6, label=label, zorder=4,
+                df["date"],
+                df[col_m],
+                color=c,
+                linewidth=1.6,
+                label=label,
+                zorder=4,
             )
 
     ax.set_ylabel("Net Sentiment Score")
@@ -141,12 +164,20 @@ def plot_fig_3_1(df: pd.DataFrame, save: bool = True):
     ax.legend(loc="upper left", framealpha=0.85)
 
     # Shade the std-band entries manually in legend
-    fb_patch = mpatches.Patch(color=COLORS["finbert"], alpha=0.25, label="FinBERT ±1 SD")
-    rb_patch = mpatches.Patch(color=COLORS["roberta"], alpha=0.25, label="RoBERTa ±1 SD")
+    fb_patch = mpatches.Patch(
+        color=COLORS["finbert"], alpha=0.25, label="FinBERT ±1 SD"
+    )
+    rb_patch = mpatches.Patch(
+        color=COLORS["roberta"], alpha=0.25, label="RoBERTa ±1 SD"
+    )
     handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles + [fb_patch, rb_patch],
-              labels  + ["FinBERT ±1 SD", "RoBERTa ±1 SD"],
-              loc="upper left", framealpha=0.85, ncol=2)
+    ax.legend(
+        handles + [fb_patch, rb_patch],
+        labels + ["FinBERT ±1 SD", "RoBERTa ±1 SD"],
+        loc="upper left",
+        framealpha=0.85,
+        ncol=2,
+    )
 
     fig.tight_layout()
     if save:
@@ -168,30 +199,41 @@ def plot_fig_3_2(df: pd.DataFrame, save: bool = True):
     )
 
     # ── annotate events ──────────────────────────────────────────────────────
-    y_above =  0.78
+    y_above = 0.78
     y_below = -0.78
     for date_str, label, position in EVENTS:
         xd = pd.Timestamp(date_str)
-        y  = y_above if position == "above" else y_below
-        va = "bottom"  if position == "above" else "top"
+        y = y_above if position == "above" else y_below
+        va = "bottom" if position == "above" else "top"
 
-        ax.axvline(xd, color="#555555", linewidth=0.9, linestyle=":", alpha=0.7, zorder=2)
+        ax.axvline(
+            xd, color="#555555", linewidth=0.9, linestyle=":", alpha=0.7, zorder=2
+        )
         ax.annotate(
             label,
             xy=(xd, 0),
             xytext=(xd, y),
-            ha="center", va=va,
+            ha="center",
+            va=va,
             fontsize=7.5,
             color="#333333",
             arrowprops=dict(arrowstyle="-", color="#999999", lw=0.7),
         )
 
     handles, labels_l = ax.get_legend_handles_labels()
-    fb_patch = mpatches.Patch(color=COLORS["finbert"], alpha=0.25, label="FinBERT ±1 SD")
-    rb_patch = mpatches.Patch(color=COLORS["roberta"], alpha=0.25, label="RoBERTa ±1 SD")
-    ax.legend(handles + [fb_patch, rb_patch],
-              labels_l + ["FinBERT ±1 SD", "RoBERTa ±1 SD"],
-              loc="upper left", framealpha=0.85, ncol=2)
+    fb_patch = mpatches.Patch(
+        color=COLORS["finbert"], alpha=0.25, label="FinBERT ±1 SD"
+    )
+    rb_patch = mpatches.Patch(
+        color=COLORS["roberta"], alpha=0.25, label="RoBERTa ±1 SD"
+    )
+    ax.legend(
+        handles + [fb_patch, rb_patch],
+        labels_l + ["FinBERT ±1 SD", "RoBERTa ±1 SD"],
+        loc="upper left",
+        framealpha=0.85,
+        ncol=2,
+    )
 
     fig.tight_layout()
     if save:
@@ -199,6 +241,7 @@ def plot_fig_3_2(df: pd.DataFrame, save: bool = True):
         fig.savefig(path, bbox_inches="tight")
         print(f"Saved → {path}")
     return fig, ax
+
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":

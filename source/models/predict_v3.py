@@ -56,35 +56,62 @@ from sklearn.preprocessing import StandardScaler
 
 from ..data.model_data import return_data
 from .. import OUTPUT
+from .design import make_pretty
+
+plt.rcParams.update(
+    {
+        "font.size": 13,
+        "axes.titlesize": 14,
+        "axes.labelsize": 13,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
 
 OUTPUT_DIR = Path(OUTPUT) / "results/model"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # ── Constants ─────────────────────────────────────────────────────────────────
-WORD_LIMIT = 1
+WORD_LIMIT = 200
 N_SPLITS_OUTER = 5
 N_SPLITS_INNER = 3
 RANDOM_STATE = 42
 MIN_SHADOW_CHANGE = 0.10  # % — shadow rate noise threshold
 
 ZLB_START = "2012-01-01"
-ZLB_END = "2021-12-31"
+ZLB_END = "2022-07-01"
 
 # Candidate pool: 7 economically motivated features
 # Short horizon (lag 1-2) | Medium horizon (lag 5) | Dispersion | Cross-model
+# ── Candidate pool (all features to evaluate) ────────────────────────────────
+# Organised by signal type — select final set based on correlation results
 CANDIDATE_FEATURES = [
-    "finbert_mean_lag2",  # level, overall, lag 2
-    "finbert_mean_lag5",  # level, overall, lag 5  (telegraph window)
-    "finbert_IS_mean_lag2",  # level, IS only, lag 2  (prepared statement)
-    "finbert_IS_std",  # dispersion, IS only    (consistency proxy)
-    "d_finbert_mean_lag1",  # Δlevel, overall, lag 1 (momentum t-1)
-    "d_finbert_mean_lag2",  # Δlevel, overall, lag 2 (momentum t-2)
-    "roberta_IS_mean_lag2",  # cross-model robustness check
-    "roberta_mean_lag2",  # level, overall, lag 2
-    "roberta_mean_lag5",  # level, overall, lag 5  (telegraph window)
-    "roberta_IS_mean_lag2",  # level, IS only, lag 2  (prepared statement)
-    "roberta_IS_std",  # dispersion, IS only    (consistency proxy)
+    # FinBERT level — overall mean, two horizons
+    # limit200_200: lag4 peak r=0.551***, lag2 r=0.467***
+    "finbert_mean_lag2",  # FB μ [t−2]  — short-horizon
+    "finbert_mean_lag4",  # FB μ [t−4]  — primary peak  ← UPDATED from lag5
+    # FinBERT IS — extremum beats mean at limit=200
+    # limit200_200: IS max r=0.613*** vs IS mean r≈0.35
+    "finbert_IS_max_lag2",  # FB IS max [t−2]  ← UPDATED from IS_mean
+    "finbert_IS_mean_lag2",  # FB IS μ [t−2]    — kept as fallback
+    # FinBERT volatility — only non-directional feature
+    "finbert_IS_std",  # FB IS σ  — within-meeting consistency
+    # FinBERT delta — momentum signal, ZLB-relevant
+    # limit200_200_v2: d_finbert_mean_lag4 r=0.224* (Full_composite)
+    "d_finbert_mean_lag1",  # ΔFB μ [t−1]
+    "d_finbert_mean_lag2",  # ΔFB μ [t−2]
+    # RoBERTa — cross-model validation
+    # limit200_200: RB IS mean Pre-ZLB r=0.746***, Hiking r=0.852***
+    "roberta_IS_mean_lag2",  # RB IS μ [t−2]
+    "roberta_mean_lag2",  # RB μ [t−2]
+    "roberta_mean_lag5",  # RB μ [t−5]
+    "roberta_IS_std",  # RB IS σ
 ]
+
 
 # Logit regularization grid
 C_GRID = [0.01, 0.05, 0.1, 0.5, 1.0, 5.0]
@@ -93,19 +120,6 @@ C_GRID = [0.01, 0.05, 0.1, 0.5, 1.0, 5.0]
 RF_GRID = {
     "max_depth": [3, 4, 5],
     "min_samples_leaf": [3, 5, 7],
-}
-
-# Pretty labels for plots
-FEAT_LABELS = {
-    "mro_lag": "MRO [t−1]",
-    "mro_change_lag": "ΔMRO [t−1]",
-    "finbert_mean_lag2": "FB overall μ [t−2]",
-    "finbert_mean_lag5": "FB overall μ [t−5]",
-    "finbert_IS_mean_lag2": "FB IS μ [t−2]",
-    "finbert_IS_std": "FB IS σ",
-    "d_finbert_mean_lag1": "ΔFB overall μ [t−1]",
-    "d_finbert_mean_lag2": "ΔFB overall μ [t−2]",
-    "roberta_IS_mean_lag2": "RB IS μ [t−2]",
 }
 
 
@@ -561,9 +575,9 @@ def run_models(df: pd.DataFrame) -> dict:
 # ── Comparison: v2 vs v3 ──────────────────────────────────────────────────────
 V2_AUC = {
     "M1 Baseline": 0.6821,
-    "M2 Sentiment": 0.7433,
-    "M3 Augmented": 0.7388,
-    "M4 Random Forest": 0.7125,
+    "M2 Sentiment": 0.6943,
+    "M3 Augmented": 0.7046,
+    "M4 Random Forest": 0.7626,
 }
 
 
@@ -633,13 +647,17 @@ def fig_performance(results: dict, save=True):
         label=f"Naive baseline: {results['_naive']:.3f}",
     )
     ax.set_xticks(x)
-    ax.set_xticklabels(names, fontsize=10)
+    ax.set_xticklabels(
+        names,
+    )
     ax.set_ylabel("Score (0–1)")
     ax.set_title(
         "Cross-validated performance — v3 (composite target + Δsentiment)\n"
         "× marks = v2 AUC for comparison"
     )
-    ax.legend(loc="lower right", fontsize=9)
+    ax.legend(
+        loc="lower right",
+    )
     ax.set_ylim(0, 1.0)
     ax.grid(axis="y", alpha=0.25)
     fig.tight_layout()
@@ -663,18 +681,19 @@ def fig_confusion(results: dict, save=True):
             ax=ax, colorbar=False, cmap="Blues"
         )
         recall = cm.diagonal() / cm.sum(axis=1)
-        ax.set_title(title, fontsize=11, fontweight="bold")
+        ax.set_title(title, fontweight="bold")
         ax.set_xlabel(
             f"Predicted label\n"
             f"Recall — Cut: {recall[0]:.0%}  "
             f"Hold: {recall[1]:.0%}  Hike: {recall[2]:.0%}",
-            fontsize=9,
         )
-    fig.suptitle("Confusion matrices — v3 (composite target)", fontsize=12)
+    fig.suptitle(
+        "Confusion matrices — v3 (composite target)",
+    )
     fig.tight_layout()
     if save:
-        fig.savefig(OUTPUT_DIR / "fig_confusion_v3.pdf", bbox_inches="tight")
-        print("Saved → fig_confusion_v3.pdf")
+        fig.savefig(OUTPUT_DIR / "fig_comparison_M3_M4_v3.pdf", bbox_inches="tight")
+        print("Saved → fig_comparison_M3_M4_v3.pdf")
     return fig
 
 
@@ -682,7 +701,7 @@ def fig_feature_analysis(results: dict, save=True):
     r3 = results["M3 Augmented"]
     r4 = results["M4 Random Forest"]
     feats = r3["feats"]
-    labels = [FEAT_LABELS.get(f, f) for f in feats]
+    labels = [make_pretty(f) for f in feats]
 
     coef_df = pd.DataFrame(
         r3["model"].coef_,
@@ -701,10 +720,14 @@ def fig_feature_analysis(results: dict, save=True):
         ax1.bar(x + (i - 1) * w, coef_df.loc[cls], w, label=cls, color=col, alpha=0.80)
     ax1.axhline(0, color="#444", lw=0.8)
     ax1.set_xticks(x)
-    ax1.set_xticklabels(labels, rotation=30, ha="right", fontsize=9)
+    ax1.set_xticklabels(
+        labels,
+        rotation=30,
+        ha="right",
+    )
     ax1.set_ylabel("Standardised coefficient")
     ax1.set_title("M3 Augmented Logit — standardised coefficients by class (v3)")
-    ax1.legend(fontsize=9)
+    ax1.legend()
     ax1.grid(axis="y", alpha=0.22)
     fig1.tight_layout()
 
@@ -713,7 +736,9 @@ def fig_feature_analysis(results: dict, save=True):
     y_pos = np.arange(len(feats))
     ax2.barh(y_pos, imps, color="#27ae60", alpha=0.85, edgecolor="white")
     ax2.set_yticks(y_pos)
-    ax2.set_yticklabels(labels, fontsize=9)
+    ax2.set_yticklabels(
+        labels,
+    )
     ax2.set_xlabel("Feature importance (impurity decrease)")
     ax2.set_title("M4 Random Forest — feature importance (v3)")
     ax2.grid(axis="x", alpha=0.22)

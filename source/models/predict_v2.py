@@ -25,42 +25,49 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (ConfusionMatrixDisplay, confusion_matrix,
-                              classification_report, roc_auc_score)
+from sklearn.metrics import (
+    ConfusionMatrixDisplay,
+    confusion_matrix,
+    classification_report,
+    roc_auc_score,
+)
 from sklearn.model_selection import TimeSeriesSplit
 from sklearn.preprocessing import StandardScaler
 
 from ..data.model_data import return_data
 from .. import OUTPUT
+from .design import make_pretty
 
 OUTPUT_DIR = Path(OUTPUT) / "results/model"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-WORD_LIMIT   = 1
-N_SPLITS     = 5
+WORD_LIMIT = 200
+N_SPLITS = 5
 RANDOM_STATE = 42
 
 SENT_FEATS = [
-    "finbert_mean:lag4",
-    "finbert_QA_std",
-    "finbert_IS_min:lag2",
-    "finbert_QA_max:lag2"
+    "finbert_mean_lag2",  # short-horizon level
+    "finbert_mean_lag4",  # primary peak lag
+    "finbert_IS_max_lag2",  # IS extremum, short-horizon
+    "finbert_IS_std",  # within-meeting volatility
 ]
 
-
-# ── pretty labels for axes (no LaTeX escaping – plain matplotlib rendering) ──
-FEAT_LABELS = {
-    "mro_lag":              "MRO [t−1]",
-    "mro_change_lag":       "ΔMRO [t−1]",
-    "finbert_mean_lag4":    "FB overall μ [t−4]",
-    "finbert_QA_std":    "FB overall μ",
-    "finbert_IS_min_lag2": "FB IS MP μ [t−2]",
-    "finbert_QA_max:lag2":       "FB QA max [t-2]",
-}
+plt.rcParams.update(
+    {
+        "font.size": 13,
+        "axes.titlesize": 14,
+        "axes.labelsize": 13,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
 
 
 # ── Data loading (PerformanceWarning fix) ─────────────────────────────────────
@@ -68,7 +75,7 @@ def _load_raw() -> pd.DataFrame:
     """Merge the two model-data configurations into one wide DataFrame."""
     configs = [
         dict(IS_QA_division=False, qa_options="both_together", with_label=False),
-        dict(IS_QA_division=True,  qa_options="just_answers",  with_label=False),
+        dict(IS_QA_division=True, qa_options="just_answers", with_label=False),
     ]
     base = None
     for cfg in configs:
@@ -87,26 +94,25 @@ def _load_raw() -> pd.DataFrame:
 
 def load_data() -> pd.DataFrame:
     df = _load_raw()
-    df["date"]     = pd.to_datetime(df["date"])
+    df["date"] = pd.to_datetime(df["date"])
     df["MRO_diff"] = df["MRO"].diff()
     df["direction"] = np.sign(df["MRO_diff"]).fillna(0).astype(int)
 
     # ── Build ALL lag columns in one pd.concat call (no fragmentation) ────────
     sent_cols = [
-        c for c in df.columns
+        c
+        for c in df.columns
         if any(m in c for m in ["finbert", "roberta"])
         and c.endswith(("_mean", "_std", "_max", "_min"))
     ]
     lag_frames = [df]
     for col in sent_cols:
-        for lag in [1, 2, 3, 5, 7, 8, 11, 13]:
-            lag_frames.append(
-                df[col].shift(lag).rename(f"{col}_lag{lag}").to_frame()
-            )
+        for lag in [1, 2, 3, 4, 5, 6, 7, 8, 11, 13]:
+            lag_frames.append(df[col].shift(lag).rename(f"{col}_lag{lag}").to_frame())
     lag_frames.append(df["MRO_diff"].shift(1).rename("mro_change_lag").to_frame())
     lag_frames.append(df["MRO"].shift(1).rename("mro_lag").to_frame())
 
-    return pd.concat(lag_frames, axis=1).copy()   # .copy() defragments
+    return pd.concat(lag_frames, axis=1).copy()  # .copy() defragments
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -134,22 +140,30 @@ def _cv(X: pd.DataFrame, y: pd.Series, model, scale=True, n=N_SPLITS):
         if len(np.unique(yte)) == 3:
             try:
                 prob = model.predict_proba(Xte)
-                aucs.append(roc_auc_score(yte, prob, multi_class="ovr",
-                                          labels=[-1, 0, 1]))
+                aucs.append(
+                    roc_auc_score(yte, prob, multi_class="ovr", labels=[-1, 0, 1])
+                )
             except Exception:
                 pass
-    return dict(acc_mean=np.mean(accs), acc_std=np.std(accs),
-                auc_mean=np.mean(aucs) if aucs else np.nan)
+    return dict(
+        acc_mean=np.mean(accs),
+        acc_std=np.std(accs),
+        auc_mean=np.mean(aucs) if aucs else np.nan,
+    )
+
 
 from sklearn.model_selection import GridSearchCV, TimeSeriesSplit
+
 
 def tune_logit(X: pd.DataFrame, y: pd.Series) -> LogisticRegression:
     """Inner CV: tune C over a small grid."""
     inner_cv = TimeSeriesSplit(n_splits=3)
     grid = GridSearchCV(
         LogisticRegression(
-            class_weight="balanced", solver="lbfgs",
-            max_iter=2000, random_state=RANDOM_STATE
+            class_weight="balanced",
+            solver="lbfgs",
+            max_iter=2000,
+            random_state=RANDOM_STATE,
         ),
         param_grid={"C": [0.01, 0.05, 0.1, 0.5, 1.0, 5.0, 10.0]},
         cv=inner_cv,
@@ -157,36 +171,43 @@ def tune_logit(X: pd.DataFrame, y: pd.Series) -> LogisticRegression:
         refit=True,
     )
     grid.fit(StandardScaler().fit_transform(X), y)
-    print(f"  Best C={grid.best_params_['C']:.3f}  "
-          f"inner AUC={grid.best_score_:.4f}")
+    print(
+        f"  Best C={grid.best_params_['C']:.3f}  " f"inner AUC={grid.best_score_:.4f}"
+    )
     return grid.best_estimator_
 
 
 # ── Model runs ────────────────────────────────────────────────────────────────
 def run_models(df: pd.DataFrame) -> dict:
     sent = [f for f in SENT_FEATS if f in df.columns]
-    mro  = ["mro_lag", "mro_change_lag"]
+    mro = ["mro_lag", "mro_change_lag"]
 
     logit = LogisticRegression(
-        class_weight="balanced", solver="lbfgs",
-        max_iter=2000, C=1.0, random_state=RANDOM_STATE,
+        class_weight="balanced",
+        solver="lbfgs",
+        max_iter=2000,
+        C=1.0,
+        random_state=RANDOM_STATE,
     )
     rf = RandomForestClassifier(
-        n_estimators=400, max_depth=4, min_samples_leaf=3,
-        class_weight="balanced", n_jobs=-1, random_state=RANDOM_STATE,
+        n_estimators=400,
+        max_depth=4,
+        min_samples_leaf=3,
+        class_weight="balanced",
+        n_jobs=-1,
+        random_state=RANDOM_STATE,
     )
 
     specs = {
-        "M1 Baseline":        (mro,        logit, True),
-        "M2 Sentiment":       (sent,       logit, True),
-        "M3 Augmented":       (mro + sent, logit, True),
-        "M4 Random Forest":   (mro + sent, rf,    False),
+        "M1 Baseline": (mro, logit, True),
+        "M2 Sentiment": (sent, logit, True),
+        "M3 Augmented": (mro + sent, logit, True),
+        "M4 Random Forest": (mro + sent, rf, False),
     }
-
     results = {}
     for name, (feats, model, scale) in specs.items():
         X, y = _Xy(df, feats)
-        cv   = _cv(X, y, model, scale=scale)
+        cv = _cv(X, y, model, scale=scale)
         print(f"\n--- {name} (n={len(X)}, feats={len(X.columns)}) ---")
         print(f"  CV Accuracy : {cv['acc_mean']:.4f} ± {cv['acc_std']:.4f}")
         if not np.isnan(cv["auc_mean"]):
@@ -196,9 +217,15 @@ def run_models(df: pd.DataFrame) -> dict:
         Xf = X.values if not scale else StandardScaler().fit_transform(X)
         model.fit(Xf, y)
 
-        results[name] = dict(cv=cv, model=model,
-                             X=X, y=y, pred=model.predict(Xf),
-                             feats=list(X.columns), classes=list(model.classes_))
+        results[name] = dict(
+            cv=cv,
+            model=model,
+            X=X,
+            y=y,
+            pred=model.predict(Xf),
+            feats=list(X.columns),
+            classes=list(model.classes_),
+        )
 
     _, y_all = _Xy(df, ["mro_lag"])
     results["_naive"] = float((y_all == 0).mean())
@@ -208,28 +235,49 @@ def run_models(df: pd.DataFrame) -> dict:
 
 # ── Figure A – performance (all four models) ─────────────────────────────────
 def fig_performance(results: dict, save=True):
-    names  = ["M1 Baseline", "M2 Sentiment", "M3 Augmented", "M4 Random Forest"]
+    names = ["M1 Baseline", "M2 Sentiment", "M3 Augmented", "M4 Random Forest"]
     colors = ["#95a5a6", "#c0392b", "#2c6fad", "#27ae60"]
 
     accs = [results[m]["cv"]["acc_mean"] for m in names]
-    errs = [results[m]["cv"]["acc_std"]  for m in names]
+    errs = [results[m]["cv"]["acc_std"] for m in names]
     aucs = [results[m]["cv"]["auc_mean"] for m in names]
 
     fig, ax = plt.subplots(figsize=(9, 5))
     x = np.arange(len(names))
 
-    ax.bar(x - 0.20, accs, 0.35, color=colors, alpha=0.85,
-           yerr=errs, capsize=5, label="Accuracy")
-    ax.bar(x + 0.20, aucs, 0.35, color=colors, alpha=0.38,
-           edgecolor=colors, linewidth=1.5, label="AUC (one-vs-rest)")
-    ax.axhline(results["_naive"], ls="--", lw=1.5, color="#888",
-               label=f"Naive baseline (always Hold): {results['_naive']:.3f}")
+    ax.bar(
+        x - 0.20,
+        accs,
+        0.35,
+        color=colors,
+        alpha=0.85,
+        yerr=errs,
+        capsize=5,
+        label="Accuracy",
+    )
+    ax.bar(
+        x + 0.20,
+        aucs,
+        0.35,
+        color=colors,
+        alpha=0.38,
+        edgecolor=colors,
+        linewidth=1.5,
+        label="AUC (one-vs-rest)",
+    )
+    ax.axhline(
+        results["_naive"],
+        ls="--",
+        lw=1.5,
+        color="#888",
+        label=f"Naive baseline (always Hold): {results['_naive']:.3f}",
+    )
 
     ax.set_xticks(x)
-    ax.set_xticklabels(names, fontsize=11)
+    ax.set_xticklabels(names)
     ax.set_ylabel("Score (0 to 1)")
     ax.set_title("Cross-validated performance of the four predictive models")
-    ax.legend(loc="lower right", fontsize=10)
+    ax.legend(loc="lower right")
     ax.set_ylim(0, 1.0)
     ax.grid(axis="y", alpha=0.25)
     fig.tight_layout()
@@ -253,23 +301,22 @@ def fig_comparison_m3_m4(results: dict, save=True):
         ["M3 Augmented", "M4 Random Forest"],
         ["M3 — Augmented Logit", "M4 — Random Forest"],
     ):
-        r  = results[name]
+        r = results[name]
         cm = confusion_matrix(r["y"], r["pred"], labels=[-1, 0, 1])
         disp = ConfusionMatrixDisplay(cm, display_labels=cls_labels)
         disp.plot(ax=ax, colorbar=False, cmap="Blues")
-        ax.set_title(title, fontsize=12, fontweight="bold")
+        ax.set_title(title, fontweight="bold")
 
         # annotate class-level recall in the title area
         recall = cm.diagonal() / cm.sum(axis=1)
         ax.set_xlabel(
             f"Predicted label\n"
             f"Recall — Cut: {recall[0]:.0%}  Hold: {recall[1]:.0%}  Hike: {recall[2]:.0%}",
-            fontsize=10,
         )
 
     fig.suptitle(
         "Confusion matrices: M3 Augmented Logit vs M4 Random Forest",
-        fontsize=13, y=1.02,
+        y=1.02,
     )
     fig.tight_layout()
     if save:
@@ -288,8 +335,7 @@ def fig_feature_analysis(results: dict, save=True):
     r3 = results["M3 Augmented"]
     r4 = results["M4 Random Forest"]
 
-    feats  = r3["feats"]            # same feature set for both
-    labels = [FEAT_LABELS.get(f, f) for f in feats]
+    feats = r3["feats"]  # same feature set for both
     n_feat = len(feats)
 
     # M3 coefficient matrix  (classes × features)
@@ -300,26 +346,31 @@ def fig_feature_analysis(results: dict, save=True):
     )
 
     # M4 feature importances, same feature order as M3
-    imp_map  = dict(zip(r4["feats"], r4["model"].feature_importances_))
-    imps     = np.array([imp_map.get(f, 0.0) for f in feats])
+    imp_map = dict(zip(r4["feats"], r4["model"].feature_importances_))
+    imps = np.array([imp_map.get(f, 0.0) for f in feats])
+    labels = [make_pretty(f) for f in feats]
 
     # ── layout ────────────────────────────────────────────────────────────────
     fig1, ax_l = plt.subplots(figsize=(8, 5.5))
 
     # Left: M3 grouped bar (Cut / Hold / Hike)
-    x     = np.arange(n_feat)
-    w     = 0.25
+    x = np.arange(n_feat)
+    w = 0.25
     cls_c = {"Cut": "#c0392b", "Hold": "#95a5a6", "Hike": "#2c6fad"}
     for i, (cls, col) in enumerate(cls_c.items()):
-        ax_l.bar(x + (i - 1) * w, coef_df.loc[cls], w,
-                 label=cls, color=col, alpha=0.80)
+        ax_l.bar(x + (i - 1) * w, coef_df.loc[cls], w, label=cls, color=col, alpha=0.80)
     ax_l.axhline(0, color="#444", lw=0.8)
     ax_l.set_xticks(x)
-    ax_l.set_xticklabels(labels, rotation=30, ha="right", fontsize=10)
+    ax_l.set_xticklabels(
+        labels,
+        rotation=30,
+        ha="right",
+    )
     ax_l.set_ylabel("Standardised coefficient")
-    ax_l.set_title("M3 Augmented Logit\nstandardised coefficients by class",
-                   fontsize=12)
-    ax_l.legend(fontsize=10)
+    ax_l.set_title(
+        "M3 Augmented Logit\nstandardised coefficients by class",
+    )
+    ax_l.legend()
     ax_l.grid(axis="y", alpha=0.22)
 
     # Right: M4 horizontal bar, same feature order
@@ -327,9 +378,13 @@ def fig_feature_analysis(results: dict, save=True):
     y_pos = np.arange(n_feat)
     ax_r.barh(y_pos, imps, color="#27ae60", alpha=0.85, edgecolor="white")
     ax_r.set_yticks(y_pos)
-    ax_r.set_yticklabels(labels, fontsize=10)
+    ax_r.set_yticklabels(
+        labels,
+    )
     ax_r.set_xlabel("Feature importance (impurity decrease)")
-    ax_r.set_title("M4 Random Forest\nfeature importance", fontsize=12)
+    ax_r.set_title(
+        "M4 Random Forest\nfeature importance",
+    )
     ax_r.grid(axis="x", alpha=0.22)
 
     fig1.tight_layout()
@@ -347,21 +402,26 @@ def report(results: dict):
         r = results[name]
         print(f"\n{'='*60}")
         print(f"{name} — full-sample classification report")
-        print("="*60)
-        print(classification_report(
-            r["y"], r["pred"],
-            labels=[-1, 0, 1],
-            target_names=["Cut", "Hold", "Hike"],
-        ))
+        print("=" * 60)
+        print(
+            classification_report(
+                r["y"],
+                r["pred"],
+                labels=[-1, 0, 1],
+                target_names=["Cut", "Hold", "Hike"],
+            )
+        )
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     print("Loading data...")
     df = load_data()
-    d  = df["direction"]
-    print(f"  {len(df)} meetings | "
-          f"Hike: {(d==1).sum()} | Cut: {(d==-1).sum()} | Hold: {(d==0).sum()}")
+    d = df["direction"]
+    print(
+        f"  {len(df)} meetings | "
+        f"Hike: {(d==1).sum()} | Cut: {(d==-1).sum()} | Hold: {(d==0).sum()}"
+    )
 
     results = run_models(df)
     fig_performance(results)

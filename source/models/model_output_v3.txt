@@ -1,0 +1,77 @@
+Loading data...
+  281 meetings total
+  Composite target: n_changed=117 | Hike=53 Cut=63 Hold=1
+  MRO-only:         n_changed=59 (v2 baseline for comparison)
+
+  Candidates available: 11/11
+  Composite target — n_analysis=276, Hike=53 Cut=62 Hold=161
+    _tune_C → best C=0.01  inner AUC=0.5661
+
+--- M1 Baseline (n=279, best C=0.01) ---
+  CV Accuracy: 0.5304 ± 0.1070
+  CV AUC:      0.5723
+
+--- M2 Sentiment: feature selection over 11 candidates ---
+    _tune_C → best C=0.1  inner AUC=0.6397
+  Best features (k=4, inner AUC=0.6575):
+    finbert_mean_lag2
+    finbert_IS_mean_lag2
+    finbert_IS_std
+    roberta_IS_mean_lag2
+
+--- M2 Sentiment (n=279, feats=4, C=0.1) ---
+  CV Accuracy: 0.3957 ± 0.1103
+  CV AUC:      0.6619
+    _tune_C → best C=0.1  inner AUC=0.6468
+
+--- M3 Augmented (n=279, feats=6, C=0.1) ---
+  CV Accuracy: 0.4565 ± 0.1230
+  CV AUC:      0.6752
+    _tune_rf → {'max_depth': 3, 'min_samples_leaf': 7}  inner AUC=0.6217
+
+--- M4 Random Forest (n=279, feats=6, depth=3, leaf=7) ---
+  CV Accuracy: 0.4913 ± 0.1687
+  CV AUC:      0.6398
+
+Naive baseline (always Hold): 0.5833
+
+============================================================
+v2  vs  v3  —  CV AUC comparison
+============================================================
+  Model                        v2       v3        Δ
+  ------------------------------------------
+  M1 Baseline              0.6821   0.5723  ↓ -0.1098
+  M2 Sentiment             0.7433   0.6619  ↓ -0.0814
+  M3 Augmented             0.7388   0.6752  ↓ -0.0636
+  M4 Random Forest         0.7125   0.6398  ↓ -0.0727
+Saved → fig_performance_v3.pdf
+Saved → fig_confusion_v3.pdf
+Saved → fig_coefficients_v3.pdf, fig_rf_importances_v3.pdf
+
+============================================================
+M3 Augmented — full-sample report (v3, composite target)
+============================================================
+              precision    recall  f1-score   support
+
+         Cut       0.44      0.70      0.54        63
+        Hold       0.76      0.53      0.63       163
+        Hike       0.32      0.38      0.34        53
+
+    accuracy                           0.54       279
+   macro avg       0.50      0.54      0.50       279
+weighted avg       0.60      0.54      0.55       279
+
+
+============================================================
+M4 Random Forest — full-sample report (v3, composite target)
+============================================================
+              precision    recall  f1-score   support
+
+         Cut       0.54      0.76      0.63        63
+        Hold       0.84      0.72      0.77       163
+        Hike       0.64      0.60      0.62        53
+
+    accuracy                           0.71       279
+   macro avg       0.67      0.69      0.68       279
+weighted avg       0.73      0.71      0.71       279
+
