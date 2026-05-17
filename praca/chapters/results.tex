@@ -24,10 +24,10 @@ A persistent vertical gap separates the two series throughout the sample. FinBER
     \begin{tabular}{@{}lrrrrr@{}}
         \toprule
         \textbf{Model} & \textbf{Mean} & \textbf{Std} & \textbf{Min} & \textbf{Max} & $\boldsymbol{n}$ \\ \midrule
-        FinBERT [IS]            & $+0.197$ & $0.20$ & $-0.38$ & $+0.73$ & $272$ \\
-        FinBERT [Q\&A]          & $+0.057$ & $0.07$ & $-0.18$ & $+0.27$ & $272$ \\
-        CB-RoBERTa [IS]         & $-0.147$ & $0.16$ & $-0.63$ & $+0.30$ & $272$ \\
-        CB-RoBERTa [Q\&A]       & $-0.340$ & $0.08$ & $-0.56$ & $-0.04$ & $272$ \\ \bottomrule
+        FinBERT [IS]            & $+0.197$ & $0.20$ & $-0.38$ & $+0.73$ & $281$ \\
+        FinBERT [Q\&A]          & $+0.057$ & $0.07$ & $-0.18$ & $+0.27$ & $281$ \\
+        CB-RoBERTa [IS]         & $-0.147$ & $0.16$ & $-0.63$ & $+0.30$ & $281$ \\
+        CB-RoBERTa [Q\&A]       & $-0.340$ & $0.08$ & $-0.56$ & $-0.04$ & $281$ \\ \bottomrule
     \end{tabular}
 \end{table}
 
@@ -90,7 +90,7 @@ The scatter in Figure~\ref{fig:Scatter_IS_vs_QA} confirms the structural offset:
 \subsection{The Internal Story Arc}
 \label{sec:results_arc}
 
-Because the data is segmented into short chunks, we can also track how sentiment evolves \emph{within} each section. Figure~\ref{fig:intra_section} bins the chunks by their relative position within each section---from the first chunk to the last---and averages across all $272$ conferences.
+Because the data is segmented into short chunks, we can also track how sentiment evolves \emph{within} each section. Figure~\ref{fig:intra_section} bins the chunks by their relative position within each section---from the first chunk to the last---and averages across all $281$ conferences.
 
 \begin{figure}[htbp]
     \centering
@@ -132,7 +132,7 @@ Given the tonal split between the prepared and the spontaneous sections, a natur
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/is_qa/fig_divergence.pdf}
-    \caption[IS--Q\&A divergence versus market variables]{IS--Q\&A communication divergence versus market variables (CentralBankRoBERTa). A larger disagreement between the speech and the \gls{qa} is associated with slightly \emph{smaller} OIS reactions ($r = -0.145^{*}$, left). Equity returns and PC1 monetary surprise show no significant relationship. $n = 272$.}
+    \caption[IS--Q\&A divergence versus market variables]{IS--Q\&A communication divergence versus market variables (CentralBankRoBERTa). A larger disagreement between the speech and the \gls{qa} is associated with slightly \emph{smaller} OIS reactions ($r = -0.146^{*}$, left). Equity returns and PC1 monetary surprise show no significant relationship. $n = 281$.}
     \label{fig:divergence}
 \end{figure}
 
@@ -141,7 +141,7 @@ The result is largely null, with one counter-intuitive exception. Neither the ST
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/is_qa/fig_gap.pdf}
-    \caption[Internal Q--A gap versus market surprises]{The internal Q--A gap (journalist question minus \gls{ecb} answer) plotted against OIS changes ($r = -0.048$, n.s.) and PC1 monetary surprise ($r = -0.003$, n.s.). The structural journalist--\gls{ecb} gap is orthogonal to market surprises. $n = 272$.}
+    \caption[Internal Q--A gap versus market surprises]{The internal Q--A gap (journalist question minus \gls{ecb} answer) plotted against OIS changes ($r = -0.048$, n.s.) and PC1 monetary surprise ($r = -0.003$, n.s.). The structural journalist--\gls{ecb} gap is orthogonal to market surprises. $n = 281$.}
     \label{fig:gap}
 \end{figure}
 

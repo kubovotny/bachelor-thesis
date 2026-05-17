@@ -17,11 +17,11 @@ Following the structural separation, the dataset must be cleaned of textual arte
     \label{tab:redundant}
     \begin{tabular}{@{}lp{8cm}@{}}
         \toprule
-        \textbf{Type} & \textbf{Example} \\ \midrule
-        Greeting          & ``Good afternoon, ladies and gentlemen.''                                                                                            \\ \addlinespace
-        Procedural        & ``The Vice-President and I are very pleased to welcome you to our press conference.''                                                \\ \addlinespace
-        Closing           & ``We are now at your disposal for questions.''                                                                                       \\ \addlinespace
-        Conversational    & ``Yes.''                                                                                                                              \\ \bottomrule
+        \textbf{Type}  & \textbf{Example}                                                                      \\ \midrule
+        Greeting       & ``Good afternoon, ladies and gentlemen.''                                             \\ \addlinespace
+        Procedural     & ``The Vice-President and I are very pleased to welcome you to our press conference.'' \\ \addlinespace
+        Closing        & ``We are now at your disposal for questions.''                                        \\ \addlinespace
+        Conversational & ``Yes.''                                                                              \\ \bottomrule
     \end{tabular}
 \end{table}
 
@@ -48,20 +48,35 @@ The output of this pipeline is split into two specialised datasets that describe
 
 \begin{figure}[ht]
     \centering
-    \resizebox{0.45\linewidth}{!}{%
-    \begin{tikzpicture}[node distance=2cm]
-        \node (htmldata) [startstop] {HTML transcripts};
-        \node (filter) [process, below of=htmldata] {Filtering, IS / Q\&A split};
-        \node (parser) [process, below of=filter] {Chunk segmentation};
-        \node (zeroshot) [process, below of=parser] {Zero-shot topic classification};
-        \node (sentiment) [process, below of=zeroshot] {Sentiment scoring (FinBERT, RoBERTa)};
-        \node (database) [startstop, below of=sentiment] {ECB transcript SQLite database};
-        \draw [arrow] (htmldata) -- (filter);
-        \draw [arrow] (filter) -- (parser);
-        \draw [arrow] (parser) -- (zeroshot);
-        \draw [arrow] (zeroshot) -- (sentiment);
-        \draw [arrow] (sentiment) -- (database);
-    \end{tikzpicture}
+    \resizebox{\linewidth}{!}{%
+        \begin{tikzpicture}[node distance=1.2cm and 1.5cm] % Vertikálna a horizontálna medzera
+
+            % Lineárna vstupná časť
+            \node (htmldata) [startstop] {HTML transcripts};
+            \node (filter) [process, right=of htmldata] {Filtering \\ \footnotesize (IS / Q\&A split)};
+            \node (parser) [process, right=of filter] {Chunk segmentation};
+
+            % Paralelné vetvy (rozdelenie hore a dole)
+            \node (zeroshot) [process, above right=of parser] {Zero-shot topic \\ \footnotesize classification};
+            \node (sentiment) [process, below right=of parser] {Sentiment scoring \\ \footnotesize (FinBERT, RoBERTa)};
+
+            % Spojenie vetiev do databázy
+            % Umiestnená priamo vpravo od parsera, aby zostala presne v strede
+            \node (database) [startstop, right=4.8cm of parser] {ECB transcript \\ \footnotesize SQLite database};
+
+            % Prepojenia (Šípky)
+            \draw [arrow] (htmldata) -- (filter);
+            \draw [arrow] (filter) -- (parser);
+
+            % Rozvetvenie z parsera do paralelných krokov
+            \draw [arrow] (parser) -- (zeroshot);
+            \draw [arrow] (parser) -- (sentiment);
+
+            % Spojenie z paralelných krokov do výslednej databázy
+            \draw [arrow] (zeroshot) -- (database);
+            \draw [arrow] (sentiment) -- (database);
+
+        \end{tikzpicture}
     }
     \caption[ECB-transcript data pipeline]{Data pipeline from raw HTML transcripts to the structured SQLite database. Sentiment and topic metadata are generated in parallel before being merged with the underlying chunks at the storage layer.}
     \label{fig:data_pipeline_snake}
@@ -87,9 +102,6 @@ The choice of a $200$-word chunk length is the outcome of a sensitivity analysis
 While the segments are now technically structured, they remain unlabelled raw text. To transform these strings into meaningful predictors, we categorise them based on their thematic content. Traditional dictionary-based methods were dismissed due to their inability to capture context, such as negations or complex sentence patterns. Furthermore, training a custom topic-modelling transformer was not feasible given the project's time constraints and the lack of a pre-labelled domain-specific dataset.
 
 Consequently, this research implements \textbf{Zero-Shot Classification}. This approach allows for the categorisation of text into prescribed labels without requiring explicit training on those specific examples. After reviewing current architectures, we selected the \emph{facebook/bart-large-mnli} model. This model is particularly suitable for our use case, as it is pre-trained on \gls{nli} tasks, which enables the treatment of thematic labels as \emph{hypotheses} to be tested against the text segments, where the model calculates the logical entailment between the text and the label.
-
-\paragraph{Iterating on the taxonomy.} Initial iterations utilised a detailed ten-topic taxonomy; however, this resulted in a challenge often described as \emph{decision paralysis}. The model became indecisive and tended to aggregate diverse segments into a single, broad category. To resolve this, we simplified the taxonomy to four core themes and replaced short titles with descriptive hypothesis strings. By narrowing the choices and enriching the context of each label, we increased the model's classification certainty. The final set of labels and their descriptive strings are detailed in Table~\ref{tab:labels}. Because individual paragraphs may speak to multiple themes simultaneously (e.g., a statement linking wage developments to policy stance), the zero-shot classifier is run in its multi-label mode. A chunk is assigned to every topic whose entailment probability exceeds $\tau = 0.5$; if no label clears the threshold, the top-1 label is retained as a fallback.
-
 \begin{table}[ht]
     \centering
     \caption[Thematic labels and descriptive strings]{Thematic labels and descriptive strings for Zero-Shot Classification.}
@@ -104,11 +116,15 @@ Consequently, this research implements \textbf{Zero-Shot Classification}. This a
     \end{tabular}
 \end{table}
 
+\paragraph{Iterating on the taxonomy.} Initial iterations utilised a detailed ten-topic taxonomy; however, this resulted in a challenge often described as \emph{decision paralysis}. The model became indecisive and tended to aggregate diverse segments into a single, broad category. To resolve this, we simplified the taxonomy to four core themes and replaced short titles with descriptive hypothesis strings. By narrowing the choices and enriching the context of each label, we increased the model's classification certainty. The final set of labels and their descriptive strings are detailed in Table~\ref{tab:labels}. Because individual paragraphs may speak to multiple themes simultaneously (e.g., a statement linking wage developments to policy stance), the zero-shot classifier is run in its multi-label mode. A chunk is assigned to every topic whose entailment probability exceeds $\tau = 0.5$; if no label clears the threshold, the top-1 label is retained as a fallback.
+
+
+
 The \emph{Other} category serves as a final filter to capture thematic noise, such as procedural talk and polite exchanges that do not possess market-moving potential. By isolating these segments, we can later test whether removing non-informative text sharpens the extracted sentiment signal and improves the accuracy of market-impact predictions.
 
-\paragraph{Robustness with a second NLI backbone.} To verify that the classification outcome is not an artefact of the specific entailment model employed, the entire zero-shot pipeline is replicated with a second backbone: \emph{MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli} \cite{laurer2024deberta}. DeBERTa-v3 differs from BART-MNLI in three architectural respects relevant to entailment classification: disentangled attention over content and position, an enhanced mask-decoder, and a strictly encoder-only design. It is also fine-tuned on a substantially broader \gls{nli} corpus that aggregates MultiNLI, FEVER-NLI, ANLI, LingNLI, and WANLI. The two backbones are applied to the same chunks under the same four-topic taxonomy and the same $\tau = 0.5$ threshold; the comparison is reported as the inter-model agreement on the top-1 label for
-TODO insert model agreement comparison
-. The headline classifier in all downstream analyses is BART-MNLI; DeBERTa-v3-MNLI is retained as a robustness check rather than as a competing labelling source, and disagreements between the two models are treated as a flag for thematic ambiguity rather than as a re-labelling instruction.
+\paragraph{Robustness with a second NLI backbone.} To verify that the classification outcome is not an artefact of the specific entailment model employed, the entire zero-shot pipeline is replicated with a second backbone: \emph{MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli} \cite{laurer2024deberta}. DeBERTa-v3 differs from BART-MNLI in three architectural respects relevant to entailment classification: disentangled attention over content and position, an enhanced mask-decoder, and a strictly encoder-only design. It is also fine-tuned on a substantially broader \gls{nli} corpus that aggregates MultiNLI, FEVER-NLI, ANLI, LingNLI, and WANLI. The two backbones are applied to the same chunks under the same four-topic taxonomy and $\tau = 0.5$ threshold.
+
+At the primary chunk limit of 200 words, top-1 label agreement reaches only $\kappa = 0.155$ (raw agreement $27.8\,\%$, $n = 18{,}557$ chunks), with DeBERTa-v3 systematically routing $60$--$72\,\%$ of substantive ECB passages to the \textsc{Other\,/\,Irrelevant} class---a known consequence of its adversarial NLI fine-tuning raising the entailment bar beyond what ECB hypothesis strings can clear \cite{laurer2024deberta}. DeBERTa-v3 therefore does not provide an independent robustness check in this setting; all downstream analyses use BART-large-mnli labels exclusively, and the comparison is reported as a transparency note.
 
 \subsection{Multi-Model Sentiment Extraction}
 \label{sec:sentiment_extraction}
@@ -120,12 +136,12 @@ FinBERT is a BERT-base encoder further pre-trained on the Reuters TRC2 financial
     \centering
     \caption[Illustrative sentiment scores produced by the two classifiers]{Illustrative sentiment scores produced by the two classifiers on representative passages from the corpus. Scores are computed via Equation~\ref{eq:sentiment} from the softmax distribution returned by each model.}
     \label{tab:sentiment_examples}
-    \begin{tabular}{@{}p{8cm}rr@{}}
+    \begin{tabular}{@{}p{9.5cm}rr@{}}
         \toprule
-        \textbf{Passage} & \textbf{FinBERT} & \textbf{CB-RoBERTa} \\ \midrule
-        ``Inflation is far too high and is expected to remain above our target for an extended period.''                                  & $-0.62$ & $-0.71$ \\ \addlinespace
-        ``The economic outlook remains broadly balanced, supported by a resilient labour market and gradually easing financing conditions.'' & $+0.48$ & $+0.05$ \\ \addlinespace
-        ``We are determined to bring inflation back down to two per cent over the medium term in a timely manner.''                       & $+0.31$ & $-0.18$ \\ \bottomrule
+        \textbf{Passage}                                                                                                                     & \textbf{FinBERT} & \textbf{CB-RoBERTa} \\ \midrule
+        ``Inflation is far too high and is expected to remain above our target for an extended period.''                                     & $-0.62$          & $-0.71$             \\ \addlinespace
+        ``The economic outlook remains broadly balanced, supported by a resilient labour market and gradually easing financing conditions.'' & $+0.48$          & $+0.05$             \\ \addlinespace
+        ``We are determined to bring inflation back down to two per cent over the medium term in a timely manner.''                          & $+0.31$          & $-0.18$             \\ \bottomrule
     \end{tabular}
 \end{table}
 

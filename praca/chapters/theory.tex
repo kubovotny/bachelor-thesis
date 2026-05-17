@@ -14,7 +14,7 @@ Within the Eurozone, the \gls{ecb} faces a communication challenge: it must addr
 At the operational core of the \gls{ecb}'s communication strategy is the \gls{mps}, which is delivered during the press conference that directly follows the \gls{mp} meetings of the \gls{gc}. The council consists of the six members of the Executive Board (including the President and Vice-President) and the governors of the euro area national central banks, who meet to deliberate and set monetary policy parameters for the entire currency bloc. The \gls{ecb} currently schedules eight \gls{mp} meetings per year, operating on an approximate six-week cycle \cite{ITC_ECB_Schedule}.
 
 \paragraph{Schedule of the Governing Council Meeting Day}
-The organisation of the announcement day is standardised, reflecting the institution's strict commitment to predictability and the mitigation of market volatility. Starting from July 21, 2022, the \gls{ecb} modified its historical publication timeline to optimise the way financial markets process complex policy signals \cite{ECB2022_NewTimes}. The initial policy decision---usually a short press release detailing the exact interest rate parameters, deposit facility rates, and main structural changes to asset purchase programmes---is published at 14:15 CET. Shortly afterward, the press conference begins at 14:45 CET, during which the \gls{ecb} President and Vice-President present the detailed \gls{mps} and interact directly with the financial press. In parallel with the start of the Q\&A segment, the full text of the \gls{mps} is published on the \gls{ecb}'s digital platforms at 15:00 CET. At 17:00, European stock markets close independently of the \gls{ecb}, ending the day's reactions to its actions, as shown in Table~\ref{tab:meet_schedule}.
+The organisation of the announcement day is standardised, reflecting the institution's strict commitment to predictability and the mitigation of market volatility. Starting from July 21, 2022, the \gls{ecb} modified its historical publication timeline to optimise the way financial markets process complex policy signals \cite{ECB2022_NewTimes}. The initial policy decision---usually a short press release detailing the exact interest rate parameters, deposit facility rates, and main structural changes to asset purchase programmes---is published at 14:15 CET. Shortly afterward, the press conference begins at 14:45 CET, during which the \gls{ecb} President and Vice-President present the detailed \gls{mps} and interact directly with the financial press. In parallel with the start of the \gls{qa} segment, the full text of the \gls{mps} is published on the \gls{ecb}'s digital platforms at 15:00 CET. At 17:00, European stock markets close independently of the \gls{ecb}, ending the day's reactions to its actions, as shown in Table~\ref{tab:meet_schedule}.
 
 \begin{table}[ht]
     \centering
@@ -25,7 +25,7 @@ The organisation of the announcement day is standardised, reflecting the institu
         \textbf{Event}                         & \textbf{Scheduled time (CET)} \\ \midrule
         Meeting of the \gls{gc}                & 9:00 -- 12:00                 \\
         \gls{mp} announcement                  & 14:15                         \\
-        Press conference (\gls{is} + \gls{qa}) & 14:45 -- 15:15                \\
+        Press conference (IS + \gls{qa}) & 14:45 -- 15:15                \\
         European stock market close            & 17:00                         \\ \bottomrule
     \end{tabular}
 \end{table}
@@ -63,7 +63,7 @@ As deep learning matured, the methodology of sentiment quantification has shifte
 
 \begin{equation}
     \label{eq:sentiment}
-    S \;=\; P_{\text{positive}} \;-\; P_{\text{negative}},
+    Score \;=\; P_{\text{positive}} \;-\; P_{\text{negative}},
 \end{equation}
 
 where $P \in [0, 1]$ represents the softmax probability assigned by the model to each respective label. This transformation maps the model's probabilistic output onto a linear scale bounded by $-1$ and $+1$. A value of zero signifies either a balanced or a neutrally classified passage. The two classifiers used in this thesis (introduced below) emit a binary positive/negative softmax: passages that the model assigns to a third \textit{neutral} class contribute zero by construction, attenuating the aggregate signal toward zero when a press conference consists predominantly of procedural or descriptive language.
