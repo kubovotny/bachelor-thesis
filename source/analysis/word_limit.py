@@ -1,30 +1,45 @@
 """
-Figure 2.X (Methodology) – Chunk Size Analysis: Why 150 Words?
+Figure 2.X (Methodology) – Chunk Size Analysis: Why 200
+ Words?
 
-Shows that word_limit=150 is the optimal chunk size by measuring:
+Shows that word_limit=200 is the optimal chunk size by measuring:
 1. Inter-model correlation (FinBERT vs RoBERTa) – higher = more stable signal
 2. Mean standard deviation per meeting – lower = less noise within each conference
 3. Sample size (number of chunks) – enough granularity without over-segmentation
 
-Result: 150-word chunks balance context preservation with computational efficiency.
+Result: 200-word chunks balance context preservation with computational efficiency.
 """
 
 import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
 
-from ..data.connection import CHUNK_LIMITS
+from ..data.queries import CHUNK_LIMITS
 from ..data.model_data import return_data
 from .. import OUTPUT
 
 OUTPUT_DIR = Path(OUTPUT) / "results/word_limit"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
+plt.rcParams.update(
+    {
+        "font.size": 13,
+        "axes.titlesize": 14,
+        "axes.labelsize": 13,
+        "legend.fontsize": 11,
+        "xtick.labelsize": 11,
+        "ytick.labelsize": 11,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 150,
+    }
+)
+
 # ── Compute metrics for each word limit ──────────────────────────────────────
 def analyze_limits():
     results = []
     
-    for limit in CHUNK_LIMITS:
+    for limit in [1,50,100,150,200,250,300,350]:
         print(f"Analyzing word_limit={limit}...")
         
         # Load data for this limit
@@ -68,35 +83,35 @@ def plot_word_limit_analysis(save: bool = True):
     ax1 = axes[0]
     ax1.plot(df["word_limit"], df["correlation"], 
              marker="o", markersize=6, linewidth=1.8, color="#2c6fad")
-    ax1.axvline(150, color="#c0392b", linestyle="--", linewidth=1.2, alpha=0.7)
-    ax1.axhline(0.65, color="#c0392b", linestyle=":", linewidth=1, alpha=0.5)
-    ax1.text(155, 0.65, "150 words\n(r=0.65)", fontsize=7.5, color="#c0392b", va="bottom")
-    ax1.set_xlabel("Chunk size (words)", fontsize=10)
-    ax1.set_ylabel("FinBERT–RoBERTa correlation", fontsize=10)
-    ax1.set_title("(A) Inter-Model Agreement\n(higher = more stable)", fontsize=9.5, pad=6)
+    ax1.axvline(200, color="#c0392b", linestyle="--", linewidth=1.2, alpha=0.7)
+    ax1.axhline(0.616, color="#c0392b", linestyle=":", linewidth=1, alpha=0.5)
+    ax1.text(155, 0.62, "200 words\n(r=0.65)", color="#c0392b", va="bottom")
+    ax1.set_xlabel("Chunk size (words)", )
+    ax1.set_ylabel("FinBERT–RoBERTa correlation", )
+    ax1.set_title("(A) Inter-Model Agreement\n(higher = more stable)", pad=6)
     ax1.grid(alpha=0.25, linewidth=0.6)
     ax1.set_ylim(0.55, 0.80)
     ax1.annotate("", xy=(50, 0.72), xytext=(350, 0.59),
                  arrowprops=dict(arrowstyle="->", color="#888", lw=1.2, alpha=0.6))
-    ax1.text(150, 0.76, "Models diverge with\nmore context", 
-             fontsize=7, ha="center", color="#555")
+    ax1.text(200, 0.76, "Models diverge with\nmore context", 
+             ha="center", color="#555")
     
     # Panel B: Within-meeting noise (decreases with chunk size)
     ax2 = axes[1]
     ax2.plot(df["word_limit"], df["avg_std"],
              marker="s", markersize=6, linewidth=1.8, color="#27ae60")
-    ax2.axvline(150, color="#c0392b", linestyle="--", linewidth=1.2, alpha=0.7)
-    ax2.axhline(0.4515, color="#c0392b", linestyle=":", linewidth=1, alpha=0.5)
-    ax2.text(155, 0.4515, "150 words\n(σ=0.45)", fontsize=7.5, color="#c0392b", va="bottom")
-    ax2.set_xlabel("Chunk size (words)", fontsize=10)
-    ax2.set_ylabel("Mean within-meeting σ", fontsize=10)
-    ax2.set_title("(B) Internal Consistency\n(lower = smoother)", fontsize=9.5, pad=6)
+    ax2.axvline(200, color="#c0392b", linestyle="--", linewidth=1.2, alpha=0.7)
+    ax2.axhline(0.443, color="#c0392b", linestyle=":", linewidth=1, alpha=0.5)
+    ax2.text(155, 0.45, "200 words\n(σ=0.45)", color="#c0392b", va="bottom")
+    ax2.set_xlabel("Chunk size (words)", )
+    ax2.set_ylabel("Mean within-meeting σ", )
+    ax2.set_title("(B) Internal Consistency\n(lower = smoother)", pad=6)
     ax2.grid(alpha=0.25, linewidth=0.6)
     ax2.set_ylim(0.43, 0.52)
     ax2.annotate("", xy=(50, 0.51), xytext=(350, 0.44),
                  arrowprops=dict(arrowstyle="->", color="#888", lw=1.2, alpha=0.6))
-    ax2.text(150, 0.50, "Diminishing returns\nafter 150", 
-             fontsize=7, ha="center", color="#555")
+    ax2.text(200, 0.50, "Diminishing returns\nafter 200", 
+             ha="center", color="#555")
     
     # Panel C: Combined metric (balance)
     ax3 = axes[2]
@@ -112,32 +127,32 @@ def plot_word_limit_analysis(save: bool = True):
     ax3.scatter([max_limit], [max_score], s=100, color="#888888", 
                 marker="*", zorder=5, edgecolors="black", linewidths=1.2)
     ax3.text(max_limit, max_score + 0.02, f"Metric peak\n({int(max_limit)} words)", 
-             fontsize=7, ha="center", va="bottom", color="#555")
+             ha="center", va="bottom", color="#555")
     
     # Mark our methodological choice
-    choice_score = df[df["word_limit"] == 150]["score"].values[0]
-    ax3.scatter([150], [choice_score], s=120, color="#c0392b", 
+    choice_score = df[df["word_limit"] == 200]["score"].values[0]
+    ax3.scatter([200], [choice_score], s=120, color="#c0392b", 
                 marker="o", zorder=6, edgecolors="white", linewidths=1.5,
-                label="Methodological choice: 150")
-    ax3.axvline(150, color="#c0392b", linestyle="--", linewidth=1.2, alpha=0.5)
+                label="Methodological choice: 200")
+    ax3.axvline(200, color="#c0392b", linestyle="--", linewidth=1.2, alpha=0.5)
     
     # Annotation box explaining the choice
-    ax3.text(150, 1.48, "Preserves context\nfor transformers", 
-             fontsize=7, ha="center", va="top", 
+    ax3.text(200, 1.48, "Preserves context\nfor transformers", 
+             ha="center", va="top", 
              bbox=dict(boxstyle="round,pad=0.4", facecolor="#fff5f5", 
                       edgecolor="#c0392b", linewidth=1, alpha=0.9))
     
-    ax3.set_xlabel("Chunk size (words)", fontsize=10)
-    ax3.set_ylabel("Correlation / σ", fontsize=10)
-    ax3.set_title("(C) Metric vs. Theory\n(higher score ≠ better choice)", fontsize=9.5, pad=6)
+    ax3.set_xlabel("Chunk size (words)", )
+    ax3.set_ylabel("Correlation / σ", )
+    ax3.set_title("(C) Metric vs. Theory\n(higher score ≠ better choice)", pad=6)
     ax3.grid(alpha=0.25, linewidth=0.6)
-    ax3.legend(loc="lower right", fontsize=7.5, framealpha=0.9)
+    ax3.legend(loc="lower right", framealpha=0.9)
     ax3.set_ylim(1.30, 1.55)
     
     # Overall title
     fig.suptitle(
         "Chunk Size Selection: Context Preservation vs. Signal Stability",
-        fontsize=11, y=1.00, fontweight="normal",
+        y=1.00, fontweight="normal",
     )
     
     plt.tight_layout()
@@ -167,8 +182,8 @@ if __name__ == "__main__":
     print(f"Metric maximized at: {int(optimal['word_limit'])} words (single sentences)")
     print(f"  - High correlation (models agree on simple text)")
     print(f"  - But lacks context for discourse-level sentiment")
-    print(f"\nMethodological choice: 150 words")
-    sel = metrics[metrics["word_limit"] == 150].iloc[0]
+    print(f"\nMethodological choice: 200 words")
+    sel = metrics[metrics["word_limit"] == 200].iloc[0]
     print(f"  - Correlation: {sel['correlation']:.3f} (still strong)")
     print(f"  - Avg std: {sel['avg_std']:.3f} (smooth)")
     print(f"  - Preserves 1-2 paragraph context for transformers")
