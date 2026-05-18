@@ -78,17 +78,13 @@ Transforming qualitative narratives into quantitative market predictors requires
 \subsection{Text Segmentation}
 \label{sec:segmentation}
 
-Sentiment classifiers operate on individual chunks rather than entire documents, and the BERT-based architectures employed in this work impose a hard 512-token input limit. To satisfy both constraints while preserving argumentative context, we set the chunk length to $200$ words (${\approx}260$--$340$ subword tokens for typical central-bank prose). Paragraphs exceeding this limit are split at sentence boundaries using
-\texttt{nltk}'s sentence-boundary detector, whereas paragraphs shorter than $30$ words are kept as single segments without further splitting. Each segment inherits its parent's metadata (date, speaker, section type). The resulting word-count distribution, with both thresholds explicitly marked, is shown in Figure~\ref{fig:distribution}.
+Sentiment classifiers operate on individual chunks rather than entire documents, and the BERT-based architectures employed in this work impose a hard 512-token input limit. To satisfy both constraints while preserving argumentative context, we set the chunk length to $200$ words (${\approx}260$--$340$ subword tokens for typical central-bank prose). Paragraphs exceeding this limit are split at sentence boundaries using \texttt{nltk}'s sentence-boundary detector, whereas paragraphs shorter than $30$ words are kept as single segments without further splitting. Each segment inherits its parent's metadata (date, speaker, section type). The resulting word-count distribution, with both thresholds explicitly marked, is shown in Figure~\ref{fig:distribution}.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\linewidth]{images/data/segment_distribution.pdf}
     \caption[Impact of segmentation on text length distribution]{Impact
-        of segmentation on text length distribution. The grey area shows
-        the original paragraph lengths, exhibiting a long right tail; the
-        blue area shows the processed segments after enforcing the
-        $30$- and $200$-word thresholds.}
+        of segmentation on text length distribution.}
     \label{fig:distribution}
 \end{figure}
 

@@ -32,9 +32,9 @@ paragraphs["length"] = paragraphs_lengths
 print("========= PARAGRAPHS =========")
 print(paragraphs.describe())
 
-qa_chunk = chunk_qa("scraped_v2")
+qa_chunk = chunk_qa("scraped_v2",200)
 qa_chunk["part"] = "qa"
-is_chunk = chunk_intro("scraped_v2")
+is_chunk = chunk_intro("scraped_v2",200)
 is_chunk["part"] = "is"
 print("========= CHUNKS =========")
 chunks = (
@@ -47,11 +47,11 @@ chunks["length"] = chunk_lengths
 print(chunks.describe())
 
 # 1. Spravíme si kópie dát, aby sme si nepokazili originály
-original_clipped = np.clip(paragraphs_lengths, a_min=None, a_max=350)
-processed_clipped = np.clip(chunk_lengths, a_min=None, a_max=350)
+original_clipped = np.clip(paragraphs_lengths, a_min=None, a_max=250)
+processed_clipped = np.clip(chunk_lengths, a_min=None, a_max=250)
 
 # 2. Nastavíme intervaly (bins) - posledný končí presne na 250
-moje_intervaly = np.arange(0, 360, 10)
+moje_intervaly = np.arange(0, 260, 10)
 
 plt.figure(figsize=(10, 6))
 
@@ -74,7 +74,7 @@ sns.histplot(
 
 # 4. Úprava osi X, aby bolo jasné, že posledný bin je "špeciálny"
 plt.xticks(
-    list(range(0, 350, 50)) + [350], [str(x) for x in range(0, 350, 50)] + ["250+"]
+    list(range(0, 250, 50)) + [250], [str(x) for x in range(0, 250, 50)] + ["250+"]
 )
 
 plt.axvline(30, color="red", linestyle="--", label="Min threshold (30 words)")
