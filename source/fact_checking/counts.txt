@@ -1,0 +1,2314 @@
+
+========================= ROZBOR PODĽA JEDNOTLIVÝCH MÍTINGOV =========================
+
+CONFERENCE: 1998-06-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  7  2  0        24         24.0
+   Questions & Answers (QA)  0  0  0  0         0          NaN
+                    CELKOVO 15  7  2  0        24         24.0
+-------------------------------------------------------
+
+CONFERENCE: 1998-07-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 17 10  2  1        30         26.0
+   Questions & Answers (QA)  0  0  0  0         0          NaN
+                    CELKOVO 17 10  2  1        30         26.0
+-------------------------------------------------------
+
+CONFERENCE: 1998-09-11
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 14  7  3  1        25         23.0
+   Questions & Answers (QA)  0  0  0  0         0          NaN
+                    CELKOVO 14  7  3  1        25         23.0
+-------------------------------------------------------
+
+CONFERENCE: 1998-10-13
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 30  9  2  1        42         38.0
+   Questions & Answers (QA) 14  6  3  1        24         21.0
+                    CELKOVO 44 15  5  2        66         59.0
+-------------------------------------------------------
+
+CONFERENCE: 1998-11-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 14 10  1  1        26         22.0
+   Questions & Answers (QA) 17  3  2  2        24         24.0
+                    CELKOVO 31 13  3  3        50         46.0
+-------------------------------------------------------
+
+CONFERENCE: 1998-12-01
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 17 12  1  1        31         26.0
+   Questions & Answers (QA)  9  8  1  1        19         18.0
+                    CELKOVO 26 20  2  2        50         44.0
+-------------------------------------------------------
+
+CONFERENCE: 1998-12-22
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  6  1  1        20         16.0
+   Questions & Answers (QA)  8  5  1  1        15         15.0
+                    CELKOVO 20 11  2  2        35         31.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-01-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 19  4  1  1        25         23.0
+   Questions & Answers (QA)  9  9  1  2        21         20.0
+                    CELKOVO 28 13  2  3        46         43.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-02-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  5  1  1        19         15.0
+   Questions & Answers (QA) 10  5  3  1        19         17.0
+                    CELKOVO 22 10  4  2        38         32.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-03-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  7  1  1        19         15.0
+   Questions & Answers (QA) 12 11  3  2        28         26.0
+                    CELKOVO 22 18  4  3        47         41.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-04-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  4  1  1        15         13.0
+   Questions & Answers (QA) 12  5  2  3        22         16.0
+                    CELKOVO 21  9  3  4        37         29.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-05-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  4  1  1        14         10.0
+   Questions & Answers (QA)  7  3  3  1        14         13.0
+                    CELKOVO 15  7  4  2        28         23.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-06-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  5  1  1        14         11.0
+   Questions & Answers (QA) 13  8  4  1        26         23.0
+                    CELKOVO 20 13  5  2        40         34.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-07-15
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 14 10  2  1        27         23.0
+   Questions & Answers (QA) 10  9  5  1        25         21.0
+                    CELKOVO 24 19  7  2        52         44.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-09-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 17  8  2  1        28         23.0
+   Questions & Answers (QA) 17  5  2  1        25         23.0
+                    CELKOVO 34 13  4  2        53         46.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-10-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  6  1  1        21         19.0
+   Questions & Answers (QA) 13  8  3  1        25         19.0
+                    CELKOVO 26 14  4  2        46         38.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-11-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  9  1  1        22         14.0
+   Questions & Answers (QA) 18 11  1  1        31         21.0
+                    CELKOVO 29 20  2  2        53         35.0
+-------------------------------------------------------
+
+CONFERENCE: 1999-12-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  4  2  1        22         20.0
+   Questions & Answers (QA) 12  6  1  1        20         18.0
+                    CELKOVO 27 10  3  2        42         38.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-01-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  3  1  1        17         16.0
+   Questions & Answers (QA)  7  4  1  2        14         13.0
+                    CELKOVO 19  7  2  3        31         29.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-02-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  5  1  1        17         13.0
+   Questions & Answers (QA) 14  6  1  1        22         20.0
+                    CELKOVO 24 11  2  2        39         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-03-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  5  1  1        18         15.0
+   Questions & Answers (QA) 13  9  1  1        24         22.0
+                    CELKOVO 24 14  2  2        42         37.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-03-30
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 16  6  5  1        28         24.0
+   Questions & Answers (QA)  9  9  5  1        24         20.0
+                    CELKOVO 25 15 10  2        52         44.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-04-13
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  5  3  1        19         17.0
+   Questions & Answers (QA) 10  9  2  1        22         20.0
+                    CELKOVO 20 14  5  2        41         37.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-05-11
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  5  1  1        14         10.0
+   Questions & Answers (QA) 15  8  3  1        27         22.0
+                    CELKOVO 22 13  4  2        41         32.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-06-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  4  2  1        20         16.0
+   Questions & Answers (QA) 19 10  3  1        33         27.0
+                    CELKOVO 32 14  5  2        53         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-07-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  3  1  1        15         12.0
+   Questions & Answers (QA) 12  4  3  1        20         15.0
+                    CELKOVO 22  7  4  2        35         27.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-09-14
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  7  1  2        22         20.0
+   Questions & Answers (QA) 11  9  7  1        28         26.0
+                    CELKOVO 23 16  8  3        50         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-10-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  4  1  2        18         14.0
+   Questions & Answers (QA) 14  6  1  1        22         18.0
+                    CELKOVO 25 10  2  3        40         32.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-10-19
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 10  2  2        23         17.0
+   Questions & Answers (QA) 15 10  1  1        27         24.0
+                    CELKOVO 24 20  3  3        50         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-11-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  8  2  2        21         16.0
+   Questions & Answers (QA) 10  7  1  1        19         15.0
+                    CELKOVO 19 15  3  3        40         31.0
+-------------------------------------------------------
+
+CONFERENCE: 2000-12-14
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  9  1  2        25         22.0
+   Questions & Answers (QA) 11 12  2  4        29         24.0
+                    CELKOVO 24 21  3  6        54         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-02-01
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  8  1  2        21         17.0
+   Questions & Answers (QA) 10  4  4  4        22         16.0
+                    CELKOVO 20 12  5  6        43         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-03-01
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  5  5  1  2        13          9.0
+   Questions & Answers (QA) 13  7  3  2        25         24.0
+                    CELKOVO 18 12  4  4        38         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-04-11
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  6  2  2        18         13.0
+   Questions & Answers (QA) 17  5  3  1        26         21.0
+                    CELKOVO 25 11  5  3        44         34.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-05-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  4  1  3        19         15.0
+   Questions & Answers (QA) 16 10  3  1        30         24.0
+                    CELKOVO 27 14  4  4        49         39.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-06-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  6  2  3        20         16.0
+   Questions & Answers (QA) 11  7  2  1        21         18.0
+                    CELKOVO 20 13  4  4        41         34.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-06-21
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  6  2  3        20         13.0
+   Questions & Answers (QA)  9  3  2  3        17         16.0
+                    CELKOVO 18  9  4  6        37         29.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-07-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  6  1  3        19         15.0
+   Questions & Answers (QA) 12  4  5  3        24         18.0
+                    CELKOVO 21 10  6  6        43         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-08-30
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  2  1        18         14.0
+   Questions & Answers (QA)  5  3  5  1        14          8.0
+                    CELKOVO 13 10  7  2        32         22.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-10-11
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  4  3  1        15         11.0
+   Questions & Answers (QA) 11  8  2  1        22         15.0
+                    CELKOVO 18 12  5  2        37         26.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-11-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  6  2  1        19         14.0
+   Questions & Answers (QA) 10  4  2  1        17         16.0
+                    CELKOVO 20 10  4  2        36         30.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-12-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 10  3  1        24         19.0
+   Questions & Answers (QA)  8  7  5  1        21         14.0
+                    CELKOVO 18 17  8  2        45         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2001-12-13
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  2  3  3  1         9          6.0
+   Questions & Answers (QA)  8  7  5  1        21         14.0
+                    CELKOVO 10 10  8  2        30         20.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-01-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  2 11  3  1        17         14.0
+   Questions & Answers (QA)  5  5  3  1        14         11.0
+                    CELKOVO  7 16  6  2        31         25.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-02-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  5  2  1        16         11.0
+   Questions & Answers (QA)  9  3  3  5        20         18.0
+                    CELKOVO 17  8  5  6        36         29.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-03-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  4  1  1        13         13.0
+   Questions & Answers (QA) 10  8  2  1        21         18.0
+                    CELKOVO 17 12  3  2        34         31.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-04-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  4  2  1        13         10.0
+   Questions & Answers (QA)  6  5  3  1        15         12.0
+                    CELKOVO 12  9  5  2        28         22.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-05-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  5  2  1        14         10.0
+   Questions & Answers (QA)  6  7  1  1        15         13.0
+                    CELKOVO 12 12  3  2        29         23.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-06-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  5  1  1        13         10.0
+   Questions & Answers (QA)  9  7  2  1        19         16.0
+                    CELKOVO 15 12  3  2        32         26.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-07-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  5  1  1        13         10.0
+   Questions & Answers (QA)  9 10  3  2        24         23.0
+                    CELKOVO 15 15  4  3        37         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-09-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  6  1  1        15         12.0
+   Questions & Answers (QA) 14  5  3  1        23         19.0
+                    CELKOVO 21 11  4  2        38         31.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-10-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  7  4  1        19         13.0
+   Questions & Answers (QA) 13  7  1  1        22         17.0
+                    CELKOVO 20 14  5  2        41         30.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-11-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  7  2  1        17         12.0
+   Questions & Answers (QA) 12  4  1  1        18         16.0
+                    CELKOVO 19 11  3  2        35         28.0
+-------------------------------------------------------
+
+CONFERENCE: 2002-12-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 12  2  1        28         19.0
+   Questions & Answers (QA) 12  4  1  1        18         16.0
+                    CELKOVO 25 16  3  2        46         35.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-01-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  5  7  4  1        17         12.0
+   Questions & Answers (QA)  4  8  2  1        15         10.0
+                    CELKOVO  9 15  6  2        32         22.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-02-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  5  1  1        14         11.0
+   Questions & Answers (QA) 16 10  2  1        29         24.0
+                    CELKOVO 23 15  3  2        43         35.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-03-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  7  1  1        16         13.0
+   Questions & Answers (QA)  9 10  4  1        24         22.0
+                    CELKOVO 16 17  5  2        40         35.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-04-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  4  2  1        14         11.0
+   Questions & Answers (QA)  9  4  4  1        18         16.0
+                    CELKOVO 16  8  6  2        32         27.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-05-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  1  1        17         13.0
+   Questions & Answers (QA)  7  9  4  1        21         14.0
+                    CELKOVO 15 16  5  2        38         27.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-06-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7 10  1  1        19         15.0
+   Questions & Answers (QA) 20  6  3  1        30         27.0
+                    CELKOVO 27 16  4  2        49         42.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-07-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  6  3  1        17         11.0
+   Questions & Answers (QA) 14  5  4  1        24         22.0
+                    CELKOVO 21 11  7  2        41         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-09-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  5  5  2  1        13         10.0
+   Questions & Answers (QA) 10 10  4  1        25         18.0
+                    CELKOVO 15 15  6  2        38         28.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-09-17
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  3  6  2  1        12         10.0
+   Questions & Answers (QA) 10 10  4  1        25         18.0
+                    CELKOVO 13 16  6  2        37         28.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-10-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  6  3  1        18         13.0
+   Questions & Answers (QA)  4  9  7  1        21         17.0
+                    CELKOVO 12 15 10  2        39         30.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-10-13
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  4  2  3  1        10          6.0
+   Questions & Answers (QA)  4  9  7  1        21         17.0
+                    CELKOVO  8 11 10  2        31         23.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-11-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  7  2  1        17         13.0
+   Questions & Answers (QA) 24 15  1  1        41         34.0
+                    CELKOVO 31 22  3  2        58         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2003-12-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  6  4  1        19         15.0
+   Questions & Answers (QA)  9 14  2  1        26         21.0
+                    CELKOVO 17 20  6  2        45         36.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-01-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  6  2  1        17         13.0
+   Questions & Answers (QA) 17  6  2  1        26         20.0
+                    CELKOVO 25 12  4  2        43         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-02-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  3  1        21         15.0
+   Questions & Answers (QA)  9 10  3  1        23         15.0
+                    CELKOVO 17 19  6  2        44         30.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-03-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 13  3  1        27         20.0
+   Questions & Answers (QA) 20 13  6  1        40         29.0
+                    CELKOVO 30 26  9  2        67         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-04-01
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  3  1        20         15.0
+   Questions & Answers (QA) 23 20  3  1        47         30.0
+                    CELKOVO 31 28  6  2        67         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-05-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  8  3  1        18         13.0
+   Questions & Answers (QA) 12 12  1  1        26         18.0
+                    CELKOVO 18 20  4  2        44         31.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-06-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 11  1  1        21         16.0
+   Questions & Answers (QA) 17 10  2  1        30         23.0
+                    CELKOVO 25 21  3  2        51         39.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-07-01
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  6  1  1        14         13.0
+   Questions & Answers (QA) 17  7  2  1        27         21.0
+                    CELKOVO 23 13  3  2        41         34.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-09-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 13  2  1        25         20.0
+   Questions & Answers (QA) 10 14  1  1        26         21.0
+                    CELKOVO 19 27  3  2        51         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-10-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 10  3  1        22         18.0
+   Questions & Answers (QA)  6 12 10  1        29         24.0
+                    CELKOVO 14 22 13  2        51         42.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-11-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  5  3  1        17         14.0
+   Questions & Answers (QA) 17 12  3  1        33         27.0
+                    CELKOVO 25 17  6  2        50         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2004-12-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  7  1  1        18         17.0
+   Questions & Answers (QA) 15  7  8  1        31         25.0
+                    CELKOVO 24 14  9  2        49         42.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-01-13
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  5  4  1        17         15.0
+   Questions & Answers (QA) 13  7  5  1        26         22.0
+                    CELKOVO 20 12  9  2        43         37.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-01-20
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  5  1  1        14         12.0
+   Questions & Answers (QA) 13  7  5  1        26         22.0
+                    CELKOVO 20 12  6  2        40         34.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-01-21
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7 11  1  1        20         11.0
+   Questions & Answers (QA) 13  7  5  1        26         22.0
+                    CELKOVO 20 18  6  2        46         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-02-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  6  4  1        18         13.0
+   Questions & Answers (QA) 11  6  1  1        19         15.0
+                    CELKOVO 18 12  5  2        37         28.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-03-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 12  3  1        25         20.0
+   Questions & Answers (QA) 12 18  2  1        33         27.0
+                    CELKOVO 21 30  5  2        58         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-04-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  6  3  1        16         13.0
+   Questions & Answers (QA) 15 10  2  1        28         23.0
+                    CELKOVO 21 16  5  2        44         36.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-05-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  2  1        18         12.0
+   Questions & Answers (QA) 14 11  2  1        28         21.0
+                    CELKOVO 22 18  4  2        46         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-06-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  7  1  1        18         15.0
+   Questions & Answers (QA) 20 16  6  1        43         27.0
+                    CELKOVO 29 23  7  2        61         42.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-07-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  5  2  1        16         13.0
+   Questions & Answers (QA) 18 11  6  1        36         22.0
+                    CELKOVO 26 16  8  2        52         35.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-09-01
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  1  1        17         14.0
+   Questions & Answers (QA) 19 11  6  1        37         26.0
+                    CELKOVO 27 18  7  2        54         40.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-10-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  5  3  1        22         19.0
+   Questions & Answers (QA) 22 13  3  1        39         35.0
+                    CELKOVO 35 18  6  2        61         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-11-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  4  1  1        14         11.0
+   Questions & Answers (QA) 27 10  3  3        43         38.0
+                    CELKOVO 35 14  4  4        57         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2005-12-01
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  7  2  1        20         14.0
+   Questions & Answers (QA) 31 10  2  3        46         35.0
+                    CELKOVO 41 17  4  4        66         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-01-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  6  2  1        15         12.0
+   Questions & Answers (QA) 11  5  2  3        21         13.0
+                    CELKOVO 17 11  4  4        36         25.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-02-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  8  1  1        17         12.0
+   Questions & Answers (QA) 25 12  2  1        40         34.0
+                    CELKOVO 32 20  3  2        57         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-03-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  6  1  1        15         13.0
+   Questions & Answers (QA) 16 10  2  2        30         25.0
+                    CELKOVO 23 16  3  3        45         38.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-04-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  7  2  1        17         11.0
+   Questions & Answers (QA) 16  9  2  2        29         22.0
+                    CELKOVO 23 16  4  3        46         33.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-05-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  8  1  1        16         12.0
+   Questions & Answers (QA) 13 13  3  1        30         23.0
+                    CELKOVO 19 21  4  2        46         35.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-06-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7 10  2  1        20         15.0
+   Questions & Answers (QA) 22 11  2  3        38         33.0
+                    CELKOVO 29 21  4  4        58         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-07-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  7  1  1        15         11.0
+   Questions & Answers (QA) 14 14  5  2        35         28.0
+                    CELKOVO 20 21  6  3        50         39.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-08-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 10  1  1        20         14.0
+   Questions & Answers (QA) 14 13  2  1        30         23.0
+                    CELKOVO 22 23  3  2        50         37.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-08-31
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  8  2  1        20         17.0
+   Questions & Answers (QA) 16 15  2  1        34         27.0
+                    CELKOVO 25 23  4  2        54         44.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-10-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  8  3  1        19         13.0
+   Questions & Answers (QA) 24 18  2  1        45         34.0
+                    CELKOVO 31 26  5  2        64         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-11-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  1  1        17         14.0
+   Questions & Answers (QA) 15  8  3  2        28         22.0
+                    CELKOVO 23 15  4  3        45         36.0
+-------------------------------------------------------
+
+CONFERENCE: 2006-12-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  3  1        20         16.0
+   Questions & Answers (QA) 25 17  3  1        46         38.0
+                    CELKOVO 33 25  6  2        66         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-01-11
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7 10  2  1        20         16.0
+   Questions & Answers (QA) 16  9  3  1        29         23.0
+                    CELKOVO 23 19  5  2        49         39.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-02-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  2  1        19         14.0
+   Questions & Answers (QA) 22  9  2  3        36         31.0
+                    CELKOVO 30 17  4  4        55         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-03-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 14  2  1        25         18.0
+   Questions & Answers (QA) 27 17  3  2        49         44.0
+                    CELKOVO 35 31  5  3        74         62.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-04-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  9  3  1        20         13.0
+   Questions & Answers (QA) 14 15  1  1        31         27.0
+                    CELKOVO 21 24  4  2        51         40.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-05-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  1  1        18         13.0
+   Questions & Answers (QA) 21 10  2  1        34         27.0
+                    CELKOVO 29 18  3  2        52         40.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-06-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 11  3  1        23         17.0
+   Questions & Answers (QA) 22 25  3  1        51         39.0
+                    CELKOVO 30 36  6  2        74         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-07-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 11  1  1        21         15.0
+   Questions & Answers (QA) 19 15 10  1        45         37.0
+                    CELKOVO 27 26 11  2        66         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-08-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  3  3  1  1         8          4.0
+   Questions & Answers (QA) 14  4 10  1        29         16.0
+                    CELKOVO 17  7 11  2        37         20.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-09-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  8  1  1        21         17.0
+   Questions & Answers (QA) 24  5  1  1        31         28.0
+                    CELKOVO 35 13  2  2        52         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-10-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  9  2  1        22         15.0
+   Questions & Answers (QA) 24 12  1  1        38         30.0
+                    CELKOVO 34 21  3  2        60         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-11-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 10  1  1        21         15.0
+   Questions & Answers (QA) 23  9  1  1        34         28.0
+                    CELKOVO 32 19  2  2        55         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2007-12-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  9  2  1        21         17.0
+   Questions & Answers (QA) 16 11  1  1        29         24.0
+                    CELKOVO 25 20  3  2        50         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-01-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  9  1  1        18         15.0
+   Questions & Answers (QA) 26  7  4  1        38         32.0
+                    CELKOVO 33 16  5  2        56         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-02-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  8  1  1        20         15.0
+   Questions & Answers (QA) 27 15  5  1        48         40.0
+                    CELKOVO 37 23  6  2        68         55.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-03-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11 11  1  1        24         19.0
+   Questions & Answers (QA) 20  7  2  1        30         26.0
+                    CELKOVO 31 18  3  2        54         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-04-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  9  1  1        20         16.0
+   Questions & Answers (QA) 22 12  2  1        37         27.0
+                    CELKOVO 31 21  3  2        57         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-05-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  8  1  1        20         16.0
+   Questions & Answers (QA) 20 12  4  1        37         32.0
+                    CELKOVO 30 20  5  2        57         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-06-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  9  2  1        25         20.0
+   Questions & Answers (QA) 24 14  1  1        40         31.0
+                    CELKOVO 37 23  3  2        65         51.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-07-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  9  2  1        24         19.0
+   Questions & Answers (QA) 25 16  1  1        43         30.0
+                    CELKOVO 37 25  3  2        67         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-08-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  8  1  1        23         18.0
+   Questions & Answers (QA) 19 10  1  1        31         27.0
+                    CELKOVO 32 18  2  2        54         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-09-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15 10  2  1        28         21.0
+   Questions & Answers (QA) 27 14  7  1        49         43.0
+                    CELKOVO 42 24  9  2        77         64.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-10-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11 10  1  1        23         15.0
+   Questions & Answers (QA) 24  9  1  1        35         31.0
+                    CELKOVO 35 19  2  2        58         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-11-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  7  2  1        20         14.0
+   Questions & Answers (QA) 25  9  3  1        38         35.0
+                    CELKOVO 35 16  5  2        58         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2008-12-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 10  2  1        22         18.0
+   Questions & Answers (QA) 34  6  3  1        44         40.0
+                    CELKOVO 43 16  5  2        66         58.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-01-15
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 10  1  1        25         19.0
+   Questions & Answers (QA) 25  9  4  1        39         31.0
+                    CELKOVO 38 19  5  2        64         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-02-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  7  1  1        20         16.0
+   Questions & Answers (QA) 29 10  3  1        43         38.0
+                    CELKOVO 40 17  4  2        63         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-03-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  9  2  1        23         17.0
+   Questions & Answers (QA) 24 10  2  1        37         32.0
+                    CELKOVO 35 19  4  2        60         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-04-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  1  1        19         14.0
+   Questions & Answers (QA) 22  5  1  1        29         24.0
+                    CELKOVO 30 14  2  2        48         38.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-05-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 14  9  1  1        25         20.0
+   Questions & Answers (QA) 21  8  2  1        32         29.0
+                    CELKOVO 35 17  3  2        57         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-06-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  9  1  1        24         19.0
+   Questions & Answers (QA) 22  6  1  3        32         29.0
+                    CELKOVO 35 15  2  4        56         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-07-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 10  1  1        22         17.0
+   Questions & Answers (QA) 21  6  1  3        31         26.0
+                    CELKOVO 31 16  2  4        53         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-08-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11 11  1  1        24         17.0
+   Questions & Answers (QA) 17 13  4  1        35         34.0
+                    CELKOVO 28 24  5  2        59         51.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-09-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 12  2  1        25         19.0
+   Questions & Answers (QA) 10  6  2  1        19         16.0
+                    CELKOVO 20 18  4  2        44         35.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-10-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  1  1        19         14.0
+   Questions & Answers (QA) 15 11  4  3        33         27.0
+                    CELKOVO 23 20  5  4        52         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-11-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 11  2  1        22         16.0
+   Questions & Answers (QA) 12 10  4  3        29         22.0
+                    CELKOVO 20 21  6  4        51         38.0
+-------------------------------------------------------
+
+CONFERENCE: 2009-12-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12 10  1  1        24         20.0
+   Questions & Answers (QA) 19  7  4  1        31         29.0
+                    CELKOVO 31 17  5  2        55         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-01-14
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 10  3  1        24         18.0
+   Questions & Answers (QA) 14 16 10  1        41         33.0
+                    CELKOVO 24 26 13  2        65         51.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-02-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  1  1        19         15.0
+   Questions & Answers (QA) 10 12  9  1        32         25.0
+                    CELKOVO 18 21 10  2        51         40.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-03-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12 10  1  1        24         20.0
+   Questions & Answers (QA) 19 14  6  1        40         37.0
+                    CELKOVO 31 24  7  2        64         57.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-04-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 10  1  1        20         16.0
+   Questions & Answers (QA) 24 16 16  1        57         44.0
+                    CELKOVO 32 26 17  2        77         60.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-05-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  8  1  1        20         15.0
+   Questions & Answers (QA) 13 16 11  1        41         35.0
+                    CELKOVO 23 24 12  2        61         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-06-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 10  2  1        23         18.0
+   Questions & Answers (QA) 25 10  9  1        45         38.0
+                    CELKOVO 35 20 11  2        68         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-07-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  8  3  1        21         16.0
+   Questions & Answers (QA) 15 13  6  1        35         29.0
+                    CELKOVO 24 21  9  2        56         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-08-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 10  2  1        22         17.0
+   Questions & Answers (QA) 22 13  5  1        41         32.0
+                    CELKOVO 31 23  7  2        63         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-09-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  9  3  1        23         18.0
+   Questions & Answers (QA) 24 12  4  1        41         35.0
+                    CELKOVO 34 21  7  2        64         53.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-10-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  3  1        19         15.0
+   Questions & Answers (QA) 15 11  7  2        35         30.0
+                    CELKOVO 23 18 10  3        54         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-11-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  8  4  1        23         19.0
+   Questions & Answers (QA) 27  8  7  2        44         34.0
+                    CELKOVO 37 16 11  3        67         53.0
+-------------------------------------------------------
+
+CONFERENCE: 2010-12-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  8  3  1        24         20.0
+   Questions & Answers (QA) 18 14 10  1        43         37.0
+                    CELKOVO 30 22 13  2        67         57.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-01-13
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  2  1        20         15.0
+   Questions & Answers (QA) 22 10  6  3        41         36.0
+                    CELKOVO 30 19  8  4        61         51.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-02-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  2  1        19         15.0
+   Questions & Answers (QA) 24  7  6  1        38         33.0
+                    CELKOVO 32 15  8  2        57         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-03-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  9  2  1        22         19.0
+   Questions & Answers (QA) 22  7  8  1        38         32.0
+                    CELKOVO 32 16 10  2        60         51.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-04-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 11  3  1        23         17.0
+   Questions & Answers (QA) 29 13  8  2        52         44.0
+                    CELKOVO 37 24 11  3        75         61.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-05-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 10  5  1        26         20.0
+   Questions & Answers (QA) 26  7  6  1        40         36.0
+                    CELKOVO 36 17 11  2        66         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-06-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11 11  2  1        25         19.0
+   Questions & Answers (QA) 22 12  8  3        45         40.0
+                    CELKOVO 33 23 10  4        70         59.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-07-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 10  2  1        22         17.0
+   Questions & Answers (QA) 20 12 16  3        51         44.0
+                    CELKOVO 29 22 18  4        73         61.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-08-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  8  2  1        22         18.0
+   Questions & Answers (QA) 26  9 10  1        46         36.0
+                    CELKOVO 37 17 12  2        68         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-09-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 10  2  1        23         18.0
+   Questions & Answers (QA) 25 16  6  1        48         38.0
+                    CELKOVO 35 26  8  2        71         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-10-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 26  6  4  2        38         34.0
+   Questions & Answers (QA) 27  5  8  1        41         38.0
+                    CELKOVO 53 11 12  3        79         72.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-11-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  8  3  2        24         15.0
+   Questions & Answers (QA) 20  5  9  1        35         29.0
+                    CELKOVO 31 13 12  3        59         44.0
+-------------------------------------------------------
+
+CONFERENCE: 2011-12-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  8  2  2        27         22.0
+   Questions & Answers (QA) 19  7 13  2        41         35.0
+                    CELKOVO 34 15 15  4        68         57.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-01-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  3  2        21         15.0
+   Questions & Answers (QA) 24  9 11  1        45         40.0
+                    CELKOVO 32 17 14  3        66         55.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-02-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  5  1  2        17         13.0
+   Questions & Answers (QA) 21  7  9  1        38         37.0
+                    CELKOVO 30 12 10  3        55         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-03-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  7  2  2        20         16.0
+   Questions & Answers (QA) 28 10 10  1        49         42.0
+                    CELKOVO 37 17 12  3        69         58.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-04-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  6  2  2        20         15.0
+   Questions & Answers (QA) 20  7 10  1        38         33.0
+                    CELKOVO 30 13 12  3        58         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-05-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  4  2        23         18.0
+   Questions & Answers (QA) 10 12 14  1        37         29.0
+                    CELKOVO 18 21 18  3        60         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-06-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  7  2  2        22         18.0
+   Questions & Answers (QA) 20 16  8  1        45         38.0
+                    CELKOVO 31 23 10  3        67         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-07-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  7  2  1        17         13.0
+   Questions & Answers (QA) 29 12  5  1        47         43.0
+                    CELKOVO 36 19  7  2        64         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-08-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  2  1        18         15.0
+   Questions & Answers (QA) 33  4  7  1        45         40.0
+                    CELKOVO 41 11  9  2        63         55.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-09-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  7  2  1        20         17.0
+   Questions & Answers (QA) 22  9  4  1        36         32.0
+                    CELKOVO 32 16  6  2        56         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-10-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  5  2  1        19         15.0
+   Questions & Answers (QA) 23 11 14  3        51         47.0
+                    CELKOVO 34 16 16  4        70         62.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-11-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  6  2  1        19         14.0
+   Questions & Answers (QA) 22 11  7  2        42         36.0
+                    CELKOVO 32 17  9  3        61         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2012-12-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  7  2  1        20         15.0
+   Questions & Answers (QA) 18  8  7  1        34         32.0
+                    CELKOVO 28 15  9  2        54         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-01-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  5  2  1        16         12.0
+   Questions & Answers (QA) 24 11  6  1        42         37.0
+                    CELKOVO 32 16  8  2        58         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-02-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  6  1  1        16         13.0
+   Questions & Answers (QA) 28  8  3  1        40         37.0
+                    CELKOVO 36 14  4  2        56         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-03-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  7  2  1        20         15.0
+   Questions & Answers (QA) 19 11  6  2        38         34.0
+                    CELKOVO 29 18  8  3        58         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-04-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  6  2  1        18         13.0
+   Questions & Answers (QA) 18 13 11  3        45         42.0
+                    CELKOVO 27 19 13  4        63         55.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-05-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  4  2  1        17         15.0
+   Questions & Answers (QA) 24  8  6  3        41         34.0
+                    CELKOVO 34 12  8  4        58         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-06-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  7  1  1        18         14.0
+   Questions & Answers (QA) 21 15  6  2        44         35.0
+                    CELKOVO 30 22  7  3        62         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-07-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  6  1  1        16         12.0
+   Questions & Answers (QA) 18  7  5  2        32         29.0
+                    CELKOVO 26 13  6  3        48         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-08-01
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  1  1        17         12.0
+   Questions & Answers (QA) 24 14  1  1        40         33.0
+                    CELKOVO 32 21  2  2        57         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-09-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  1  1        18         13.0
+   Questions & Answers (QA) 21  9  6  3        39         36.0
+                    CELKOVO 29 17  7  4        57         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-10-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  1  1        17         12.0
+   Questions & Answers (QA) 16 15  7  2        40         33.0
+                    CELKOVO 24 22  8  3        57         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-11-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  4  1  1        14         12.0
+   Questions & Answers (QA) 24 12  2  1        39         31.0
+                    CELKOVO 32 16  3  2        53         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2013-12-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  1  1        17         14.0
+   Questions & Answers (QA) 23  8  5  2        38         32.0
+                    CELKOVO 31 15  6  3        55         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-01-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  6  7  2  1        16         12.0
+   Questions & Answers (QA) 23 12  5  2        42         34.0
+                    CELKOVO 29 19  7  3        58         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-02-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  6  1  1        15         12.0
+   Questions & Answers (QA) 37 14  1  2        54         44.0
+                    CELKOVO 44 20  2  3        69         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-03-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  9  2  1        21         15.0
+   Questions & Answers (QA) 18 15  2  1        36         33.0
+                    CELKOVO 27 24  4  2        57         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-04-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  6  2  1        17         12.0
+   Questions & Answers (QA) 29  9  1  1        40         33.0
+                    CELKOVO 37 15  3  2        57         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-05-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  1  1        18         13.0
+   Questions & Answers (QA) 22 16  6  1        45         39.0
+                    CELKOVO 30 24  7  2        63         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-06-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  7  2  1        25         22.0
+   Questions & Answers (QA) 28 19  7  2        56         47.0
+                    CELKOVO 43 26  9  3        81         69.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-07-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  6  1  1        17         14.0
+   Questions & Answers (QA) 50 20  4  3        77         71.0
+                    CELKOVO 59 26  5  4        94         85.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-08-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  7  1  1        18         15.0
+   Questions & Answers (QA) 36 31 10  2        79         72.0
+                    CELKOVO 45 38 11  3        97         87.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-09-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  8  2  1        20         15.0
+   Questions & Answers (QA) 26 12 10  2        50         42.0
+                    CELKOVO 35 20 12  3        70         57.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-10-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  6  3  1        22         16.0
+   Questions & Answers (QA) 28  9  9  2        48         40.0
+                    CELKOVO 40 15 12  3        70         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-10-26
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7 21  1  7        36         36.0
+   Questions & Answers (QA) 20 26  4  1        51         46.0
+                    CELKOVO 27 47  5  8        87         82.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-11-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  4  2  7        23         14.0
+   Questions & Answers (QA) 22  9  7  3        41         37.0
+                    CELKOVO 32 13  9 10        64         51.0
+-------------------------------------------------------
+
+CONFERENCE: 2014-12-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  7  1  7        25         14.0
+   Questions & Answers (QA) 29 15  5  3        52         45.0
+                    CELKOVO 39 22  6 10        77         59.0
+-------------------------------------------------------
+
+CONFERENCE: 2015-01-22
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  6  1  1        21         17.0
+   Questions & Answers (QA) 33 10  8  3        54         47.0
+                    CELKOVO 46 16  9  4        75         64.0
+-------------------------------------------------------
+
+CONFERENCE: 2015-03-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  8  2  1        22         17.0
+   Questions & Answers (QA) 23  5 13  1        42         38.0
+                    CELKOVO 34 13 15  2        64         55.0
+-------------------------------------------------------
+
+CONFERENCE: 2015-04-15
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  7  3  1        20         14.0
+   Questions & Answers (QA) 27 16  7  1        51         45.0
+                    CELKOVO 36 23 10  2        71         59.0
+-------------------------------------------------------
+
+CONFERENCE: 2015-06-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  8  1  1        21         16.0
+   Questions & Answers (QA) 22 16  9  1        48         39.0
+                    CELKOVO 33 24 10  2        69         55.0
+-------------------------------------------------------
+
+CONFERENCE: 2015-07-16
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  7  1  1        21         15.0
+   Questions & Answers (QA) 19 12 12  3        46         43.0
+                    CELKOVO 31 19 13  4        67         58.0
+-------------------------------------------------------
+
+CONFERENCE: 2015-09-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  7  1  1        22         17.0
+   Questions & Answers (QA) 21 13  3  2        39         30.0
+                    CELKOVO 34 20  4  3        61         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2015-10-22
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  7  1  1        18         12.0
+   Questions & Answers (QA) 21 19  5  2        47         36.0
+                    CELKOVO 30 26  6  3        65         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2015-12-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 14 11  2  1        28         20.0
+   Questions & Answers (QA) 25 10  5  2        42         37.0
+                    CELKOVO 39 21  7  3        70         57.0
+-------------------------------------------------------
+
+CONFERENCE: 2016-01-21
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  7  1  1        18         13.0
+   Questions & Answers (QA) 25 13  1  3        42         36.0
+                    CELKOVO 34 20  2  4        60         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2016-03-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  6  2  1        24         20.0
+   Questions & Answers (QA) 36 12  3  2        53         44.0
+                    CELKOVO 51 18  5  3        77         64.0
+-------------------------------------------------------
+
+CONFERENCE: 2016-04-21
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  8  1  1        19         14.0
+   Questions & Answers (QA) 24  8  4  1        37         31.0
+                    CELKOVO 33 16  5  2        56         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2016-06-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  8  1  1        19         15.0
+   Questions & Answers (QA) 20 13  4  3        40         32.0
+                    CELKOVO 29 21  5  4        59         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2016-07-21
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  8  1  1        20         15.0
+   Questions & Answers (QA) 17 14  3  3        37         34.0
+                    CELKOVO 27 22  4  4        57         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2016-09-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 10  1  1        22         16.0
+   Questions & Answers (QA) 19  9  7  2        37         30.0
+                    CELKOVO 29 19  8  3        59         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2016-10-20
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  6  1  1        18         13.0
+   Questions & Answers (QA) 21  5  2  2        30         30.0
+                    CELKOVO 31 11  3  3        48         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2016-12-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  6  2  1        21         16.0
+   Questions & Answers (QA) 22 11  7  3        43         32.0
+                    CELKOVO 34 17  9  4        64         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2017-01-19
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  6  1  1        17         12.0
+   Questions & Answers (QA) 18  7  4  3        32         25.0
+                    CELKOVO 27 13  5  4        49         37.0
+-------------------------------------------------------
+
+CONFERENCE: 2017-03-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  1  1        18         13.0
+   Questions & Answers (QA) 28 19  1  1        49         46.0
+                    CELKOVO 36 27  2  2        67         59.0
+-------------------------------------------------------
+
+CONFERENCE: 2017-04-27
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7  7  1  1        16         11.0
+   Questions & Answers (QA) 16 14  5  1        36         34.0
+                    CELKOVO 23 21  6  2        52         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2017-06-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  7 10  1  1        19         13.0
+   Questions & Answers (QA) 26 10  2  1        39         34.0
+                    CELKOVO 33 20  3  2        58         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2017-07-20
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  7  1  1        17         12.0
+   Questions & Answers (QA) 19 12  2  1        34         28.0
+                    CELKOVO 27 19  3  2        51         40.0
+-------------------------------------------------------
+
+CONFERENCE: 2017-09-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 10  1  1        20         14.0
+   Questions & Answers (QA) 27 11  2  7        47         39.0
+                    CELKOVO 35 21  3  8        67         53.0
+-------------------------------------------------------
+
+CONFERENCE: 2017-10-26
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  7  1  1        20         16.0
+   Questions & Answers (QA) 28 16  4  2        50         39.0
+                    CELKOVO 39 23  5  3        70         55.0
+-------------------------------------------------------
+
+CONFERENCE: 2017-12-14
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 10  1  1        21         15.0
+   Questions & Answers (QA) 21  9  3  2        35         27.0
+                    CELKOVO 30 19  4  3        56         42.0
+-------------------------------------------------------
+
+CONFERENCE: 2018-01-25
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  1  1        19         13.0
+   Questions & Answers (QA) 31 11  1  2        45         38.0
+                    CELKOVO 39 20  2  3        64         51.0
+-------------------------------------------------------
+
+CONFERENCE: 2018-03-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 10  1  1        20         14.0
+   Questions & Answers (QA) 23 13  3  2        41         36.0
+                    CELKOVO 31 23  4  3        61         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2018-04-26
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  1  1        19         13.0
+   Questions & Answers (QA) 21 13  1  2        37         33.0
+                    CELKOVO 29 22  2  3        56         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2018-06-14
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  7  1  1        20         17.0
+   Questions & Answers (QA) 29 18  6  1        54         44.0
+                    CELKOVO 40 25  7  2        74         61.0
+-------------------------------------------------------
+
+CONFERENCE: 2018-07-26
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  8  1  1        19         13.0
+   Questions & Answers (QA) 15 10  4  2        31         27.0
+                    CELKOVO 24 18  5  3        50         40.0
+-------------------------------------------------------
+
+CONFERENCE: 2018-09-13
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 10  1  1        21         15.0
+   Questions & Answers (QA) 16 17  6  2        41         32.0
+                    CELKOVO 25 27  7  3        62         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2018-10-25
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  9  1  1        19         13.0
+   Questions & Answers (QA) 22 11  5  1        39         33.0
+                    CELKOVO 30 20  6  2        58         46.0
+-------------------------------------------------------
+
+CONFERENCE: 2018-12-13
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 10  1  1        21         15.0
+   Questions & Answers (QA) 14 14  3  2        33         30.0
+                    CELKOVO 23 24  4  3        54         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2019-01-24
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9  8  1  1        19         13.0
+   Questions & Answers (QA) 22 18  3  2        45         39.0
+                    CELKOVO 31 26  4  3        64         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2019-03-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 10  1  1        25         18.0
+   Questions & Answers (QA) 26 10  4  2        42         34.0
+                    CELKOVO 39 20  5  3        67         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2019-04-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 10  1  1        22         15.0
+   Questions & Answers (QA) 21 18  4  2        45         34.0
+                    CELKOVO 31 28  5  3        67         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2019-06-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  9  2  1        25         19.0
+   Questions & Answers (QA) 22 12  2  2        38         31.0
+                    CELKOVO 35 21  4  3        63         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2019-07-25
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  7  1  1        20         15.0
+   Questions & Answers (QA) 26 12  2  1        41         34.0
+                    CELKOVO 37 19  3  2        61         49.0
+-------------------------------------------------------
+
+CONFERENCE: 2019-09-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 17 11  2  1        31         25.0
+   Questions & Answers (QA) 25 10  6  1        42         27.0
+                    CELKOVO 42 21  8  2        73         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2019-10-24
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  8  2  1        21         17.0
+   Questions & Answers (QA) 38 14  7  1        60         46.0
+                    CELKOVO 48 22  9  2        81         63.0
+-------------------------------------------------------
+
+CONFERENCE: 2019-12-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  8  2  1        23         19.0
+   Questions & Answers (QA) 19 14  3  3        39         33.0
+                    CELKOVO 31 22  5  4        62         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2020-01-23
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  7  2  1        23         18.0
+   Questions & Answers (QA) 21 11  5  3        40         32.0
+                    CELKOVO 34 18  7  4        63         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2020-03-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  9  2  1        25         22.0
+   Questions & Answers (QA) 14 14  8  3        39         28.0
+                    CELKOVO 27 23 10  4        64         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2020-04-30
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  9  1  1        26         22.0
+   Questions & Answers (QA) 22 10  3  1        36         32.0
+                    CELKOVO 37 19  4  2        62         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2020-06-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  8  1  1        25         22.0
+   Questions & Answers (QA) 24  9  2  1        36         32.0
+                    CELKOVO 39 17  3  2        61         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2020-07-16
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12 10  2  1        25         19.0
+   Questions & Answers (QA) 18 20  3  1        42         31.0
+                    CELKOVO 30 30  5  2        67         50.0
+-------------------------------------------------------
+
+CONFERENCE: 2020-09-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 10  2  1        26         20.0
+   Questions & Answers (QA) 23  7  5  1        36         32.0
+                    CELKOVO 36 17  7  2        62         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2020-10-29
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10  9  2  1        22         17.0
+   Questions & Answers (QA) 25 11  5  3        44         35.0
+                    CELKOVO 35 20  7  4        66         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2020-12-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 20  9  3  1        33         30.0
+   Questions & Answers (QA) 23  8  1  2        34         30.0
+                    CELKOVO 43 17  4  3        67         60.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-01-21
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12 10  4  1        27         22.0
+   Questions & Answers (QA) 22 13  4  2        41         32.0
+                    CELKOVO 34 23  8  3        68         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-03-11
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 16 11  3  1        31         26.0
+   Questions & Answers (QA) 21  9  4  1        35         27.0
+                    CELKOVO 37 20  7  2        66         53.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-04-22
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  8  2  1        24         22.0
+   Questions & Answers (QA) 18 14  4  1        37         30.0
+                    CELKOVO 31 22  6  2        61         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-06-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 17 10  2  1        30         27.0
+   Questions & Answers (QA) 21 11  1  1        34         29.0
+                    CELKOVO 38 21  3  2        64         56.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-07-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11  3  2  1        17         11.0
+   Questions & Answers (QA) 28  3  3  1        35         32.0
+                    CELKOVO 39  6  5  2        52         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-07-22
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11 12  1  1        25         19.0
+   Questions & Answers (QA) 20  9  1  3        33         28.0
+                    CELKOVO 31 21  2  4        58         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-09-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12 11  1  1        25         19.0
+   Questions & Answers (QA) 27 11  2  3        43         35.0
+                    CELKOVO 39 22  3  4        68         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-10-28
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 12  1  1        23         16.0
+   Questions & Answers (QA) 29  8  1  1        39         36.0
+                    CELKOVO 38 20  2  2        62         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2021-12-16
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 17 14  1  1        33         27.0
+   Questions & Answers (QA) 21 12  3  2        38         30.0
+                    CELKOVO 38 26  4  3        71         57.0
+-------------------------------------------------------
+
+CONFERENCE: 2022-02-03
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8  8  1  1        18         12.0
+   Questions & Answers (QA) 26 14  5  2        47         35.0
+                    CELKOVO 34 22  6  3        65         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2022-03-10
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 16 11  1  1        29         21.0
+   Questions & Answers (QA) 19  5  1  1        26         23.0
+                    CELKOVO 35 16  2  2        55         44.0
+-------------------------------------------------------
+
+CONFERENCE: 2022-04-14
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  8 10  1  1        20         15.0
+   Questions & Answers (QA) 23  9  1  1        34         30.0
+                    CELKOVO 31 19  2  2        54         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2022-06-09
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 14 15  1  1        31         23.0
+   Questions & Answers (QA) 23 11  1  1        36         30.0
+                    CELKOVO 37 26  2  2        67         53.0
+-------------------------------------------------------
+
+CONFERENCE: 2022-07-21
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 16 13  1  1        31         22.0
+   Questions & Answers (QA) 31  9  4  1        45         35.0
+                    CELKOVO 47 22  5  2        76         57.0
+-------------------------------------------------------
+
+CONFERENCE: 2022-09-08
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 10  1  1        25         19.0
+   Questions & Answers (QA) 30 10  4  1        45         33.0
+                    CELKOVO 43 20  5  2        70         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2022-10-27
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 14  9  1  1        25         19.0
+   Questions & Answers (QA) 28  8  4  2        42         35.0
+                    CELKOVO 42 17  5  3        67         54.0
+-------------------------------------------------------
+
+CONFERENCE: 2022-12-15
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15 12  1  1        29         20.0
+   Questions & Answers (QA) 23 10  3  2        38         32.0
+                    CELKOVO 38 22  4  3        67         52.0
+-------------------------------------------------------
+
+CONFERENCE: 2023-02-02
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 11  1  1        26         18.0
+   Questions & Answers (QA) 24  4  4  1        33         29.0
+                    CELKOVO 37 15  5  2        59         47.0
+-------------------------------------------------------
+
+CONFERENCE: 2023-03-16
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 10  1  1        25         17.0
+   Questions & Answers (QA) 24  9  1  1        35         31.0
+                    CELKOVO 37 19  2  2        60         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2023-05-04
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  5  1  1        20         16.0
+   Questions & Answers (QA) 25  5  3  1        34         29.0
+                    CELKOVO 38 10  4  2        54         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2023-06-15
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 16  7  2  1        26         19.0
+   Questions & Answers (QA) 21  6  2  1        30         22.0
+                    CELKOVO 37 13  4  2        56         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2023-07-27
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 16  7  2  1        26         20.0
+   Questions & Answers (QA) 22  9  1  1        33         25.0
+                    CELKOVO 38 16  3  2        59         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2023-09-14
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  7  1  1        22         17.0
+   Questions & Answers (QA) 22 11  1  1        35         28.0
+                    CELKOVO 35 18  2  2        57         45.0
+-------------------------------------------------------
+
+CONFERENCE: 2023-10-26
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  6  1  1        23         19.0
+   Questions & Answers (QA) 20  7  1  1        29         24.0
+                    CELKOVO 35 13  2  2        52         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2023-12-14
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15  7  2  1        25         21.0
+   Questions & Answers (QA) 14  7  2  1        24         17.0
+                    CELKOVO 29 14  4  2        49         38.0
+-------------------------------------------------------
+
+CONFERENCE: 2024-01-25
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  8  1  1        23         17.0
+   Questions & Answers (QA) 14 15  1  1        31         25.0
+                    CELKOVO 27 23  2  2        54         42.0
+-------------------------------------------------------
+
+CONFERENCE: 2024-03-07
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  8  1  1        23         16.0
+   Questions & Answers (QA) 20 10  1  1        32         25.0
+                    CELKOVO 33 18  2  2        55         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2024-04-11
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  8  1  1        22         16.0
+   Questions & Answers (QA) 16  4  3  1        24         18.0
+                    CELKOVO 28 12  4  2        46         34.0
+-------------------------------------------------------
+
+CONFERENCE: 2024-06-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12 10  1  1        24         18.0
+   Questions & Answers (QA) 17  9  1  1        28         21.0
+                    CELKOVO 29 19  2  2        52         39.0
+-------------------------------------------------------
+
+CONFERENCE: 2024-07-18
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS)  9 11  1  1        22         16.0
+   Questions & Answers (QA) 17 12  4  1        34         25.0
+                    CELKOVO 26 23  5  2        56         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2024-09-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 11  1  1        26         20.0
+   Questions & Answers (QA) 15 11  2  1        29         20.0
+                    CELKOVO 28 22  3  2        55         40.0
+-------------------------------------------------------
+
+CONFERENCE: 2024-10-17
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 11 12  1  1        25         20.0
+   Questions & Answers (QA) 18 10  1  1        30         22.0
+                    CELKOVO 29 22  2  2        55         42.0
+-------------------------------------------------------
+
+CONFERENCE: 2024-12-12
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 15 11  1  1        28         23.0
+   Questions & Answers (QA) 16 10  3  1        30         21.0
+                    CELKOVO 31 21  4  2        58         44.0
+-------------------------------------------------------
+
+CONFERENCE: 2025-01-30
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 10  1  1        25         19.0
+   Questions & Answers (QA) 12 12  1  1        26         18.0
+                    CELKOVO 25 22  2  2        51         37.0
+-------------------------------------------------------
+
+CONFERENCE: 2025-03-06
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 11  1  1        26         20.0
+   Questions & Answers (QA) 22 13  4  1        40         28.0
+                    CELKOVO 35 24  5  2        66         48.0
+-------------------------------------------------------
+
+CONFERENCE: 2025-04-17
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13  9  1  1        24         18.0
+   Questions & Answers (QA) 20 11  1  1        33         22.0
+                    CELKOVO 33 20  2  2        57         40.0
+-------------------------------------------------------
+
+CONFERENCE: 2025-06-05
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 13 11  1  1        26         21.0
+   Questions & Answers (QA) 18  9  1  1        29         22.0
+                    CELKOVO 31 20  2  2        55         43.0
+-------------------------------------------------------
+
+CONFERENCE: 2025-07-24
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 10 11  1  1        23         17.0
+   Questions & Answers (QA) 15 13  1  1        30         20.0
+                    CELKOVO 25 24  2  2        53         37.0
+-------------------------------------------------------
+
+CONFERENCE: 2025-09-11
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12  9  1  1        23         17.0
+   Questions & Answers (QA) 15 13  3  1        32         24.0
+                    CELKOVO 27 22  4  2        55         41.0
+-------------------------------------------------------
+
+CONFERENCE: 2025-10-30
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 12 13  1  1        27         20.0
+   Questions & Answers (QA) 19 28  6  2        55         50.0
+                    CELKOVO 31 41  7  3        82         70.0
+-------------------------------------------------------
+
+CONFERENCE: 2025-12-18
+-------------------------------------------------------
+                     Sekcia MP EP FS OI COUNT_SUM COUNT_ACTUAL
+Introductory Statement (IS) 14  9  1  1        25         19.0
+   Questions & Answers (QA) 14 15  5  2        36         33.0
+                    CELKOVO 28 24  6  3        61         52.0
+-------------------------------------------------------
