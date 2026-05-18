@@ -47,31 +47,73 @@ The signed gap $S_Q - S_A$ has a mean of $-0.286$ and a median of $-0.238$; jour
 \subsection{Does the Sectional Divergence Move Markets?}
 \label{sec:divergence}
 
-The two preceding subsections established that the IS and Q\&A carry structurally different information and that the journalist--\gls{ecb} gap is a stable institutional feature. A natural follow-up is whether either source of divergence carries market-moving content.
+The two preceding subsections established that the IS and Q\&A carry structurally different information and that the journalist--\gls{ecb} gap is a stable institutional feature. A natural follow-up is whether either source of divergence carries market-moving content. Because three market variables are examined for each of two divergence measures, six Pearson correlations are tested simultaneously; we apply Holm--Bonferroni correction to the full family throughout and report both raw and adjusted $p$-values.\footnote{Under the global null, six independent tests at $\alpha = 0.05$ yield an expected false-positive count of $6 \times 0.05 = 0.30$ and a probability of at least one spurious significant result of $1 - (0.95)^{6} \approx 26\%$. The Holm--Bonferroni procedure controls the family-wise error rate while being uniformly more powerful than the plain Bonferroni correction \cite{holm1979}. Adjusted $p$-values are reproduced in the scatter-plot annotations of Figures~\ref{fig:divergence}--\ref{fig:gap} for transparency.}
 
-Figure~\ref{fig:divergence} regresses the absolute IS--Q\&A divergence against three market outcomes: the cross-maturity mean of $|\Delta\text{OIS}|$, the STOXX50 return, and the PC1 monetary surprise.
+Figure~\ref{fig:divergence} plots the absolute IS--Q\&A divergence against three market outcomes: the cross-maturity mean of $|\Delta\text{OIS}|$, the STOXX50 return, and the PC1 monetary surprise.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/is_qa/fig_divergence.pdf}
-    \caption{IS--Q\&A divergence versus market variables}
+    \caption{%
+        IS--Q\&A sentiment divergence versus market variables
+        ($n = 272$ press conferences).
+        Each panel reports Pearson $r$, raw $p$, and Holm-adjusted
+        $p_{\mathrm{adj}}$; significance stars reflect $p_{\mathrm{adj}}$.
+        Regression lines are shown for visual reference only.}
     \label{fig:divergence}
 \end{figure}
 
-The result is largely null, with one counter-intuitive exception. Neither the STOXX50 return ($r = 0.047$, n.s.) nor the PC1 monetary surprise ($r = -0.040$, n.s.)
-correlates significantly with the divergence. A small but statistically significant
-\emph{negative} correlation appears with $|\Delta\text{OIS}|$ ($r = -0.146$, $p < 0.05$): conferences where IS and Q\&A diverge the most produce the
-\emph{smallest} OIS reactions. We refer to this as \emph{communicative cancellation}: conflicting signals within the same press conference prevent the market from cleanly updating its rate expectations in either direction.
+The result is uniformly null after multiplicity correction. Neither the STOXX50 return ($r = 0.047$, $p_{\mathrm{adj}} = 1.000$) nor the PC1 monetary surprise ($r = -0.040$, $p_{\mathrm{adj}} = 1.000$) correlates meaningfully with the IS--Q\&A divergence. A nominally significant negative association emerges with $|\Delta\text{OIS}|$ ($r = -0.146$, $p_{\mathrm{raw}} = 0.016$), but this result does not survive Holm--Bonferroni correction ($p_{\mathrm{adj}} = 0.096$, Bonferroni threshold $\approx 0.0083$) and cannot be treated as a confirmed finding.
 
-Figure~\ref{fig:gap} tests whether the journalist--\gls{ecb} gap within the Q\&A carries the same kind of market content.
+The \emph{direction} of this association is nonetheless theoretically interpretable: press conferences in which IS and Q\&A sentiment diverge most tend to produce the \emph{smallest} OIS reactions. We label this directional pattern \emph{communicative cancellation} --- the hypothesis that conflicting signals within the same press conference prevent the market from cleanly updating its rate expectations in either direction. We treat this as a motivated conjecture rather than an established result and revisit it in the regime-dependent rolling analysis of Section~\ref{sec:rolling}, where the same channel is examined conditional on the prevailing monetary policy uncertainty regime.
 
-\begin{figure}[htpb]
+Figure~\ref{fig:gap} tests whether the journalist--\gls{ecb} sentiment gap within the Q\&A carries analogous market content.
+
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\linewidth]{images/results/is_qa/fig_gap.pdf}
-    \caption{Internal Q--A gap versus market surprises}
+    \caption{%
+        Internal Q--A sentiment gap versus market surprises
+        ($n = 272$ press conferences).
+        Annotation convention follows Figure~\ref{fig:divergence}.
+        All three correlations are statistically indistinguishable from zero
+        before and after family-wise correction.}
     \label{fig:gap}
 \end{figure}
 
-Both correlations are statistically indistinguishable from zero, and the near-flat regression lines in Figure~\ref{fig:gap} confirm the visual message. Markets correctly anticipate the structural pessimism of the press corps and the measured caution of the \gls{ecb}; these expected components are immediately discounted. It is the \emph{deviation} from the institutionally expected baseline---not the level of the gap---that carries market-moving information.
+All three Q--A gap correlations are firmly null at both levels ($p_{\mathrm{adj}} \geq 0.764$ in every case; see Table~\ref{tab:holm_correction}). The near-flat regression lines in Figure~\ref{fig:gap} confirm the visual message. Markets appear to correctly anticipate the structural pessimism of the press corps and the measured caution of the \gls{ecb}; these expected components are priced immediately and leave no residual correlation with realised market moves. It is the \emph{deviation} from the institutionally expected baseline---not the level of the gap itself---that may carry market-moving content, a distinction testable only with event-study or high-frequency identification designs beyond the scope of this analysis.
 
-In summary, the IS is a structured narrative whose policy signal concentrates in the closing passages; the Q\&A is a flat, reactive dialogue divided between a journalistic framing of risk and an institutional response. Neither the IS--Q\&A divergence nor the journalist--\gls{ecb} gap moves markets in the expected direction, but the former produces a detectable communicative-cancellation effect on rate expectations.
+Table~\ref{tab:holm_correction} consolidates all six correlations and their family-corrected counterparts.
+
+\begin{table}[htbp]
+    \centering
+    \caption{%
+        Pearson correlations between divergence measures and market variables
+        with Holm--Bonferroni correction
+        (family $\alpha = 0.05$, $n = 272$)}
+    \label{tab:holm_correction}
+    \small
+    \begin{tabular}{llrrrll}
+        \toprule
+        Outcome           & Predictor            & $r$      & $p_{\mathrm{raw}}$ & $p_{\mathrm{adj}}$ & Decision       \\
+        \midrule
+        IS--QA divergence & $|\Delta\text{OIS}|$ & $-0.146$ & $0.016$            & $0.096$            & Retain $H_{0}$ \\
+        IS--QA divergence & STOXX50              & $0.047$  & $0.444$            & $1.000$            & Retain $H_{0}$ \\
+        IS--QA divergence & PC1                  & $-0.040$ & $0.507$            & $1.000$            & Retain $H_{0}$ \\
+        \midrule
+        Q--A gap          & $|\Delta\text{OIS}|$ & $-0.048$ & $0.430$            & $1.000$            & Retain $H_{0}$ \\
+        Q--A gap          & STOXX50              & $0.087$  & $0.153$            & $0.764$            & Retain $H_{0}$ \\
+        Q--A gap          & PC1                  & $-0.003$ & $0.957$            & $1.000$            & Retain $H_{0}$ \\
+        \bottomrule
+    \end{tabular}
+    \par\smallskip
+    \footnotesize\textit{Note:} Holm--Bonferroni correction applied
+    simultaneously to all six tests. Plain Bonferroni threshold:
+    $0.05/6 \approx 0.0083$. The nominally significant IS--QA
+    vs.\ $|\Delta\text{OIS}|$ result ($p_{\mathrm{raw}} = 0.016$)
+    does not survive family-wise correction
+    ($p_{\mathrm{adj}} = 0.096$). All six null hypotheses are
+    retained at the corrected level.
+\end{table}
+
+In summary, neither the IS--Q\&A divergence nor the journalist--\gls{ecb} gap moves markets in a statistically confirmed manner once multiplicity is accounted for. The directional evidence for communicative cancellation on OIS rate expectations is suggestive and carries a clear economic interpretation, but it requires corroboration in a regime-conditional framework before it can support strong inference.
