@@ -174,7 +174,7 @@ The schema, illustrated in Figure~\ref{fig:db_schema}, consists of seven normali
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=1\linewidth]{images/data/diagram.pdf}
+    \includegraphics[width=1\linewidth]{images/data/diagram.png}
     \caption[ER diagram of the segments database]{Physical ER diagram of
         the \gls{ecb} transcript database (generated with
         \textit{dbdiagram.io}), showing the seven tables, their columns,
@@ -194,8 +194,7 @@ To evaluate the informational value of the textual signal, the latter is confron
 \paragraph{Official policy rates.} The \gls{mro} rate and the Deposit Facility (DF) rate, sourced from the
 \gls{ecb} money-market archives, represent the explicit policy signal. For periods in which nominal rates are constrained by the \gls{zlb}, the Wu--Xia shadow rate \cite{wu2016measuring} is used as a proxy for unconstrained monetary conditions.
 
-\paragraph{First principal component of the OIS surprises.} To collapse the multi-dimensional OIS surprise vector onto a single target variable, we extract its first principal component, denoted
-\textbf{PC1}. PC1 captures the dominant level shift across the maturity spectrum and serves as a parsimonious summary of the policy surprise for the predictive analysis of Chapter~\ref{ch:results}.
+\paragraph{First principal component of the OIS surprises.} To collapse the mul\-ti-di\-men\-sional \gls{ois} surprise vector onto a single target variable, we extract its first principal component, denoted \textbf{PC1}. PC1 captures the dominant level shift across the maturity spectrum and serves as a parsimonious summary of the policy surprise for the predictive analysis of Chapter~\ref{ch:results}.
 
 The three layers are joined to the meeting-level feature matrix of Section~\ref{sec:feature_construction} on the press-conference date, yielding the unified $(\text{date} \times \text{feature})$ panel on which the empirical analysis operates.
 
