@@ -1,3 +1,7 @@
+"""
+THIS IS JUST THE EXTENSION FOR THE THESIS 
+we have prepared script with prompt and groq implementation - llama
+"""
 import json
 import time
 import pandas as pd
@@ -8,7 +12,6 @@ from .. import DATA_DIR, GROQ_KEY, FILENAME
 # Inicializácia
 client = Groq(api_key=GROQ_KEY)
 
-# VYLEPŠENÝ PROMPT PRE BATCH (Viacero textov naraz)
 BATCH_SYSTEM_PROMPT = """
 You are an elite macroeconomist and ECB policy analyst. I will provide you with a LIST of 10 text excerpts from ECB press conferences.
 To ensure accuracy, proceed strictly in two logical steps and respond EXCLUSIVELY in JSON format.
@@ -68,7 +71,7 @@ for i in range(0, len(df), batch_size):
     all_results.extend(batch_res)
 
     # Každých 100 riadkov priebežne ukladaj (DÔLEŽITÉ pri takomto objeme!)
-    if i % 100 == 0:...# TODO saving to dabase
+    if i % 100 == 0:...
 
     # Krátka pauza, aby Groq "nelapal po dychu"
     time.sleep(1.2)
@@ -76,4 +79,3 @@ for i in range(0, len(df), batch_size):
 # Pridanie výsledkov do pôvodného DF
 results_df = pd.DataFrame(all_results)
 df = pd.concat([df.reset_index(drop=True), results_df], axis=1)
-# TODO save to dabase
