@@ -61,7 +61,7 @@ Four classifiers are compared. \textbf{M1 (Baseline)} uses rate history only: $\
     \label{fig:performance}
 \end{figure}
 
-Figure~\ref{fig:performance} reports the results. Three observations follow. First, M2's raw accuracy ($0.39 \pm 0.11$) falls well below the naive baseline---the expected outcome of a class-balanced classifier on an imbalanced sample. With Hold meetings comprising $79.3\%$ of the sample, the always-Hold predictor achieves an accuracy of $0.793$ that no class-balanced classifier can mechanically match; we therefore report AUC (one-vs-rest, macro-averaged) as the primary metric, since it is invariant to the class prior and rewards correct directional ranking rather than majority-class prediction. Second, the AUC ordering is strict: M1 ($0.682$) $<$ M2 ($0.694$) $<$ M3 ($0.705$) $<$ M4 ($0.763$). Third, and most strikingly, the largest single increment is M3$\rightarrow$M4 ($+0.058$): the Random Forest captures non-linear interactions that the logistic specification cannot, an interpretation confirmed by the importance profile in Figure~\ref{fig:rf_importances}.
+Figure~\ref{fig:performance} reports the results. Three observations follow. First, M2's raw accuracy ($0.39 \pm 0.11$) falls well below the naive baseline---the expected outcome of a class-balanced classifier on an imbalanced sample. With Hold meetings comprising $79.3\%$ of the sample, the always-Hold predictor achieves an accuracy of $0.793$ that no class-balanced classifier can mechanically match; we therefore report \gls{auc} (one-vs-rest, macro-averaged) as the primary metric, since it is invariant to the class prior and rewards correct directional ranking rather than majority-class prediction. Second, the \gls{auc} ordering is strict: M1 ($0.682$) $<$ M2 ($0.694$) $<$ M3 ($0.705$) $<$ M4 ($0.763$). Third, and most strikingly, the largest single increment is M3$\rightarrow$M4 ($+0.058$): the Random Forest captures non-linear interactions that the logistic specification cannot, an interpretation confirmed by the importance profile in Figure~\ref{fig:rf_importances}.
 
 Figure~\ref{fig:comparison_m3_m4} places the M3 and M4 confusion matrices side by side; Table~\ref{tab:classification_v2} reports the underlying precision, recall, and F1 scores.
 
@@ -91,7 +91,7 @@ Figure~\ref{fig:comparison_m3_m4} places the M3 and M4 confusion matrices side b
 \end{table}
 
 Both models are strong on the directional classes (Cut and Hike recall $73$--$93\%$) but weaker on hold timing: M3 misclassifies $86$ of $219$ holds as directional decisions. This is the expected behaviour of a signal that leads the rate by several meetings---it correctly anticipates the
-\emph{direction} of the next move but cannot pinpoint \emph{which} hold meeting precedes it. M4 recovers $40$ of those misclassified holds ($173$ vs $133$ correct), accounting for most of the AUC gain.
+\emph{direction} of the next move but cannot pinpoint \emph{which} hold meeting precedes it. M4 recovers $40$ of those misclassified holds ($173$ vs $133$ correct), accounting for most of the \gls{auc} gain.
 
 \begin{figure}[htbp]
     \centering
@@ -120,7 +120,7 @@ increases the number of changed meetings to $n_{\text{changed}} = 120$ and shift
         images/results/model/fig_performance_v3.pdf}
     \caption[Cross-validated performance, composite target]{%
         Cross-validated performance, composite target ($n = 276$--$279$).
-        $\times$: v2 AUC for reference. Dashed: naive baseline ($0.572$).}
+        $\times$: v2 \gls{auc} for reference. Dashed: naive baseline ($0.572$).}
     \label{fig:performance_v3}
 \end{figure}
 
@@ -160,20 +160,13 @@ increases the number of changed meetings to $n_{\text{changed}} = 120$ and shift
     \end{tabular}
 \end{table}
 
-All AUC values fall uniformly relative to the \gls{mro}-only setting: M1 ($0.576$) $<$ M2 ($0.657$) $<$ M4 ($0.668$) $<$ M3 ($0.699$). Two findings stand out. First, M3 remains the best model, confirming that combining rate history with sentiment adds value even on the harder target. Second, M4 no longer outperforms M3: the Random Forest's non-linear advantage is specific to the conventional rate cycle and does not generalise to the composite window, where shadow-rate changes carry different statistical properties. The composite results are best read as a robustness check: directional predictability of sentiment survives the extension to unconventional policy, but the non-linear gain identified in Section~\ref{sec:results_prediction} is regime-specific.
+All \gls{auc} values fall uniformly relative to the \gls{mro}-only setting: M1 ($0.576$) $<$ M2 ($0.657$) $<$ M4 ($0.668$) $<$ M3 ($0.699$). Two findings stand out. First, M3 remains the best model, confirming that combining rate history with sentiment adds value even on the harder target. Second, M4 no longer outperforms M3: the Random Forest's non-linear advantage is specific to the conventional rate cycle and does not generalise to the composite window, where shadow-rate changes carry different statistical properties. The composite results are best read as a robustness check: directional predictability of sentiment survives the extension to unconventional policy, but the non-linear gain identified in Section~\ref{sec:results_prediction} is regime-specific.
 
 %─────────────────────────────────────────────────────────────────────────────
 \subsection{Communication Surprise and Market Volatility}
 \label{sec:results_surprise}
 
-The preceding analysis asked whether lagged sentiment predicts future rate
-decisions. A complementary question is whether the \emph{change} in sentiment
-from one meeting to the next---the communication surprise---correlates with the
-contemporaneous market reaction, and whether the \emph{dispersion} of sentiment
-within a press conference predicts the size of that reaction. Two estimation
-strategies address these questions: a static full-sample Pearson correlation
-and a 20-meeting rolling window that reveals regime-level variation.
-Figure~\ref{fig:delta_sentiment} reports the static checks.
+The preceding analysis asked whether lagged sentiment predicts future rate decisions. A complementary question is whether the \emph{change} in sentiment from one meeting to the next---the communication surprise---correlates with the contemporaneous market reaction, and whether the \emph{dispersion} of sentiment within a press conference predicts the size of that reaction. Two estimation strategies address these questions: a static full-sample Pearson correlation and a 20-meeting rolling window that reveals regime-level variation. Figure~\ref{fig:delta_sentiment} reports the static checks.
 
 \begin{figure}[htbp]
     \centering
@@ -193,40 +186,13 @@ Figure~\ref{fig:delta_sentiment} reports the static checks.
 
 \subsubsection*{Static correlations}
 
-Three results emerge from the full-sample analysis. First, all directional
-correlations (top row) are statistically indistinguishable from zero: the
-first-differenced \gls{is} mean ($r = +0.037$, n.s.), \gls{qa} mean
-($r = +0.035$, n.s.), and overall FinBERT score ($r = +0.052$, n.s.) carry no
-systematic information about the sign of the same-day \gls{ois}-1Y move. A
-hawkish communication surprise did not reliably produce a positive rate
-reaction at the one-year horizon.
+Three results emerge from the full-sample analysis. First, all directional correlations (top row) are statistically indistinguishable from zero: the first-differenced \gls{is} mean ($r = +0.037$, n.s.), \gls{qa} mean ($r = +0.035$, n.s.), and overall FinBERT score ($r = +0.052$, n.s.) carry no systematic information about the sign of the same-day \gls{ois}-1Y move. A hawkish communication surprise did not reliably produce a positive rate reaction at the one-year horizon.
 
-Second, the within-conference sentiment dispersion features---proxies for
-the internal coherence of the press conference---are likewise uninformative
-about market volatility in the aggregate: FinBERT \gls{is} standard deviation
-($r = -0.020$, n.s.) and CentralBankRoBERTa \gls{is} standard deviation
-($r = -0.015$, n.s.) produce near-zero correlations with
-$|\Delta\overline{\text{OIS}}|$. Third, sentiment \emph{levels}, rather
-than dispersions, show a weak but statistically significant negative
-association with market volatility: FinBERT \gls{is} mean
-($r = -0.146$, $p < 0.05$), FinBERT overall mean ($r = -0.125$, $p < 0.05$),
-and CentralBankRoBERTa overall standard deviation
-($r = -0.130$, $p < 0.05$). The sign is consistent across models: more
-positive or more coherent ECB communication is associated with \emph{smaller}
-absolute market reactions, suggesting that communication clarity reduces
-pricing uncertainty rather than amplifying it. This pattern echoes the
-communicative-cancellation finding of Section~\ref{sec:divergence}.
+Second, the within-conference sentiment dispersion features---proxies for the internal coherence of the press conference---are likewise uninformative about market volatility in the aggregate: FinBERT \gls{is} standard deviation ($r = -0.020$, n.s.) and CentralBankRoBERTa \gls{is} standard deviation ($r = -0.015$, n.s.) produce near-zero correlations with $|\Delta\overline{\text{OIS}}|$. Third, sentiment \emph{levels}, rather than dispersions, show a weak but statistically significant negative association with market volatility: FinBERT \gls{is} mean ($r = -0.146$, $p < 0.05$), FinBERT overall mean ($r = -0.125$, $p < 0.05$), and CentralBankRoBERTa overall standard deviation ($r = -0.130$, $p < 0.05$). The sign is consistent across models: more positive or more coherent ECB communication is associated with \emph{smaller} absolute market reactions, suggesting that communication clarity reduces pricing uncertainty rather than amplifying it. This pattern echoes the communicative-cancellation finding of Section~\ref{sec:divergence}.
 
 \subsubsection*{Time-varying structure}
-
-The static aggregate conceals a strongly regime-dependent structure.
-Figure~\ref{fig:rolling_correlation} traces the same directional and
-volatility correlations through a 20-meeting rolling window
-(${\approx}\,2.5$ years at eight meetings per year). The dotted horizontal
-lines mark the two-sided 95\,\% significance threshold for $n = 20$
-($r_{\text{crit}} = \pm 0.444$); segments outside the corridor are
-statistically distinguishable from zero at the local-window level, while
-segments inside should be read as noise.
+\label{sec:rolling}
+The static aggregate conceals a strongly regime-dependent structure. Figure~\ref{fig:rolling_correlation} traces the same directional and volatility correlations through a 20-meeting rolling window (${\approx}\,2.5$ years at eight meetings per year). The dotted horizontal lines mark the two-sided 95\,\% significance threshold for $n = 20$ ($r_{\text{crit}} = \pm 0.444$); segments outside the corridor are statistically distinguishable from zero at the local-window level, while segments inside should be read as noise.
 
 \begin{figure}[htbp]
     \centering
@@ -247,18 +213,6 @@ segments inside should be read as noise.
     \label{fig:rolling_correlation}
 \end{figure}
 
-The top panel reveals three structurally distinct regimes. In the pre-\gls{gfc}
-period the \gls{is} surprise correlation peaks at approximately $+0.50$,
-marginally clearing the significance corridor: a hawkish tone shift moved
-one-year rates upward on impact, consistent with an environment in which
-markets treated ECB communication as a reliable signal of the near-term policy
-path. This relationship collapsed during the \gls{gfc} and turned persistently
-and significantly negative through the \gls{zlb} era, reaching a trough of
-approximately $-0.50$ to $-0.60$ during 2010--2013: under forward guidance and
-the effective lower bound, a hawkish communication surprise was re-interpreted
-as a reassurance about the economic outlook rather than a tightening signal,
-producing the opposite market response. The hiking cycle (2022--2024) shows
-a tentative recovery toward positive values, though the rolling correlation
-remains inside the significance corridor for most of that period, indicating
-that the sign reversal had not yet fully stabilised by the end of the sample.
-Crucially, the near-zero full-sample correlation reported above is an artefac
+The top panel reveals three structurally distinct regimes. In the pre-\gls{gfc} period the \gls{is} surprise correlation peaks at approximately $+0.50$, marginally clearing the significance corridor: a hawkish tone shift moved one-year rates upward on impact, consistent with an environment in which markets treated ECB communication as a reliable signal of the near-term policy path. This relationship collapsed during the \gls{gfc} and turned persistently and significantly negative through the \gls{zlb} era, reaching a trough of approximately $-0.50$ to $-0.60$ during 2010--2013: under forward guidance and the effective lower bound, a hawkish communication surprise was re-interpreted as a reassurance about the economic outlook rather than a tightening signal, producing the opposite market response. The hiking cycle (2022--2024) shows a tentative recovery toward positive values, though the rolling correlation remains inside the significance corridor for most of that period, indicating that the sign reversal had not yet fully stabilised by the end of the sample. Crucially, the near-zero full-sample correlation reported above is an artefact of temporal aggregation: pre-\gls{gfc} positive and \gls{zlb}-era negative effects largely cancel in the pooled estimate.
+
+The bottom panel tells a more muted story. The within-conference sentiment dispersion measures spend the majority of the sample inside the $r_{\text{crit}}$ corridor, consistent with their full-sample non-significance. Two brief exceptions are visible: a spike toward $+0.50$ during the \gls{gfc} (2008--2009), when elevated market volatility and elevated internal communication uncertainty coincided, and a cluster of positive values during mid-\gls{zlb} crisis episodes (2011--2013). In the hiking cycle the dispersion--volatility correlation collapses toward zero or reverses, a pattern that is economically interpretable: the ECB communicated with unusual resolve during 2022--2023 (low internal dispersion) while simultaneously producing the largest \gls{ois} moves in the sample (high volatility), mechanically suppressing the correlation. The regime instability is itself an economically meaningful finding: the informational content of communication surprises, and of internal coherence signals, depends critically on the prevailing monetary policy framework rather than on any stable structural relationship between language and prices.
